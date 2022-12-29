@@ -408,7 +408,7 @@ class ProductController extends BaseController
 
         $promotions = [];
         if (isset($result->custitem42)){
-            if($result->cusitem42) {
+            if($result->custitem42) {
                 $promotions = [
                     "DeleteMissingArrayElements" => true,
                     "promo_order" => 1,
@@ -416,7 +416,7 @@ class ProductController extends BaseController
                 ];
 
             }
-            $p_promote = "Home Page - Featured";
+            // $p_promote = "Home Page - Featured";
         }
 
         $p_tab_video = "";
