@@ -17,7 +17,7 @@ use App\Http\Controllers\API\ProductController;
 |
 */
 
-// Route::post('/updateProduct', 'API/ProductController@updateProduct');
+Route::post('/updateProduct', 'API/ProductController@updateProduct');
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
