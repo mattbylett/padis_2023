@@ -151,10 +151,12 @@ class ProductController extends BaseController
             );
         } while ($net_website_additional_text === "error");
 
-        Log::info("Netsuite Result = " . $result);
-        // Log::info("Netsuite Result = " . json_encode($result));
+        Log::info("Netsuite Result = " . json_encode($result));
+
 
         $p_code = $result->itemId;
+
+        Log::info("p_code = " . $p_code );
 
         $website_display_insinc = false;
         if (isset($result->custitem14)) {
