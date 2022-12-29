@@ -414,7 +414,9 @@ class ProductController extends BaseController
                     "promo_order" => 1,
                     "promo_tag" => "Home Page - Featured"
                 ];
+
             }
+            $p_promote = "Home Page - Featured";
         }
 
         $p_tab_video = "";
