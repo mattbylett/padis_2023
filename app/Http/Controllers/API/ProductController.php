@@ -399,25 +399,25 @@ class ProductController extends BaseController
             }
         }
 
-        // if (isset($result->custitem42)) {
-        //     if ($result->custitem42) {
-        //         $p_promote = "Home Page - Featured";                
-        //         $weekly_specials_insinc = 124022;
-        //     }
-        // }
-
-        $promotions = [];
-        if (isset($result->custitem42)){
-            if($result->custitem42) {
-                $promotions = [
-                    "DeleteMissingArrayElements" => true,
-                    "promo_order" => 1,
-                    "promo_tag" => "Home Page - Featured"
-                ];
-
+        if (isset($result->custitem42)) {
+            if ($result->custitem42) {
+                $p_promote = "Home Page - Featured";                
+                $weekly_specials_insinc = 124022;
             }
-            $p_promote = "Home Page - Featured";
         }
+
+        // $promotions = [];
+        // if (isset($result->custitem42)){
+        //     if($result->custitem42) {
+        //         $promotions = [
+        //             "DeleteMissingArrayElements" => true,
+        //             "promo_order" => 1,
+        //             "promo_tag" => "Home Page - Featured"
+        //         ];
+
+        //     }
+        //     $p_promote = "Home Page - Featured";
+        // }
 
         $p_tab_video = "";
         if (isset($result->custitem33)) {
