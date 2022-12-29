@@ -408,12 +408,13 @@ class ProductController extends BaseController
 
         $promotions = [];
         if (isset($result->custitem42)){
-            // if($result->cusitem42) {
+            if($result->cusitem42) {
                 $promotions = [
                     "DeleteMissingArrayElements" => true,
+                    "promo_order" => 1,
                     "promo_tag" => "Home Page - Featured"
                 ];
-            // }
+            }
         }
 
         $p_tab_video = "";
