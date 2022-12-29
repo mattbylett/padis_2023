@@ -131,7 +131,7 @@ class ProductController extends BaseController
         do {
             $result = $netSuiteApi->getOneProductInfo($id);
         } while ($result == "error");
-        dd($result->custitem36);
+        // dd($result->custitem36);
 
         do {
             $base_price = $netSuiteApi->getBasePrice($id);
