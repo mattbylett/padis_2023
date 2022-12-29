@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 //Controllers
 use App\Http\Controllers\API\ProductController;
+use App\Http\Controllers\API\XeroController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::post('/updateProduct', [ProductController::class, 'updateProduct']);
+
+// Xero CallBack URLs
+Route::get('/callback', [XeroController::class, 'index'])->name('xero.index');
+Route::post('/callback', [XeroController::class, 'store'])->name('xero.store');
