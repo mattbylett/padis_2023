@@ -416,7 +416,7 @@ class ProductController extends BaseController
                 ];
 
             }
-            // $p_promote = "Home Page - Featured";
+            $p_promote = "Home Page - Featured";
         }
 
         $p_tab_video = "";
