@@ -24,7 +24,7 @@ class ProductController extends BaseController
                 Product::create([
                   "name" => $item["p_code"] ?? null,
                 //   "internal_id" => $item[""] ?? null,
-                  "pid" => $item["pid"] ?? null,
+                  "pid" => $item["id"] ?? null,
                   "website_additional_text" => $item["p_additionaltext"] ?? null,
                   "vendor_name" => $item["p_suppliername"] ?? null,
                   "website_availability_text" => $item["p_outofstockmessage"] ?? null,
