@@ -131,6 +131,7 @@ class ProductController extends BaseController
         do {
             $result = $netSuiteApi->getOneProductInfo($id);
         } while ($result == "error");
+        dd($result->custitem36);
 
         do {
             $base_price = $netSuiteApi->getBasePrice($id);
@@ -411,7 +412,7 @@ class ProductController extends BaseController
                 ];
             }
         }
-        
+
         $p_tab_video = "";
         if (isset($result->custitem33)) {
             $p_tab_video = $result->custitem33;

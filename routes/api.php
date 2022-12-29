@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+//Controllers
+use App\Http\Controllers\API\ProductController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::post('/updateProduct', 'API/ProductController@updateProduct');
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::post('/updateProduct', [ProductController::class, 'updateProduct']);
