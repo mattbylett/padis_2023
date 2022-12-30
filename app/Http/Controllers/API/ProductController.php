@@ -152,9 +152,7 @@ class ProductController extends BaseController
         } while ($net_website_additional_text === "error");
 
         do {
-            $promotions_info = $netSuiteApi->getPromotionalInfo(
-                $id
-            );
+            $promotions_info = $netSuiteApi->getPromotionalInfo($id);
         } while ($promotions_info === "error");
 
         Log::info("Netsuite Result = " . json_encode($result));
