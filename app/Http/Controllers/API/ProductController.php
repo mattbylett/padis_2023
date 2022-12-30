@@ -406,19 +406,14 @@ class ProductController extends BaseController
         //     }
         // }
 
-        // $promotions = [];
+
         if (isset($result->custitem42)){
             if($result->custitem42) {
                 $p_promote = "Home Page - Featured";                
                 $weekly_specials_insinc = 124022;
-                // $promotions = [
-                //     "DeleteMissingArrayElements" => true,
-                //     "promo_order" => 1,
-                //     "promo_tag" => "Home Page - Featured"
-                // ];
             }
         }
-        Log::info("Promotions = " . $promotions);
+
         $p_tab_video = "";
         if (isset($result->custitem33)) {
             $p_tab_video = $result->custitem33;
