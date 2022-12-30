@@ -52,9 +52,4 @@ return [
         "rubbish_api_id" => env("RUBBISH_API_ID"),
         "rubbish_api_key" => env("RUBBISH_API_KEY"),
     ],
-    "xero" => [
-        "base_uri" => env('XERO_BASE_URI'),
-        'client_id' => env('XERO_CLIENT_ID'),
-        'client_secret' => env('XERO_CLIENT_SECRET'),
-    ],
 ];
