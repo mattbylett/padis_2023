@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\XeroController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,7 +49,11 @@ Route::prefix('admin')->group(function()
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard')->middleware('admin');
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout')->middleware('admin');
 });
-
+/* 
+ * We name this route xero.auth.success as by default the config looks for a route with this name to redirect back to
+ * after authentication has succeeded. The name of this route can be changed in the config file.
+ */
+Route::get('/manage/xero', [XeroController::class, 'index'])->name('xero.auth.success');
 
 
 /** ___________________-END ADMIN ROUTES-_____________________________________ */

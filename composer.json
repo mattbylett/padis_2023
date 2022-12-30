@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.7",
         "maatwebsite/excel": "^3.1",
         "psr/simple-cache": "^2.0",
+        "webfox/laravel-xero-oauth2": "^4.0",
         "yajra/laravel-datatables": "^9.0"
     },
     "require-dev": {
