@@ -151,9 +151,9 @@ class ProductController extends BaseController
             );
         } while ($net_website_additional_text === "error");
 
-        do {
-            $promotions_info = $netSuiteApi->getPromotionalInfo($id);
-        } while ($promotions_info === "error");
+        // do {
+        //     $promotions_info = $netSuiteApi->getPromotionalInfo($id);
+        // } while ($promotions_info === "error");
 
         Log::info("Netsuite Result = " . json_encode($result));
 
@@ -410,8 +410,8 @@ class ProductController extends BaseController
         //     }
         // }
 
-        $promotions = $promotional_info;
-        if (isset($promotions)){            
+        $promotions = [];
+        if (isset($result->custitem42)){            
                 $promotions = [
                     'DeleteMissingArrayElements' => true,
                     'promo_tag' => 'Home Page - Featured',

@@ -200,21 +200,21 @@ class NetSuiteApi
         }
     }
 
-    public function getPromotionalInfo($product_id)
-    {
-        $path = "/inventoryitem/" . $product_id . "/custitem42";
-        $httpMethod = "GET";
+    // public function getPromotionalInfo($product_id)
+    // {
+    //     $path = "/inventoryitem/" . $product_id . "/custitem42";
+    //     $httpMethod = "GET";
 
-        $result = $this->sendRequest($httpMethod, $path);
-        if ($result == "error") {
-            return $result;
-        } else {
-            if (isset($result->items[0]->refName)) {
-                return $result->items[0]->refName;
-            } else {
-                return "";
-            }
-        }
+    //     $result = $this->sendRequest($httpMethod, $path);
+    //     if ($result == "error") {
+    //         return $result;
+    //     } else {
+    //         if (isset($result->items[0]->refName)) {
+    //             return $result->items[0]->refName;
+    //         } else {
+    //             return "";
+    //         }
+    //     }
 
-    }
+    // }
 }
