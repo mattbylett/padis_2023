@@ -219,7 +219,7 @@ class ProductController extends BaseController
         }
 
         Log::info(
-            "Website insinc, cafe, disposable, rubbish, packnet, hand, car == " .
+            "Website insinc, cafe, disposable, rubbish, packnet, hand, car, soluclean == " .
                 $website_display_insinc .
                 ", " .
                 $website_display_cafe .
@@ -673,6 +673,11 @@ class ProductController extends BaseController
             "apiKey" => config("services.website.insinc_api_key"),
         ]);
 
+        $http_soluclean = Http::withHeaders([
+            "apiID" => config("services.website.soluclean_api_id"),
+            "apiKey" => config("services.website.soluclean_api_key"),
+        ]);
+
         $base_uri = config("services.website.base_uri");
 
         try {
@@ -739,6 +744,17 @@ class ProductController extends BaseController
                     );
                     $result = $response->json();
                     Log::info("Website Gloves Success");
+                } catch (\Throwable $th) {
+                    Log::error($th->getMessage());
+                }
+
+                try {
+                    $response = $http_soluclean->post(
+                        "{$base_uri}/product",
+                        $removeData
+                    );
+                    $result = $response->json();
+                    Log::info("Website Soluclean Success");
                 } catch (\Throwable $th) {
                     Log::error($th->getMessage());
                 }
@@ -983,6 +999,45 @@ class ProductController extends BaseController
                 }
 
                 Log::info("Website Gloves Success");
+
+                if ($website_display_soluclean) {
+                    $data_gloves = $data;
+                    if ($type == "create") {
+                        $data_soluclean["p_groupid"] = "244504";
+                    } else {
+                        $response_soluclean = $http_soluclean->get(
+                            "{$base_uri}/products?p_code=" . $p_code
+                        );
+                        $result_soluclean = $response_soluclean->json();
+                        if (isset($result_soluclean["resultCount"])) {
+                            if ($result_soluclean["resultCount"] == 0) {
+                                $data_soluclean["p_groupid"] = "244504";
+                            }
+                        }
+                    }
+                    $response_soluclean = $http_soluclean->post(
+                        "{$base_uri}/product",
+                        $data_soluclean
+                    );
+                    $result_soluclean = $response_soluclean->json();
+                    Log::info($result_soluclean);
+                } else {
+                    $response_soluclean = $http_soluclean->get(
+                        "{$base_uri}/products?p_code=" . $p_code
+                    );
+                    $result_soluclean = $response_soluclean->json();
+                    if (isset($result_soluclean["resultCount"])) {
+                        if ($result_soluclean["resultCount"] != 0) {
+                            $response_soluclean = $http_soluclean->post(
+                                "{$base_uri}/product",
+                                $removeData
+                            );
+                            $result_soluclean = $response_soluclean->json();
+                        }
+                    }
+                }
+
+                Log::info("Website Soluclean Success");
 
                 if ($website_display_insinc) {
                     $data_insinc = $data;
