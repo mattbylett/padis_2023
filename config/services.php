@@ -51,5 +51,8 @@ return [
 
         "rubbish_api_id" => env("RUBBISH_API_ID"),
         "rubbish_api_key" => env("RUBBISH_API_KEY"),
+
+        "soluclean_api_id" => env("SOLUCLEAN_API_ID"),
+        "soluclean_api_key" => env("SOLUCLEAN_API_KEY"),
     ],
 ];

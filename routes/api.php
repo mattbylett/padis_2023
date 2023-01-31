@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 //Controllers
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\XeroController;
+use App\Http\Controllers\API\WebsiteWorldController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +32,8 @@ Route::post('/updateProduct', [ProductController::class, 'updateProduct']);
 // Xero CallBack URLs
 Route::get('/callback', [XeroController::class, 'index'])->name('xero.index');
 Route::post('/callback', [XeroController::class, 'store'])->name('xero.store');
+
+//Website World Routes
+Route::get('featured/product/form', [WebsiteWorldController::class, 'index'])->name('ww.featured.form');
+Route::post('featured/products/update', [WebsiteWorldController::class, 'updateFeaturedProducts'])->name('ww.update.featured');
+// Route::get('featured/products/update', [WebsiteWorldController::class, 'getFeaturedProducts'])->name('ww.get.featured');

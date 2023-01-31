@@ -211,6 +211,13 @@ class ProductController extends BaseController
             }
         }
 
+        $website_display_soluclean = false;
+        if (isset($result->custitem43)) {
+            if ($result->custitem43) {
+                $website_display_soluclean = true;
+            }
+        }
+
         Log::info(
             "Website insinc, cafe, disposable, rubbish, packnet, hand, car == " .
                 $website_display_insinc .
@@ -225,7 +232,9 @@ class ProductController extends BaseController
                 ", " .
                 $website_display_hand .
                 ", " .
-                $website_display_car
+                $website_display_car . 
+                ", " . 
+                $website_display_soluclean
         );
 
         $p_suppliername = $vendor_name;
