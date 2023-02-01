@@ -1001,7 +1001,7 @@ class ProductController extends BaseController
                 Log::info("Website Gloves Success");
 
                 if ($website_display_soluclean) {
-                    $data_gloves = $data;
+                    $data_soluclean = $data;
                     if ($type == "create") {
                         $data_soluclean["p_groupid"] = "244504";
                     } else {
