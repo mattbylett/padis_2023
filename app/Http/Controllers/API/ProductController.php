@@ -258,7 +258,7 @@ class ProductController extends BaseController
             }
         }
 
-        $p_shipping = null;
+        $p_shipping = 0;
         if ($p_freight_exclude) {
             if (isset($result->custitem11)) {
                 $p_shipping = $result->custitem11;
@@ -294,7 +294,7 @@ class ProductController extends BaseController
             $p_uom = $result->custitem7;
         }
 
-        $p_weight = "";
+        $p_weight = 0;
         if (isset($result->custitem8)) {
             $p_weight = $result->custitem8;
         }
@@ -672,6 +672,8 @@ class ProductController extends BaseController
             "apiID" => config("services.website.insinc_api_id"),
             "apiKey" => config("services.website.insinc_api_key"),
         ]);
+
+
 
         $http_soluclean = Http::withHeaders([
             "apiID" => config("services.website.soluclean_api_id"),
@@ -1080,6 +1082,8 @@ class ProductController extends BaseController
                 }
 
                 Log::info("Website Insinc Success");
+		Log::info($data_insinc);
+		Log::info($result_insinc);
             }
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
