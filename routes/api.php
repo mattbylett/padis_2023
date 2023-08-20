@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\XeroController;
 use App\Http\Controllers\API\WebsiteWorldController;
+use App\Http\Controllers\API\AuthenticationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,15 +20,19 @@ use App\Http\Controllers\API\WebsiteWorldController;
 |
 */
 
-Route::post('/updateProduct', 'API/ProductController@updateProduct');
+// Route::post('/updateProduct', 'API/ProductController@updateProduct');
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('connect', [AuthenticationController::class, 'authenticate']);
+Route::post('authorize', [AuthenticationController::class, 'create'])->name('netsuite.authorize.create');
+Route::get('authorize', [AuthenticationController::class, 'index'])->name('netsuite.authorize.index');
 
 Route::post('/updateProduct', [ProductController::class, 'updateProduct']);
+Route::post('/updateCustomer', [CustomerController::class, 'updateCustomer']);
 
 // Xero CallBack URLs
 Route::get('/callback', [XeroController::class, 'index'])->name('xero.index');

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Http;
 
 class ProductController extends BaseController
 {
+
     public function all()
     {
         $response = $this->http->get("{$this->base_uri}/products");
@@ -309,22 +310,10 @@ class ProductController extends BaseController
             $p_outofstockmessage = $result->custitem9;
         }
 
-        // $net_website_stock_available = 0;
-        // if(isset($result->custitem21))
-        //     $net_website_stock_available = $request->custitem21;
-
-        // if(($p_outofstockmessage == null) && ($net_website_stock_available == 0)) {
-        //     $p_outofstockmessage = "Out Of Stock";
-        // }
-
         $p_supplierprice = 0;
         if (isset($result->cost)) {
             $p_supplierprice = $result->cost;
         }
-
-        // $net_website_additional_text = "";
-        // if (isset($result->custitem28))
-        //     $net_website_additional_text = $result->custitem28;
 
         $p_additionaltext = $net_website_additional_text;
         $p_additionaltext_insinc = $net_website_additional_text;
@@ -498,9 +487,6 @@ class ProductController extends BaseController
         if ($outofstock) {
             $p_qtyinstock = 0;
         }
-
-        // if ((!$outofstock) && ($p_outofstockmessage == "Out Of Stock"))
-        //     $p_outofstockmessage = "";
 
         if (isset($result->custitem23)) {
             if ($result->custitem23) {
@@ -1088,194 +1074,6 @@ class ProductController extends BaseController
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
         }
-
-        /*
-        $product->name = $result->itemId;
-
-        if(isset($result->custitem5)) {
-            $product->description = $result->custitem5;
-        } else {
-            if(isset($result->displayName))
-                $product->display_name = $result->displayName;
-        }
-
-        if(isset($result->custitem6)) {
-            $product->description = $result->custitem6;
-        } else {
-            if(isset($result->salesDescription))
-                $product->description = $result->salesDescription;
-        }
-
-        $product->base_price = $base_price;
-        // $product->categories = $result->custitem22;
-        if(isset($result->weightUnits))
-            $product->website_unit_of_measure = $result->weightUnits;
-
-        if(isset($result->custitem8))
-            $product->website_freight_weight = $result->custitem8;
-
-        if($result->custitem3) {
-            $product->website_stock_available = null;
-        } else {
-            if(isset($result->custitem21))
-                $product->website_stock_available = $result->custitem21;
-        }
-
-        if(isset($result->cost))
-            $product->purchase_price = $result->cost;
-
-        if(isset($result->vendorName))
-            $product->vendor_name = $result->vendorName;
-
-        $product->vendor = $vendor_name;
-
-        if($result->custitem_czo_promotion)
-            $product->promotional_item = 1;
-        else
-            $product->promotional_item = 0;
-
-        $product->website_show_buy_button = true;
-        if(isset($result->custitem13)) {
-            if(!$result->custitem13) {
-                // $product->website_show_buy_button = $result->custitem13;
-            }
-        }
-
-        $product->environmental_impact = $environment_impact;
-
-        $product_out_of_stock_message = null;
-        if(isset($result->custitem9)) {
-            $product_out_of_stock_message = $result->custitem9;
-        }
-        if(($product_out_of_stock_message == null) && ($product->website_stock_available == 0)) {
-            $product_out_of_stock_message = "Out Of Stock";
-        }
-
-        if(isset($result->custitem11))
-            $product->website_fixed_freight_cost = $result->custitem11;
-
-        if(isset($result->custitem14)) {
-            if(!$result->custitem14)
-                $product->website_display_insinc_products = $result->custitem14;
-        }
-
-        if(isset($result->custitem15)) {
-            if(!$result->custitem15)
-                $product->website_display_cafe_supplies = $result->custitem15;
-        }
-
-        if(isset($result->custitem16)) {
-            if(!$result->custitem16)
-                $product->website_display_disposable_gloves = $result->custitem16;
-        }
-
-        if(isset($result->custitem17)) {
-            if(!$result->custitem17)
-                $product->website_display_rubbish_bags = $result->custitem17;
-        }
-
-        if(isset($result->custitem18)) {
-            if(!$result->custitem18)
-                $product->website_display_packnet = $result->custitem18;
-        }
-
-        if(isset($result->custitem19)) {
-            if(!$result->custitem19)
-                $product->website_display_hand_sanitiser = $result->custitem19;
-        }
-
-        if(isset($result->custitem20)) {
-            if(!$result->custitem20)
-                $product->website_display_car_cleaning = $result->custitem20;
-        }
-
-        $product->save();
-
-        try {
-
-            $website_id = WebsiteId::select('cafe_supplies', 'car_cleaning', 'hand_sanitiser', 'insinc_products', 'packnet', 'rubbish_bags', 'disposable_gloves')->where('internal_id', $id)->first();
-
-            foreach($website_id->toArray() as $website_name => $pid)
-            {
-                switch($website_name) {
-                    case 'cafe_supplies':
-                        $http = Http::withHeaders([
-                            'apiID' => config('services.website.cafe_api_id'),
-                            'apiKey' => config('services.website.cafe_api_key')
-                        ]);
-                        break;
-                    case 'car_cleaning':
-                        $http = Http::withHeaders([
-                            'apiID' => config('services.website.car_api_id'),
-                            'apiKey' => config('services.website.car_api_key')
-                        ]);
-                        break;
-                    case 'hand_sanitiser':
-                        $http = Http::withHeaders([
-                            'apiID' => config('services.website.hand_api_id'),
-                            'apiKey' => config('services.website.hand_api_key')
-                        ]);
-                        break;
-                    case 'insinc_products':
-                        $http = Http::withHeaders([
-                            'apiID' => config('services.website.insinc_api_id'),
-                            'apiKey' => config('services.website.insinc_api_key')
-                        ]);
-                        break;
-                    case 'packnet':
-                        $http = Http::withHeaders([
-                            'apiID' => config('services.website.packnet_api_id'),
-                            'apiKey' => config('services.website.packnet_api_key')
-                        ]);
-                        break;
-                    case 'rubbish_bags':
-                        $http = Http::withHeaders([
-                            'apiID' => config('services.website.rubbish_api_id'),
-                            'apiKey' => config('services.website.rubbish_api_key')
-                        ]);
-                        break;
-                    case 'disposable_gloves':
-                        $http = Http::withHeaders([
-                            'apiID' => config('services.website.gloves_api_id'),
-                            'apiKey' => config('services.website.gloves_api_key')
-                        ]);
-                        break;
-                }
-
-                $base_uri = config('services.website.base_uri');
-                if($pid != 0){
-
-                    $data = array(
-                        // "id" => $pid,
-                        'p_code' => $product->name,
-                        // 'p_title' => $product->display_name,
-                        // 'p_details' => $product->description,
-                        // 'p_group' => $product->categories,
-                        'p_price' => $product->base_price,
-                        // 'p_shipping' => $product->website_fixed_freight_cost,
-                        // 'p_uom' => $product->website_unit_of_measure,
-                        // 'p_weight' => $product->website_freight_weight,
-                        'p_outofstockmessage' => $product_out_of_stock_message,
-                        'p_qtyinstock' => $product->website_stock_available,
-                        'p_supplierprice' => $product->purchase_price,
-                        // 'p_suppliercode' => $product->vendor_name,
-                        // 'p_suppliername' => $product->vendor,
-                        // 'p_promote' => $product->promotional_item,
-                        'p_showbuybutton' => $product->website_show_buy_button,
-                        // 'p_additionaltext' => $product->environmental_impact,
-                        // 'p_freight_exclude' => $product->website_fixed_freight_cost,
-                        // 'variants' => "error"
-                    );
-                    $response = $http->post("{$base_uri}/product", $data);
-                    $result = $response->json();
-                    Log::info($result);
-                }
-            }
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-        }
-
-        */
 
         return;
     }

@@ -51,3 +51,12 @@
                   "website_categories" => $item["p_categories"] ?? null,
                 ]);
             }
+
+            ?>
+
+            OAuth realm="7103496", auth_consumer_key="708cc5b4bda99ffb17be3b4cb3509c792c1d4040c1cac15fdb19089689a93dcb",oauth_token="80a0894fd6cc1322ab4785f52d20997bbc01762c5f0eee5ca0c3c3a92b0f1550",oauth_signature_method="HMAC-SHA256",oauth_timestamp="1685496282",oauth_nonce="0123456789abcdefghijk",oauth_version="1.0",oauth_signature="toBNSQVMO5PpuM69IUfEivom4M/CiUD2w0J/TAVTMCQ"
+      
+
+            https://7103496.suitetalk.api.netsuite.com/services/rest/record/v1/customer
+
+            OAuth realm="7103496",oauth_consumer_key="708cc5b4bda99ffb17be3b4cb3509c792c1d4040c1cac15fdb19089689a93dcb",oauth_token="80a0894fd6cc1322ab4785f52d20997bbc01762c5f0eee5ca0c3c3a92b0f1550",oauth_signature_method="HMAC-SHA256",oauth_timestamp="1685496282",oauth_nonce="C0HnSQT2Xt0",oauth_version="1.0",oauth_signature="uraPPqydKyz3CWpSW2UwPeRLU8msi8krtX00Va%2BeMmU%3D"

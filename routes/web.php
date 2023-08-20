@@ -6,6 +6,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\API\XeroController;
+use App\Http\Controllers\API\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -95,3 +96,9 @@ Route::post('product/import/master', [ImportController::class, 'master'] )->name
 Route::post('product/import/webids', [ImportController::class, 'webids'] )->name('import.webids');
 
 /** ___________________-IMPORT  ROUTES-_____________________________________ */
+
+
+Route::get('admin/customers', [CustomerController::class, 'index'])->name('customers.index');
+Route::get('admin/customer/{id}', [CustomerController::class, 'show'])->name('customer.show');
+
+Route::get('netsuite', [CustomerController::class, 'netsuite']);
