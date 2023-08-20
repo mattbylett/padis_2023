@@ -8,9 +8,7 @@
 @section('admin-content')
 <div class="table">
 
-  {{$customers}}
-  {{-- @foreach ($customers as $customer) 
-  <a href="{{route('customer.show', $customer->id)}}"><li>Customer ID : {{$customer->id}}</li></a>
-  @endforeach --}}
+
+
 </div>
 @endsection
