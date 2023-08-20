@@ -34,7 +34,7 @@ class CustomerController extends Controller
         $customers = $request;
 
        foreach( $customers as $customer) {
-        'id' => $request->id;
+        echo $request->id;
        }
 
        Log::debug($customer);
