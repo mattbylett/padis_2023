@@ -24,7 +24,7 @@ define(["N/record", "N/https"], function (record, https) {
         postData = JSON.stringify(postData);
         var header = [];
         header["Content-Type"] = "application/json";
-        var apiURL = "https://your-app-url/api/updateCustomer";
+        var apiURL = "https://insinc.cluster.nz/api/updateCustomer";
 
         try {
             var response = https.post({

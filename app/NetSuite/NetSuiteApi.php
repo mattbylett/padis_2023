@@ -1,6 +1,7 @@
 <?php
 
 namespace App\NetSuite;
+use Illuminate\Support\Facades\Log;
 
 class NetSuiteApi
 {
@@ -17,6 +18,7 @@ class NetSuiteApi
             "https://" .
             $netsuite_account_id .
             ".suitetalk.api.netsuite.com/services/rest/record/v1";
+
         $this->signatureMethod = "HMAC-SHA256";
         $this->version = "1.0";
         $this->account = $netsuite_account_id;
@@ -24,7 +26,12 @@ class NetSuiteApi
         $this->tokenId = $netsuite_token_id;
         $this->consumerSecret = $netsuite_consumer_secret;
         $this->tokenSecret = $netsuite_token_secret;
+
+        
     }
+
+
+          
 
     private function sendRequest($httpMethod, $path, $is_full_path = false)
     {
@@ -35,13 +42,14 @@ class NetSuiteApi
             0,
             20
         );
+
         $this->timestamp = time();
 
         $url = $this->baseUrl . $path;
         if ($is_full_path) {
             $url = $path;
         }
-        // dd($url);
+
         $baseString =
             $httpMethod .
             "&" .
@@ -59,7 +67,7 @@ class NetSuiteApi
                     "&oauth_token=" .
                     rawurlencode($this->tokenId) .
                     "&oauth_version=" .
-                    rawurlencode($this->version)
+                    rawurlencode($this->version)  
             );
 
         $key =
@@ -67,16 +75,17 @@ class NetSuiteApi
             "&" .
             rawurlencode($this->tokenSecret);
 
-        $signature = base64_encode(
+        $signature = rawurlencode(base64_encode(
             hash_hmac("sha256", $baseString, $key, true)
-        );
+        ));
 
         $header = [
-            "Authorization: OAuth
-            realm=\"$this->account\",oauth_consumer_key=\"$this->consumerKey\",oauth_token=\"$this->tokenId\",oauth_signature_method=\"HMAC-SHA256\",oauth_timestamp=\"$this->timestamp\",oauth_nonce=\"$this->nonce\",oauth_version=\"$this->version\",oauth_signature=\"$signature\"",
+            "Authorization: OAuth realm=\"$this->account\",oauth_consumer_key=\"$this->consumerKey\",oauth_token=\"$this->tokenId\",oauth_signature_method=\"HMAC-SHA256\",oauth_timestamp=\"$this->timestamp\",oauth_nonce=\"$this->nonce\",oauth_version=\"$this->version\",oauth_signature=\"$signature\"",
             "Cookie: NS_ROUTING_VERSION=LAGGING",
             "Cache-Control: no-cache",
+            "Content-Type: application/json"
         ];
+                dump($header);
 
         $curl = curl_init();
 
@@ -90,13 +99,15 @@ class NetSuiteApi
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => $httpMethod,
             CURLOPT_HTTPHEADER => $header,
+
         ]);
 
         $response = curl_exec($curl);
 
-        if ($response === false) {
+        if ($response == false) {
+
             curl_close($curl);
-            return "error";
+            return "curl if error";
         } else {
             $info = curl_getinfo($curl);
             $http_result = $info["http_code"];
@@ -106,10 +117,11 @@ class NetSuiteApi
                 return json_decode($response);
             } else {
                 curl_close($curl);
-                return "error";
+                return "curl else error";
             }
         }
-    }
+
+     }
 
     public function getOneProductInfo($product_id)
     {
@@ -198,6 +210,29 @@ class NetSuiteApi
                 return "";
             }
         }
+    }
+
+    //Customer Requests
+    public function getAllCustomers()
+    {
+
+        Log::debug("In the Customer Method");
+        // $path = "/customer";
+        // $httpMethod ="GET";
+        // // dump($path);
+        // $result = $this->sendRequest($httpMethod, $path); 
+
+        // return $result;        
+
+    }
+
+    public function getSingleCustomer($id)
+    {
+        $path = "/customer/" . $id;
+        $httpMethod = "GET";
+
+        $result = $this->sendRequest($httpMethod, $path);
+        return $result;
     }
 
 }
