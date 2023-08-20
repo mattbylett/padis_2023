@@ -19,7 +19,7 @@ class CustomerController extends Controller
 
     // Get All Customers
 
-    public function index()
+    public function updateCustomer()
     {
     Log::info("API Customer request call to NetSuite ");
 
@@ -33,7 +33,7 @@ class CustomerController extends Controller
 
         $customers = $result;
 
-        dd($customers);
+        Log::debug($customers);
         
         return view('customers.index', compact('customers'));
     }
