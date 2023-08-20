@@ -33,6 +33,8 @@ class CustomerController extends Controller
 
         $customers = $request;
 
+        Log::info('Back In Update Customer');
+
         Log::debug($customers);
         
         return view('customers.index', compact('customers'));
