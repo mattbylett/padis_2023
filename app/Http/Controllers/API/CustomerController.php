@@ -19,19 +19,19 @@ class CustomerController extends Controller
 
     // Get All Customers
 
-    public function updateCustomer()
+    public function updateCustomer(Request $request)
     {
     Log::info("API Customer request call to NetSuite ");
 
         $netSuiteApi = new NetSuiteApi();
 
-        do {
-            $result = $netSuiteApi->getAllCustomers();
-            Log::debug($result);
-            // dd($result);
-        } while ($result === ' this error');
+        // do {
+        //     $result = $netSuiteApi->getAllCustomers();
+        //     Log::debug($result);
+        //     // dd($result);
+        // } while ($result === ' this error');
 
-        $customers = $result;
+        $customers = $request;
 
         Log::debug($customers);
         

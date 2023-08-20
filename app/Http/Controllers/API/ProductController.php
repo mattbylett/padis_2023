@@ -156,7 +156,7 @@ class ProductController extends BaseController
         //     $promotions_info = $netSuiteApi->getPromotionalInfo($id);
         // } while ($promotions_info === "error");
 
-        Log::info("Netsuite Result = " . json_encode($result));
+        Log::info("NetSuite Result = " . json_encode($result));
 
 
         $p_code = $result->itemId;
