@@ -27,22 +27,15 @@ class CustomerController extends Controller
 
         do {
             $result = $netSuiteApi->getAllCustomers();
-            Log::debug($result);
-            // dd($result);
+
         } while ($result === ' this error');
 
-        $customers = $request;
 
-       foreach( $customers as $customer) {
-        echo $request->id;
-       }
-
-       Log::debug($customer);
 
         Log::info('Back In Update Customer');
 
         
-        return view('customers.index', compact('customers'));
+        return view('customers.index');
     }
 
     public function show($id)
