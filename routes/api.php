@@ -8,6 +8,7 @@ use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\XeroController;
 use App\Http\Controllers\API\WebsiteWorldController;
 use App\Http\Controllers\API\AuthenticationController;
+use App\Http\Controllers\API\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
