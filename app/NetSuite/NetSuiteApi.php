@@ -85,8 +85,7 @@ class NetSuiteApi
             "Cache-Control: no-cache",
             "Content-Type: application/json"
         ];
-                dump($header);
-
+  
         $curl = curl_init();
 
         curl_setopt_array($curl, [
@@ -217,12 +216,11 @@ class NetSuiteApi
     {
 
         Log::debug("In the Customer Method");
-        // $path = "/customer";
-        // $httpMethod ="GET";
-        // // dump($path);
-        // $result = $this->sendRequest($httpMethod, $path); 
+        $path = "/customer";
+        $httpMethod ="GET";
+        $result = $this->sendRequest($httpMethod, $path); 
 
-        // return $result;        
+        return $result;        
 
     }
 

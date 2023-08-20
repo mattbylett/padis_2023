@@ -25,17 +25,22 @@ class CustomerController extends Controller
 
         $netSuiteApi = new NetSuiteApi();
 
-        // do {
-        //     $result = $netSuiteApi->getAllCustomers();
-        //     Log::debug($result);
-        //     // dd($result);
-        // } while ($result === ' this error');
+        do {
+            $result = $netSuiteApi->getAllCustomers();
+            Log::debug($result);
+            // dd($result);
+        } while ($result === ' this error');
 
         $customers = $request;
 
+       foreach( $customers as $customer) {
+        'id' => $request->id;
+       }
+
+       Log::debug($customer);
+
         Log::info('Back In Update Customer');
 
-        Log::debug($customers);
         
         return view('customers.index', compact('customers'));
     }
@@ -43,6 +48,7 @@ class CustomerController extends Controller
     public function show($id)
     {
         Log::info('Single Customer: ' . $id);
+
 
         $netSuiteApi = new NetSuiteApi();
 
