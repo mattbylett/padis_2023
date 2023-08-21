@@ -23,8 +23,8 @@ class CustomerController extends Controller
     {
     Log::info("API Customer request call to NetSuite ");
     Log::info(' This Is The Request Data');
-    Log::debug(json_decode($request));
-    $id = 37996;
+    Log::debug($request->all());
+    $id = $request->input('internalID');
     Log::debug('id : ' . $id);
         $netSuiteApi = new NetSuiteApi();
 
