@@ -35,7 +35,7 @@ class CustomerController extends Controller
 
         $customerData = 
         [
-            'companyName' => $request->['entityId'],
+            'companyName' => $request['entityId'],
             'category'  => $request->category->refName,
             'email' =>  $request->email,
             'isPerson'  => $request['isPerson']
