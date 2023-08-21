@@ -53,7 +53,7 @@ class CustomerController extends Controller
         $mbrEmail = $customerData['mbr_email'];
 
         Log::info('Getting The Email To Search For Customer in API');
-        Log::debug(json_encode($mbrEmail));
+        // Log::debug(json_encode($mbrEmail));
 
        // Connect to Website World
         $http_insinc = Http::withHeaders([
