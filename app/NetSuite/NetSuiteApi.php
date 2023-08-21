@@ -49,7 +49,8 @@ class NetSuiteApi
         if ($is_full_path) {
             $url = $path;
         }
-
+        Log::info('Logging Url...')
+        Log::debug($url);
         $baseString =
             $httpMethod .
             "&" .
@@ -79,12 +80,18 @@ class NetSuiteApi
             hash_hmac("sha256", $baseString, $key, true)
         ));
 
+        Log::info('Logging Signature...')
+        Log::debug($signature);
+
         $header = [
             "Authorization: OAuth realm=\"$this->account\",oauth_consumer_key=\"$this->consumerKey\",oauth_token=\"$this->tokenId\",oauth_signature_method=\"HMAC-SHA256\",oauth_timestamp=\"$this->timestamp\",oauth_nonce=\"$this->nonce\",oauth_version=\"$this->version\",oauth_signature=\"$signature\"",
             "Cookie: NS_ROUTING_VERSION=LAGGING",
             "Cache-Control: no-cache",
             "Content-Type: application/json"
         ];
+
+        Log::info('Logging Headers...')
+        Log::debug($header);
   
         $curl = curl_init();
 
@@ -102,6 +109,9 @@ class NetSuiteApi
         ]);
 
         $response = curl_exec($curl);
+
+        Log::info('Logging Response...')
+        Log::debug($response);
 
         if ($response == false) {
 
