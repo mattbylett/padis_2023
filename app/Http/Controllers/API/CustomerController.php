@@ -35,9 +35,10 @@ class CustomerController extends Controller
 
 
         Log::info('Back In Update Customer');
+        Log::debug($result);
 
         
-        return view('customers.index');
+        return $result;
     }
 
     public function show($id)
