@@ -35,7 +35,11 @@ class CustomerController extends Controller
 
         $customerData = 
         [
-            'id' => $request->id
+            'companyName' => $request->['entityId'],
+            'category'  => $request->category->refName,
+            'email' =>  $request->email,
+            'isPerson'  => $request['isPerson']
+
         ];
 
         Log::info('Back In Update Customer');
