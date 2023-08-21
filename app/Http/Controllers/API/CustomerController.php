@@ -35,7 +35,7 @@ class CustomerController extends Controller
 
 
         Log::info('Back In Update Customer');
-        Log::debug($result);
+        Log::debug(json_encode($result));
 
         
         return $result;
