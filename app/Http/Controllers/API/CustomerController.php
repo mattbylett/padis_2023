@@ -35,13 +35,23 @@ class CustomerController extends Controller
 
         $customerData = 
         [
-            'companyName' => $result->entityId,
-            'email' => $result->email,
-            'category' => $result->category->refName
+            'mbr_company'=> $result->entityId,
+            'mbr_email' => $result->email,
+            'memberGroups' => [
+                [
+                    "name" => $result->category->refName
+                ]      
+            ]
         ];
 
-        Log::info('Back In Update Customer');
+        Log::info('Logging The Customer Data From Netsuite');
         Log::debug(json_encode($customerData));
+
+
+        $mbrEmail = $customerData['mbr_email'];
+
+        Log::info('Getting The Email To Search For Customer in API');
+        Log::debug(json_encode($mbrEmail));
 
         
         return $customerData;
@@ -58,6 +68,6 @@ class CustomerController extends Controller
             $result = $netSuiteApi->getSingleCustomer($id);
         } while ($result == 'error');
 
-        // dd($result);
+        // dd($result;)
     }
 }
