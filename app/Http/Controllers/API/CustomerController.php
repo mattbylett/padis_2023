@@ -23,10 +23,12 @@ class CustomerController extends Controller
     {
     Log::info("API Customer request call to NetSuite ");
 
+    $id = $request->internalId;
+    Log::debug('id : ' . $id);
         $netSuiteApi = new NetSuiteApi();
 
         do {
-            $result = $netSuiteApi->getAllCustomers();
+            $result = $netSuiteApi->getSingleCustomer($id);
 
         } while ($result === ' this error');
 
