@@ -23,7 +23,7 @@ class CustomerController extends Controller
     {
     Log::info("API Customer request call to NetSuite ");
 
-    $id = $request->internalId;
+    $id = 2135;
     Log::debug('id : ' . $id);
         $netSuiteApi = new NetSuiteApi();
 
@@ -32,10 +32,13 @@ class CustomerController extends Controller
 
         } while ($result === ' this error');
 
-
+        $customerData = 
+        [
+            'id' => $request->id
+        ];
 
         Log::info('Back In Update Customer');
-        Log::debug(json_encode($result));
+        Log::debug(json_encode($customerData));
 
         
         return $result;
