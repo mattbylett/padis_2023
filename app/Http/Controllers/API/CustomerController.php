@@ -22,8 +22,9 @@ class CustomerController extends Controller
     public function updateCustomer(Request $request)
     {
     Log::info("API Customer request call to NetSuite ");
-
-    $id = 2135;
+    Log::info(' This Is The Request Data');
+    Log::debug(json_decode($request));
+    $id = 37996;
     Log::debug('id : ' . $id);
         $netSuiteApi = new NetSuiteApi();
 
