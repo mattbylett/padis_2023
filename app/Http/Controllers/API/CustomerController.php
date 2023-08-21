@@ -35,14 +35,15 @@ class CustomerController extends Controller
 
         $customerData = 
         [
-            'companyName' => $request['entityId'],
+            'companyName' => $result['entityId'],
+            'email' => $result->email
         ];
 
         Log::info('Back In Update Customer');
         Log::debug(json_encode($customerData));
 
         
-        return $result;
+        return $customerData;
     }
 
     public function show($id)
