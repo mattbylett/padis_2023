@@ -30,10 +30,10 @@ class CustomerController extends Controller
     Log::debug('id : ' . $id);
         $netSuiteApi = new NetSuiteApi();
 
-        do {
-            $result = $netSuiteApi->getSingleCustomer($id);
+        // do {
+        //     $result = $netSuiteApi->getSingleCustomer($id);
 
-        } while ($result === ' this error');
+        // } while ($result === ' this error');
 
         $customerData = 
         [
@@ -53,7 +53,7 @@ class CustomerController extends Controller
         $mbrEmail = $customerData['mbr_email'];
 
         Log::info('Getting The Email To Search For Customer in API');
-        // Log::debug(json_encode($mbrEmail));
+        Log::debug(json_encode($mbrEmail));
 
        // Connect to Website World
         $http_insinc = Http::withHeaders([
@@ -71,7 +71,7 @@ class CustomerController extends Controller
             $customer = $response->json();
 
             Log::info('Call Made To Website World.  Logging Customer');
-            Log::debug($customer);
+            // Log::debug($customer);
 
         // If Email Exists - then Update (Include Id)
 
