@@ -27,8 +27,13 @@ class CustomerController extends Controller
     Log::info(' This Is The Request Data');
     Log::debug($request->all());
     $id = $request->input('internalID');
+    $mbrCompany = $request->input('customerName');
+    $mbrEmail = $request->input('customerEmail');
+
     Log::debug('id : ' . $id);
-        $netSuiteApi = new NetSuiteApi();
+    Log::debug('name : ' . $mbrCompany);
+    Log::debug('email : ' . $mbrEmail);
+        // $netSuiteApi = new NetSuiteApi();
 
         // do {
         //     $result = $netSuiteApi->getSingleCustomer($id);
@@ -37,14 +42,20 @@ class CustomerController extends Controller
 
         $customerData = 
         [
-            'mbr_company'=> $result->entityId,
-            'mbr_email' => $result->email,
-            'memberGroups' => [
-                [
-                    "name" => $result->category->refName
-                ]      
-            ]
+            'mbr_company'=> $mbrCompany,
+            'mbr_email' => $mbrEmail
         ];
+
+        // $customerData = 
+        // [
+        //     'mbr_company'=> $result->entityId,
+        //     'mbr_email' => $result->email,
+        //     'memberGroups' => [
+        //         [
+        //             "name" => $result->category->refName
+        //         ]      
+        //     ]
+        // ];
 
         Log::info('Logging The Customer Data From Netsuite');
         Log::debug(json_encode($customerData));
