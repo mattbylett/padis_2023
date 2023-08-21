@@ -49,7 +49,7 @@ class NetSuiteApi
         if ($is_full_path) {
             $url = $path;
         }
-        Log::info('Logging Url...')
+        Log::info('Logging Url...');
         Log::debug($url);
         $baseString =
             $httpMethod .
@@ -80,7 +80,7 @@ class NetSuiteApi
             hash_hmac("sha256", $baseString, $key, true)
         ));
 
-        Log::info('Logging Signature...')
+        Log::info('Logging Signature...');
         Log::debug($signature);
 
         $header = [
@@ -90,7 +90,7 @@ class NetSuiteApi
             "Content-Type: application/json"
         ];
 
-        Log::info('Logging Headers...')
+        Log::info('Logging Headers...');
         Log::debug($header);
   
         $curl = curl_init();
@@ -110,7 +110,7 @@ class NetSuiteApi
 
         $response = curl_exec($curl);
 
-        Log::info('Logging Response...')
+        Log::info('Logging Response...');
         Log::debug($response);
 
         if ($response == false) {
