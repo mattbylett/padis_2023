@@ -33,7 +33,7 @@ class CustomerController extends Controller
 
     Log::debug('id : ' . $id);
 
-    $netSuiteApi = new NetSuiteApi();
+    // $netSuiteApi = new NetSuiteApi();
 
         // do {
         // $result = $netSuiteApi->getSingleCustomer($id);
@@ -42,11 +42,11 @@ class CustomerController extends Controller
 
         $customerData = 
         [
-            'mbr_company'=> $result->entityId,
-            'mbr_email' => $result->email,
+            'mbr_company'=> $mbrCompany,
+            'mbr_email' => $mbrEmail,
             'memberGroups' => [
                 [
-                    "name" => $result->category->refName
+                    "name" => $mbrGroups->refName
                 ]      
             ]
         ];
