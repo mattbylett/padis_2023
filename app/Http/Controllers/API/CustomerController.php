@@ -46,7 +46,7 @@ class CustomerController extends Controller
             'mbr_email' => $mbrEmail,
             'memberGroups' => [
                 [
-                    "name" => $mbrGroups->refName
+                    "name" => $mbrGroups['refName']
                 ]      
             ]
         ];
