@@ -84,12 +84,14 @@ class CustomerController extends Controller
         // call The API and see if the Email Exists - Fetch ID
         try {
 
-            // $url = "{$base_uri}/member?mbr_email={$mbrEmail}";
-            $response = $http_insinc->get(
-                "{$base_uri}/member?mbr_email={$mbrEmail}", $mbrEmail
-            );
+            $url = "{$base_uri}/member?mbr_email={$mbrEmail}";
+            // $response = $http_insinc->get(
+            //     "{$base_uri}/member?mbr_email={$mbrEmail}", $mbrEmail
+            // );
 
-            // Log::info('Website World Call URL: '. $url);
+            $response = $http_insinc->get("{$url}");
+
+            Log::info('Website World Call URL: '. $url);
             $customer = $response->json();
 
             Log::info('Call Made To Website World.  Logging Customer');
