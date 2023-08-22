@@ -29,10 +29,12 @@ class CustomerController extends Controller
     $id = $request->input('internalID');
     $mbrCompany = $request->input('customerName');
     $mbrEmail = $request->input('customerEmail');
+    $mbrGroups = $request->input('category')->('refName');
 
     Log::debug('id : ' . $id);
     Log::debug('name : ' . $mbrCompany);
     Log::debug('email : ' . $mbrEmail);
+    Log::debug( 'category' . $mbrGroups);
         // $netSuiteApi = new NetSuiteApi();
 
         // do {
@@ -43,7 +45,12 @@ class CustomerController extends Controller
         $customerData = 
         [
             'mbr_company'=> $mbrCompany,
-            'mbr_email' => $mbrEmail
+            'mbr_email' => $mbrEmail,
+            'memberGroups' => [
+              [
+                  "name" => $mbrGroups
+              ]      
+          ]
         ];
 
         // $customerData = 
