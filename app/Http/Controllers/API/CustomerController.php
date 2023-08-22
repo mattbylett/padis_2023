@@ -84,7 +84,7 @@ class CustomerController extends Controller
         // call The API and see if the Email Exists - Fetch ID
         try {
             $response = $http_insinc->get(
-                "{$base_uri}/member?=mbr_email=", $mbrEmail
+                "{$base_uri}/member?=mbr_email={$mbrEmail}", $mbrEmail
             );
             $customer = $response->json();
 
