@@ -95,7 +95,7 @@ class CustomerController extends Controller
             $customer = $response->json();
 
             Log::info('Call Made To Website World.  Logging Customer');
-            // Log::debug($customer);
+            Log::debug($customer);
 
         // If Email Exists - then Update (Include Id)
 
