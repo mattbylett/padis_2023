@@ -44,11 +44,11 @@ class CustomerController extends Controller
         [
             'mbr_company'=> $mbrCompany,
             'mbr_email' => $mbrEmail,
-            'memberGroups' => [
-                [
-                    "name" => $mbrGroups['refName']
-                ]      
-            ]
+            // 'memberGroups' => [
+            //     [
+            //         "name" => $mbrGroups['refName']
+            //     ]      
+            // ]
         ];
 
         Log::info('Logging The Customer Data From Netsuite');
