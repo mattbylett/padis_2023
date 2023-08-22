@@ -231,7 +231,7 @@ class NetSuiteApi
 
         $result = $this->sendRequest($httpMethod, $path);
         Log::info('This is inside the Netsuite API Call Result...');
-        Log::debug($result->all());
+        Log::debug($result);
         return $result;
     }
 
