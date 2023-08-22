@@ -33,11 +33,11 @@ class CustomerController extends Controller
 
     Log::debug('id : ' . $id);
 
-    // $netSuiteApi = new NetSuiteApi();
+    $netSuiteApi = new NetSuiteApi();
 
-        // do {
-        // $result = $netSuiteApi->getSingleCustomer($id);
-        // } while ($result === ' this error');
+        do {
+        $result = $netSuiteApi->getSingleCustomer($id);
+        } while ($result === ' this error');
 
 
         $customerData = 
