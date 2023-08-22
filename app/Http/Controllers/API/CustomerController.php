@@ -35,11 +35,10 @@ class CustomerController extends Controller
 
     $netSuiteApi = new NetSuiteApi();
 
-        do {
-        $result = $netSuiteApi->getSingleCustomer($id);
-        } while ($result === ' this error');
-        Log::info('This is inside the Netsuite API Call Result...');
-        Log::debug($result->all());
+        // do {
+        // $result = $netSuiteApi->getSingleCustomer($id);
+        // } while ($result === ' this error');
+
 
         $customerData = 
         [
