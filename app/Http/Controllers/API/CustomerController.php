@@ -89,13 +89,13 @@ class CustomerController extends Controller
             //     "{$base_uri}/member?mbr_email={$mbrEmail}", $mbrEmail
             // );
 
-            $response = $http_insinc->get("{$url}");
+            $response = $http_insinc->get("{$url}", $mbrEmail);
 
             Log::info('Website World Call URL: '. $url);
             $customer = $response->json();
 
             Log::info('Call Made To Website World.  Logging Customer');
-            Log::debug($customer);
+            // Log::debug($customer);
 
         // If Email Exists - then Update (Include Id)
 
