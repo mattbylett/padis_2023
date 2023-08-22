@@ -115,6 +115,21 @@ class ProductController extends BaseController
         }
     }
 
+    public function featuredProducts(Request $request)
+    {
+        Log::info('This is the Request Data');
+        Log::debug($request->all());
+        //Data for The Website World Post Request
+        $promotions = [];
+        if (isset($result->custitem42)){            
+                $promotions = [
+                    'DeleteMissingArrayElements' => true,
+                    'promo_tag' => 'Home Page - Featured',
+                    'promo_order' => 1
+                ]->toString();     
+        }
+    }
+
     public function updateProduct(Request $request)
     {
         Log::info("API request call from NetSuite ");
@@ -407,15 +422,6 @@ class ProductController extends BaseController
                 $weekly_specials_insinc = 124022;
             }
         }
-
-        // $promotions = [];
-        // if (isset($result->custitem42)){            
-        //         $promotions = [
-        //             'DeleteMissingArrayElements' => true,
-        //             'promo_tag' => 'Home Page - Featured',
-        //             'promo_order' => 1
-        //         ]->toString();     
-        // }
 
         $p_tab_video = "";
         if (isset($result->custitem33)) {

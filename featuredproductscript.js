@@ -1,33 +1,49 @@
 /**
  * @NApiVersion 2.x
- * @NScriptType ClientScript
+ * @NScriptType ScheduledScript
  */
+define(["N/search", "N/https"], function (search, https) {
+    function execute(context) {
+        var featuredProducts = [];
 
-require(["N/search"], function (search) {
-    var findFeaturedProducts = search.create({
-        type: "ITEM",
-        columns: ["name", "custitem42"],
-        filters: ["custitem42", "is", "true"],
-    });
-
-    var featuredProductArray = findFeaturedProducts.run();
-
-    var featuredProducts = featuredProductArray.getRange({
-        start: 0,
-        end: 50,
-    });
-
-    for (var i = 0; i < featuredProducts.length; i++) {
-        promotions = {
-            id: featuredProducts[i].id,
-            promotions: [
-                {
-                    promo_tag: "Home Page - Featured",
-                    promo_order: 1,
-                },
+        var inventorySearch = search.create({
+            type: search.Type.INVENTORY_ITEM,
+            filters: [["custitem42", "is", true]],
+            columns: [
+                "itemid",
+                "displayname",
+                "salesdescription",
+                // Add more columns as required
             ],
-        };
-        log.debug(promotions);
+        });
+
+        inventorySearch.run().each(function (result) {
+            featuredProducts.push({
+                itemId: result.getValue("itemid"),
+                displayName: result.getValue("displayname"),
+                salesDescription: result.getValue("salesdescription"),
+                // Add more fields as required
+            });
+            return true;
+        });
+
+        if (featuredProducts.length) {
+            sendDataToBackend(featuredProducts);
+        }
     }
-    return promotions;
+
+    function sendDataToBackend(data) {
+        var apiURL = "https://insinc.cluster.nz/api/featuredProducts";
+        https.post({
+            url: apiURL,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+    }
+
+    return {
+        execute: execute,
+    };
 });

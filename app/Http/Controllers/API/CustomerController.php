@@ -32,26 +32,14 @@ class CustomerController extends Controller
     $mbrGroups = $request->input('category');
 
     Log::debug('id : ' . $id);
-    // Log::debug('name : ' . $mbrCompany);
-    // Log::debug('email : ' . $mbrEmail);
-    // Log::debug( 'category' . $mbrGroups['refName']);
-        $netSuiteApi = new NetSuiteApi();
+
+    $netSuiteApi = new NetSuiteApi();
 
         do {
-            $result = $netSuiteApi->getSingleCustomer($id);
-
+        $result = $netSuiteApi->getSingleCustomer($id);
         } while ($result === ' this error');
-
-        // $customerData = 
-        // [
-        //     'mbr_company'=> $mbrCompany,
-        //     'mbr_email' => $mbrEmail,
-        //     'memberGroups' => [
-        //       [
-        //           "name" => $mbrGroups
-        //       ]      
-        //   ]
-        // ];
+        Log::info('This is inside the Netsuite API Call Result...')
+        Log::debug($result->all());
 
         $customerData = 
         [
@@ -95,7 +83,7 @@ class CustomerController extends Controller
             $customer = $response->json();
 
             Log::info('Call Made To Website World.  Logging Customer');
-            Log::debug($customer);
+            // Log::debug($customer);
 
         // If Email Exists - then Update (Include Id)
 
@@ -111,17 +99,5 @@ class CustomerController extends Controller
         return;
     }
 
-    public function show($id)
-    {
-        Log::info('Single Customer: ' . $id);
 
-
-        $netSuiteApi = new NetSuiteApi();
-
-        do {
-            $result = $netSuiteApi->getSingleCustomer($id);
-        } while ($result == 'error');
-
-        // dd($result;)
-    }
 }
