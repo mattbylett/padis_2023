@@ -233,6 +233,7 @@ class NetSuiteApi
 
         Log::info('This is inside the Netsuite API Call Result...');
         Log::debug($path);
+        Log::debug($result);
         return $result;
     }
 
