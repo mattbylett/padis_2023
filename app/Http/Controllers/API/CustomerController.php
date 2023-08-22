@@ -32,37 +32,37 @@ class CustomerController extends Controller
     $mbrGroups = $request->input('category');
 
     Log::debug('id : ' . $id);
-    Log::debug('name : ' . $mbrCompany);
-    Log::debug('email : ' . $mbrEmail);
-    Log::debug( 'category' . $mbrGroups['refName']);
-        // $netSuiteApi = new NetSuiteApi();
+    // Log::debug('name : ' . $mbrCompany);
+    // Log::debug('email : ' . $mbrEmail);
+    // Log::debug( 'category' . $mbrGroups['refName']);
+        $netSuiteApi = new NetSuiteApi();
 
-        // do {
-        //     $result = $netSuiteApi->getSingleCustomer($id);
+        do {
+            $result = $netSuiteApi->getSingleCustomer($id);
 
-        // } while ($result === ' this error');
-
-        $customerData = 
-        [
-            'mbr_company'=> $mbrCompany,
-            'mbr_email' => $mbrEmail,
-            'memberGroups' => [
-              [
-                  "name" => $mbrGroups
-              ]      
-          ]
-        ];
+        } while ($result === ' this error');
 
         // $customerData = 
         // [
-        //     'mbr_company'=> $result->entityId,
-        //     'mbr_email' => $result->email,
+        //     'mbr_company'=> $mbrCompany,
+        //     'mbr_email' => $mbrEmail,
         //     'memberGroups' => [
-        //         [
-        //             "name" => $result->category->refName
-        //         ]      
-        //     ]
+        //       [
+        //           "name" => $mbrGroups
+        //       ]      
+        //   ]
         // ];
+
+        $customerData = 
+        [
+            'mbr_company'=> $result->entityId,
+            'mbr_email' => $result->email,
+            'memberGroups' => [
+                [
+                    "name" => $result->category->refName
+                ]      
+            ]
+        ];
 
         Log::info('Logging The Customer Data From Netsuite');
         Log::debug(json_encode($customerData));
