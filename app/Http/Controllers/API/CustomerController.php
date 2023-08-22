@@ -89,7 +89,7 @@ class CustomerController extends Controller
                 "{$base_uri}/member?mbr_email={$mbrEmail}", $mbrEmail
             );
 
-            Log::info('Website World Call URL: '. $url);
+            // Log::info('Website World Call URL: '. $url);
             $customer = $response->json();
 
             Log::info('Call Made To Website World.  Logging Customer');
