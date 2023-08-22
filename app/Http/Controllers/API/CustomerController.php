@@ -84,12 +84,12 @@ class CustomerController extends Controller
         // call The API and see if the Email Exists - Fetch ID
         try {
             $response = $http_insinc->get(
-                "{$base_uri}/member", $mbrEmail
+                "{$base_uri}/member?=mbr_email=", $mbrEmail
             );
             $customer = $response->json();
 
             Log::info('Call Made To Website World.  Logging Customer');
-            // Log::debug($customer);
+            Log::debug($customer);
 
         // If Email Exists - then Update (Include Id)
 
