@@ -30,7 +30,7 @@ class CustomerController extends Controller
     $mbrCompany = $request->input('customerName');
     $mbrEmail = $request->input('customerEmail');
     $mbrGroups = $request->input('category');
-    // $subscriptions = $request->input('subscriptions');
+    $subs    = $request->input('subscriptions');
 
     Log::debug('id : ' . $id);
 
@@ -61,6 +61,10 @@ class CustomerController extends Controller
         $priceLevel = $result->priceLevel->refName;
         if(isset($priceLevel)){
             Log::debug('Price Level: ' . $priceLevel);
+        }
+
+        foreach ($subs as $sub) {
+            Log::debug('subscriptions retuned from the Script : ' . $sub);
         }
 
         $customerData = 
