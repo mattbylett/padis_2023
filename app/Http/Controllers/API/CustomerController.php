@@ -39,16 +39,18 @@ class CustomerController extends Controller
         $result = $netSuiteApi->getSingleCustomer($id);
         } while ($result === ' this error');
 
-        if(isset($result->category['refName'])) {
-            Log::debug('Category Name: ' . $result->category['name']);
+        $customer = json_encode($result);
+
+        if(isset($customer->category['refName'])) {
+            Log::debug('Category Name: ' . $customer->category['name']);
         }
 
-        $terms = $result->terms['refName'];
-        if(isset($result->terms['refName'])) {
+        $terms = $customer->terms['refName'];
+        if(isset($customer->terms['refName'])) {
             Log::debug('Terms: ' . $terms);
         }
 
-        $priceLevel = $result->priceLevel['refName'];
+        $priceLevel = $customer->priceLevel['refName'];
         if(isset($priceLevel)){
             Log::debug('Price Level: ' . $priceLevel);
         }
