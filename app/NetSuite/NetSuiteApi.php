@@ -234,7 +234,7 @@ class NetSuiteApi
 
         Log::info('This is inside the Netsuite API Call Result...');
         Log::debug($path);
-        Log::debug(json_encode($result));
+        // Log::debug(json_encode($result));
         return $result;
     }
 
@@ -242,12 +242,12 @@ class NetSuiteApi
     {
         $path = "/customer/" . $id . "/subscriptions/";
         $httpMethod = "GET";
-        $theseSubscriptions = $this->sendRequest($httpMethod, $path);
+        $subscriptions = $this->sendRequest($httpMethod, $path);
 
         Log::info('Getting the Subscription Data from the API');
-        Log::debug(json_encode($theseSubscriptions));
-        
-        return $theseSubscriptions;
+        Log::debug(json_encode($subscriptions));
+
+        return $subscriptions;
 
     }
 
