@@ -41,9 +41,9 @@ class CustomerController extends Controller
 
         // $customer = json_encode($result);
 
-        $category = $result->category['refName'];
+        $category = $result->category->refName;
         if(isset($category)) {
-            Log::debug('Category Name: ' . json_encode($result->category['name']));
+            Log::debug('Category Name: ' . json_encode($result->category->refName));
         }
 
         // $terms = $result->terms->refName;
@@ -51,7 +51,7 @@ class CustomerController extends Controller
         //     Log::debug('Terms: ' . $terms);
         // }
 
-        // $priceLevel = $result->priceLevel['refName'];
+        // $priceLevel = $result->priceLevel->refName;
         // if(isset($priceLevel)){
         //     Log::debug('Price Level: ' . $priceLevel);
         // }
