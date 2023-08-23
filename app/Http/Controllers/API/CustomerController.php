@@ -73,8 +73,8 @@ class CustomerController extends Controller
             'mbr_company'=> $mbrCompany,
             'mbr_email' => $mbrEmail,
             'memberGroups' => [
-                [
-                    'DeleteMissingArrayElements' => true,
+                'DeleteMissingArrayElements' => true,
+            [
                     "name" => $cat
                 ]      
                 ],
