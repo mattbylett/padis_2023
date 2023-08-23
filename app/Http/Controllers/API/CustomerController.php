@@ -111,7 +111,7 @@ class CustomerController extends Controller
 
             if ($response->successful()) {
                 $customer = $response->json();
-                Log::debug('Customer: ' . $customer)
+                Log::debug('Customer: ' . $customer);
             } else {
                 Log::error('Request failed with status: ' . $response->status());
                 // Handle the failure, maybe retry or notify someone
