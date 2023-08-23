@@ -74,7 +74,7 @@ class CustomerController extends Controller
             'mbr_email' => $mbrEmail,
             'memberGroups' => [
                 [
-                    $category
+                    "name" : $cat
                 ]      
                 ],
             'terms' => $terms,
