@@ -74,7 +74,7 @@ class CustomerController extends Controller
             'mbr_email' => $mbrEmail,
             'memberGroups' => [
                 [
-                    'DeleteMissingArrayElements' => true,
+                    'DeleteMissingArrayElements' : true,
                     "name" : $cat
                 ]      
                 ],
