@@ -30,7 +30,7 @@ class CustomerController extends Controller
     $mbrCompany = $request->input('customerName');
     $mbrEmail = $request->input('customerEmail');
     $mbrGroups = $request->input('category');
-    $subs    = $request->input('subscriptions');
+    // $subs    = $request->input('subscriptions');
 
     Log::debug('id : ' . $id);
 
@@ -63,9 +63,9 @@ class CustomerController extends Controller
             Log::debug('Price Level: ' . $priceLevel);
         }
 
-        foreach ($subs as $sub) {
-            Log::debug('subscriptions retuned from the Script : ' . $sub->refName);
-        }
+        // foreach ($subs as $sub) {
+        //     Log::debug('subscriptions retuned from the Script : ' . $sub->refName);
+        // }
 
         $customerData = 
         [
@@ -105,25 +105,23 @@ class CustomerController extends Controller
             //     "{$base_uri}/member?mbr_email={$mbrEmail}", $mbrEmail
             // );
 
-            $response = $http_insinc->get("{$url}", $mbrEmail);
-
-            Log::info('Website World Call URL: '. $url);
-            $customer = $response->json();
-
-            Log::info('Call Made To Website World.  Logging Customer');
-            // Log::debug($customer);
+            $response = $http_insinc->post("{$url}", $customerData);
 
         // If Email Exists - then Update (Include Id)
 
+            if ($response->successful()) {
+                $customer = $response->json();
+                Log::debug('Customer: ' . $customer)
+            } else {
+                Log::error('Request failed with status: ' . $response->status());
+                // Handle the failure, maybe retry or notify someone
+            }
 
         // If email Doesnt exist - then Create (same request - no ID)
 
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
-        }
-
-
-        
+        }        
         return;
     }
 
