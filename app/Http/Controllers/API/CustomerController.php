@@ -39,16 +39,31 @@ class CustomerController extends Controller
         $result = $netSuiteApi->getSingleCustomer($id);
         } while ($result === ' this error');
 
+        if(isset($result->category['refName'])) {
+            Log::debug('Category Name: ' . $result->category['name']);
+        }
+
+        $terms = $result->terms['refName'];
+        if(isset($result->terms['refName'])) {
+            Log::debug('Terms: ' . $terms);
+        }
+
+        $priceLevel = $result->priceLevel['refName'];
+        if(isset($priceLevel)){
+            Log::debug('Price Level: ' . $priceLevel);
+        }
 
         $customerData = 
         [
             'mbr_company'=> $mbrCompany,
             'mbr_email' => $mbrEmail,
-            // 'memberGroups' => [
-            //     [
-            //         "name" => $mbrGroups['refName']
-            //     ]      
-            // ]
+            'memberGroups' => [
+                [
+                    "name" => $category
+                ]      
+                ],
+            'terms' => $terms,
+            'priceLevel' => $priceLevel
         ];
 
         Log::info('Logging The Customer Data From Netsuite');
