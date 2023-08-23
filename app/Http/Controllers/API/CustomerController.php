@@ -50,7 +50,8 @@ class CustomerController extends Controller
 
         $category = $result->category->refName;
         if(isset($category)) {
-            Log::debug('Category Name: ' . json_encode($result->category->refName));
+            $cat = "Category: $category - Netsuite";
+            Log::debug('Category Name: ' . json_encode($cat));
         }
 
         $terms = $result->terms->refName;
