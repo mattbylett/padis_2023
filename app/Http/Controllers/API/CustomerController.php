@@ -70,14 +70,14 @@ class CustomerController extends Controller
 
         $customerData = 
         [
+            'DeleteMissingArrayElements' => true,
             'mbr_company'=> $mbrCompany,
             'mbr_email' => $mbrEmail,
             'memberGroups' => [
-                'DeleteMissingArrayElements' => true,
-            [
+                [
                     "name" => $cat
                 ]      
-                ],
+            ],
             'terms' => $terms,
             'priceLevel' => $priceLevel
         ];
