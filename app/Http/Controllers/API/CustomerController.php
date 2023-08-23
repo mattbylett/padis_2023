@@ -81,19 +81,50 @@ class CustomerController extends Controller
         //     'terms' => $terms,
         //     'priceLevel' => $priceLevel
         // ];
-
-        $discount = 10;
+        switch ($priceLevel) {
+            case 'Base Price':
+                $discount = 0;
+                break;
+            case '10% Discount off Base Price':
+                $discount = 10;
+                break;
+            case '100% Discount off Base Price':
+                $discount = 100;
+                break;
+            case '12.5% Discount off Base Price':
+                $discount = 12.5;
+                break;
+            case '15% Discount off Base Price':
+                $discount = 15;
+                break;
+            case '2.0% Discount off Base Price':
+                $discount = 2;
+                break;
+            case '20% Discount off Base Price':
+                $discount = 20;
+                break;
+            case '5% Discount off Base Price':
+                $discount = 5;
+                break;
+            case '7.5% Discount off Base Price':
+                $discount = 7.5;
+                break;
+            
+            default:
+               $discount = 0;
+                break;
+        }
 
         $customerData = 
         [
             'mbr_company'=> $mbrCompany,
             'mbr_email' => $mbrEmail,
-            'mbr_grp' => 'TEST',
+            'mbr_grp' => 'Shopping',
             'memberGroups' => [
                 [
-                    "name" => $category,
-                    "name" => $terms,
-                    "name" => $priceLevel
+                   $category,
+                   $terms,
+                   $priceLevel
                 ]      
                 ],
             'mbr_discount' => $discount,
