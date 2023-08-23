@@ -73,12 +73,25 @@ class CustomerController extends Controller
             'mbr_email' => $mbrEmail,
             'memberGroups' => [
                 [
-                    "name" => $category
+                    $category
                 ]      
                 ],
             'terms' => $terms,
             'priceLevel' => $priceLevel
         ];
+
+        // $customerData = 
+        // [
+        //     'mbr_company'=> $mbrCompany,
+        //     'mbr_email' => $mbrEmail,
+        //     'memberGroups' => [
+        //         [
+        //             "name" => $category
+        //         ]      
+        //         ],
+        //     'terms' => $terms,
+        //     'priceLevel' => $priceLevel
+        // ];
 
         Log::info('Logging The Customer Data From Netsuite');
         Log::debug(json_encode($customerData));
