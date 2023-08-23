@@ -238,4 +238,17 @@ class NetSuiteApi
         return $result;
     }
 
+    public function getSubscriptions($id)
+    {
+        $path = "/customer/" . $id . "/subscriptions/";
+        $httpMethod = "GET";
+        $theseSubscriptions = $this->sendRequest($httpMethod, $path);
+
+        Log::info('Getting the Subscription Data from the API');
+        Log::debug(json_encode($theseSubscriptions));
+        
+        return $theseSubscriptions;
+
+    }
+
 }

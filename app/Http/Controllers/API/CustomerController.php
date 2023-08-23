@@ -30,6 +30,7 @@ class CustomerController extends Controller
     $mbrCompany = $request->input('customerName');
     $mbrEmail = $request->input('customerEmail');
     $mbrGroups = $request->input('category');
+    $subscriptions = $request->input('subscriptions');
 
     Log::debug('id : ' . $id);
 
@@ -39,7 +40,11 @@ class CustomerController extends Controller
         $result = $netSuiteApi->getSingleCustomer($id);
         } while ($result === ' this error');
 
-        // $customer = json_encode($result);
+        do {
+            $subscriptions = $netSuiteApi->getSubscriptions($id);
+        } while ($result === ' this error');
+
+        
 
         $category = $result->category->refName;
         if(isset($category)) {
