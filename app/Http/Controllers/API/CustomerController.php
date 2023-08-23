@@ -68,32 +68,36 @@ class CustomerController extends Controller
         //     Log::debug('subscriptions retuned from the Script : ' . $sub->refName);
         // }
 
-        $customerData = 
-        [
-            'DeleteMissingArrayElements' => true,
-            'mbr_company'=> $mbrCompany,
-            'mbr_email' => $mbrEmail,
-            'memberGroups' => [
-                [
-                    "name" => $cat
-                ]      
-            ],
-            'terms' => $terms,
-            'priceLevel' => $priceLevel
-        ];
-
         // $customerData = 
         // [
+        //     'DeleteMissingArrayElements' => true,
         //     'mbr_company'=> $mbrCompany,
         //     'mbr_email' => $mbrEmail,
         //     'memberGroups' => [
         //         [
-        //             "name" => $category
+        //             "name" => $cat
         //         ]      
-        //         ],
+        //     ],
         //     'terms' => $terms,
         //     'priceLevel' => $priceLevel
         // ];
+
+        $discount = 10;
+
+        $customerData = 
+        [
+            'mbr_company'=> $mbrCompany,
+            'mbr_email' => $mbrEmail,
+            'mbr_grp' => 'TEST',
+            'memberGroups' => [
+                [
+                    "name" => $category,
+                    "name" => $terms,
+                    "name" => $priceLevel
+                ]      
+                ],
+            'mbr_discount' => $discount,
+        ];
 
         Log::info('Logging The Customer Data From Netsuite');
         Log::debug(json_encode($customerData));
@@ -101,8 +105,8 @@ class CustomerController extends Controller
 
         $mbrEmail = $customerData['mbr_email'];
 
-        Log::info('Getting The Email To Search For Customer in API');
-        Log::debug(json_encode($mbrEmail));
+        // Log::info('Getting The Email To Search For Customer in API');
+        // Log::debug(json_encode($mbrEmail));
 
        // Connect to Website World
         $http_insinc = Http::withHeaders([
