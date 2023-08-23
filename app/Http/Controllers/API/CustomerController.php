@@ -85,28 +85,28 @@ class CustomerController extends Controller
             case 'Base Price':
                 $discount = 0;
                 break;
-            case '10% Discount off Base Price':
+            case '10% Discount off Base':
                 $discount = 10;
                 break;
-            case '100% Discount off Base Price':
+            case '100% Discount off Base':
                 $discount = 100;
                 break;
-            case '12.5% Discount off Base Price':
+            case '12.5% Discount off Base':
                 $discount = 12.5;
                 break;
-            case '15% Discount off Base Price':
+            case '15% Discount off Base':
                 $discount = 15;
                 break;
-            case '2.0% Discount off Base Price':
+            case '2.0% Discount off Base':
                 $discount = 2;
                 break;
-            case '20% Discount off Base Price':
+            case '20% Discount off Base':
                 $discount = 20;
                 break;
-            case '5% Discount off Base Price':
+            case '5% Discount off Base':
                 $discount = 5;
                 break;
-            case '7.5% Discount off Base Price':
+            case '7.5% Discount off Base':
                 $discount = 7.5;
                 break;
             
