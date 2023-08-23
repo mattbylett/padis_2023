@@ -64,7 +64,7 @@ class CustomerController extends Controller
         }
 
         foreach ($subs as $sub) {
-            Log::debug('subscriptions retuned from the Script : ' . $sub);
+            Log::debug('subscriptions retuned from the Script : ' . $sub->refName);
         }
 
         $customerData = 
