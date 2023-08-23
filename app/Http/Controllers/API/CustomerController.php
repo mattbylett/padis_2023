@@ -41,7 +41,8 @@ class CustomerController extends Controller
 
         $customer = json_encode($result);
 
-        if(isset($customer->category['refName'])) {
+        $category = $customer->category['refName'];
+        if(isset($category)) {
             Log::debug('Category Name: ' . $customer->category['name']);
         }
 
