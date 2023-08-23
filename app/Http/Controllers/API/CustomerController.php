@@ -45,15 +45,15 @@ class CustomerController extends Controller
             Log::debug('Category Name: ' . $customer->category['name']);
         }
 
-        $terms = $customer->terms['refName'];
-        if(isset($customer->terms['refName'])) {
-            Log::debug('Terms: ' . $terms);
-        }
+        // $terms = $customer->terms->refName;
+        // if(isset($terms)) {
+        //     Log::debug('Terms: ' . $terms);
+        // }
 
-        $priceLevel = $customer->priceLevel['refName'];
-        if(isset($priceLevel)){
-            Log::debug('Price Level: ' . $priceLevel);
-        }
+        // $priceLevel = $customer->priceLevel['refName'];
+        // if(isset($priceLevel)){
+        //     Log::debug('Price Level: ' . $priceLevel);
+        // }
 
         $customerData = 
         [
@@ -64,8 +64,8 @@ class CustomerController extends Controller
                     "name" => $category
                 ]      
                 ],
-            'terms' => $terms,
-            'priceLevel' => $priceLevel
+            // 'terms' => $terms,
+            // 'priceLevel' => $priceLevel
         ];
 
         Log::info('Logging The Customer Data From Netsuite');
