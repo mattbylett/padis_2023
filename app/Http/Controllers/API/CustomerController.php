@@ -59,11 +59,13 @@ class CustomerController extends Controller
             Log::debug('Terms: ' . $terms);
         }
 
+        $termCategory = "Terms: $terms - Netsuite";
+
         $priceLevel = $result->priceLevel->refName;
         if(isset($priceLevel)){
             Log::debug('Price Level: ' . $priceLevel);
         }
-
+        $priceCategory = "Price Level: $priceLevel";
         // foreach ($subs as $sub) {
         //     Log::debug('subscriptions retuned from the Script : ' . $sub->refName);
         // }
@@ -123,8 +125,8 @@ class CustomerController extends Controller
             'memberGroups' => [
                 [
                    ["name" => $cat],
-                   ["name" => $terms],
-                   ["name" => $priceLevel]
+                   ["name" => $termCategory],
+                   ["name" => $priceCategory]
                 ]      
                 ],
             'mbr_discount' => $discount,
