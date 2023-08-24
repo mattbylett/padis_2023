@@ -117,17 +117,19 @@ class ProductController extends BaseController
 
     public function featuredProducts(Request $request)
     {
-        Log::info('This is the Request Data');
+        Log::info('Featured Products Triggerd.  This is the Request...');
         Log::debug($request->all());
-        //Data for The Website World Post Request
-        // $promotions = [];
-        // if (isset($result->custitem42)){            
-        //         $promotions = [
-        //             'DeleteMissingArrayElements' => true,
-        //             'promo_tag' => 'Home Page - Featured',
-        //             'promo_order' => 1
-        //         ]->toString();     
-        // }
+       // Data for The Website World Post Request
+        $promotions = [];
+        if (isset($result->custitem42)){            
+                $promotions = [
+                    'DeleteMissingArrayElements' => true,
+                    'promo_tag' => 'Home Page - Featured',
+                    'promo_order' => 1
+                ]->toString();     
+        }
+        Log::debug('This is the promotions array : ' . json_encode($promotions));
+        return $promotions;
     }
 
     public function updateProduct(Request $request)
