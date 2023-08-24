@@ -120,14 +120,14 @@ class ProductController extends BaseController
         Log::info('This is the Request Data');
         Log::debug($request->all());
         //Data for The Website World Post Request
-        $promotions = [];
-        if (isset($result->custitem42)){            
-                $promotions = [
-                    'DeleteMissingArrayElements' => true,
-                    'promo_tag' => 'Home Page - Featured',
-                    'promo_order' => 1
-                ]->toString();     
-        }
+        // $promotions = [];
+        // if (isset($result->custitem42)){            
+        //         $promotions = [
+        //             'DeleteMissingArrayElements' => true,
+        //             'promo_tag' => 'Home Page - Featured',
+        //             'promo_order' => 1
+        //         ]->toString();     
+        // }
     }
 
     public function updateProduct(Request $request)
