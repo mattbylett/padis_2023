@@ -120,7 +120,7 @@ class CustomerController extends Controller
         $customerData = 
         [
             'DeleteMissingArrayElements' => true,
-            'mbr_company'=> $mbrCompany,
+            'mbr_name'=> $mbrCompany,
             'mbr_email' => $mbrEmail,
             'memberGroups' => [
                 [
