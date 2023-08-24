@@ -121,11 +121,9 @@ class CustomerController extends Controller
             'mbr_name'=> $mbrCompany,
             'mbr_email' => $mbrEmail,
             'memberGroups' => [
-                [
                    ["name" => $cat],
                    ["name" => $termCategory],
-                   ["name" => $priceCategory]
-                ]      
+                   ["name" => $priceCategory]   
                 ],
             'mbr_discount' => $discount,
         ];
