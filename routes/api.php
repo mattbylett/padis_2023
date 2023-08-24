@@ -33,7 +33,7 @@ Route::post('authorize', [AuthenticationController::class, 'create'])->name('net
 Route::get('authorize', [AuthenticationController::class, 'index'])->name('netsuite.authorize.index');
 
 Route::post('/updateProduct', [ProductController::class, 'updateProduct']);
-Route::post('/featuedProducts', [ProductController::class, 'featuredProducts']);
+Route::post('/featuredProducts', [ProductController::class, 'featuredProducts']);
 Route::post('/updateCustomer', [CustomerController::class, 'updateCustomer']);
 
 // Xero CallBack URLs
