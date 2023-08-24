@@ -103,10 +103,10 @@ class CustomerController extends Controller
             case '20% Discount Off Base':
                 $discount = 20;
                 break;
-            case '5% Discount off Base':
+            case '5% Discount Off Base':
                 $discount = 5;
                 break;
-            case '7.5% Discount off Base':
+            case '7.5% Discount Off Base':
                 $discount = 7.5;
                 break;
             
@@ -118,7 +118,7 @@ class CustomerController extends Controller
         $customerData = 
         [
             'DeleteMissingArrayElements' => true,
-            'mbr_name'=> $mbrCompany,
+            'mbr_company'=> $mbrCompany,
             'mbr_email' => $mbrEmail,
             'memberGroups' => [
                    ["name" => $cat],
