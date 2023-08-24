@@ -44,8 +44,8 @@ class CustomerController extends Controller
             $subscriptions = $netSuiteApi->getSubscriptions($id);
         } while ($result === ' this error');
 
-        foreach ($subscriptions as $subscription) {
-            Log::debug('Subscription: ' . json_encode($subscription));
+        // foreach ($subscriptions as $subscription) {
+        //     Log::debug('Subscription: ' . json_encode($subscription));
         }
 
         $category = $result->category->refName;
