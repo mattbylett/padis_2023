@@ -121,7 +121,7 @@ class ProductController extends BaseController
         Log::info('Featured Products Triggerd.  This is the Request...');
         Log::debug($request->all());
         $featuredProducts = [
-        'p_code' = $request->itemId;
+        'p_code' = $request->itemId,
         'promotions' = [
             'DeleteMissingArrayElements' => true,
             'promo_tag' => 'Home Page - Featured',
