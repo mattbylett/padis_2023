@@ -120,18 +120,38 @@ public function featuredProducts(Request $request)
     Log::info('Featured Products Triggered. This is the Request...');
     Log::debug($request->all());
 
-    $featuredProducts = [
-        'p_code' => $request->input('itemId'),
-        'promotions' => [
-            'DeleteMissingArrayElements' => true,
-            'promo_tag' => 'Home Page - Featured',
-            'promo_order' => 1
-        ]
-    ];
+    $products = $request->all();
+    $updatedProducts = [];
 
-    Log::debug('This is the promotions array : ' . json_encode($featuredProducts));
+    foreach ($products as $product) {
+        $updatedProduct = [
+            'p_code' => $product['itemId'],
+            'promotions' => [
+                'DeleteMissingArrayElements' => true,
+                'promo_tag' => 'Home Page - Featured',
+                'promo_order' => 1
+            ]
+        ];
+        $updatedProducts[] = $updatedProduct;
+
+        // Connect to Website World
+        $http_insinc = Http::withHeaders([
+            "apiID" => config("services.website.insinc_api_id"),
+            "apiKey" => config("services.website.insinc_api_key"),
+        ]);
+
+        $base_uri = config("services.website.base_uri");
+        try {
+            $response = $http_insinc->post("{$base_uri}/product", $updatedProduct);
+            $result = $response->json();
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        }
+    }
+
+    Log::debug('Updated Products: ' . json_encode($updatedProducts));
     
-    return $featuredProducts;
+    return;
 }
 
     public function updateProduct(Request $request)
