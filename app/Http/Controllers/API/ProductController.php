@@ -115,24 +115,24 @@ class ProductController extends BaseController
         }
     }
 
-    public function featuredProducts(Request $request)
-    {
+public function featuredProducts(Request $request)
+{
+    Log::info('Featured Products Triggered. This is the Request...');
+    Log::debug($request->all());
 
-        Log::info('Featured Products Triggerd.  This is the Request...');
-        Log::debug($request->all());
-        $featuredProducts = [
-        'p_code' = $request->itemId,
-        'promotions' = [
+    $featuredProducts = [
+        'p_code' => $request->input('itemId'),
+        'promotions' => [
             'DeleteMissingArrayElements' => true,
             'promo_tag' => 'Home Page - Featured',
             'promo_order' => 1
-        ]->toString();     
-        ];
+        ]
+    ];
 
-
-        Log::debug('This is the promotions array : ' . json_encode($featuredProducts));
-        return $featuredProducts;
-    }
+    Log::debug('This is the promotions array : ' . json_encode($featuredProducts));
+    
+    return $featuredProducts;
+}
 
     public function updateProduct(Request $request)
     {
