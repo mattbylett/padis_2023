@@ -30,6 +30,7 @@ class CustomerController extends Controller
     $mbrCompany = $request->input('customerName');
     $mbrEmail = $request->input('customerEmail');
     $mbrGroups = $request->input('category');
+    $mbrName = $request->input('contactName');
     // $subs    = $request->input('subscriptions');
 
     Log::debug('id : ' . $id);
@@ -49,19 +50,19 @@ class CustomerController extends Controller
         $category = $result->category->refName;
         if(isset($category)) {
             $cat = "Category: $category - Netsuite";
-            Log::debug('Category Name: ' . json_encode($cat));
+            // Log::debug('Category Name: ' . json_encode($cat));
         }
 
         $terms = $result->terms->refName;
         if(isset($terms)) {
-            Log::debug('Terms: ' . $terms);
+            // Log::debug('Terms: ' . $terms);
         }
 
         $termCategory = "Terms: $terms - Netsuite";
 
         $priceLevel = $result->priceLevel->refName;
         if(isset($priceLevel)){
-            Log::debug('Price Level: ' . $priceLevel);
+            // Log::debug('Price Level: ' . $priceLevel);
         }
         $priceCategory = "Price Level: $priceLevel";
         // foreach ($subs as $sub) {
@@ -118,6 +119,7 @@ class CustomerController extends Controller
         $customerData = 
         [
             'DeleteMissingArrayElements' => true,
+            'mbr_name'=> $mbrName,
             'mbr_company'=> $mbrCompany,
             'mbr_email' => $mbrEmail,
             'memberGroups' => [
@@ -126,6 +128,8 @@ class CustomerController extends Controller
                    ["name" => $priceCategory]   
                 ],
             'mbr_discount' => $discount,
+            'mbr_reference' => $id,
+            'mbr_level'     => 135
         ];
 
         Log::info('Logging The Customer Data From Netsuite');

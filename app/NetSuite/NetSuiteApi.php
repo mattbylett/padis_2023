@@ -116,7 +116,7 @@ class NetSuiteApi
                 return json_decode($response);
             } else {
                 curl_close($curl);
-                Log::error('cURL Error: ' . curl_error($curl));
+                // Log::error('cURL Error: ' . curl_error($curl));
                 return "curl else error";
             }
         }
@@ -134,6 +134,9 @@ class NetSuiteApi
 
     public function getBasePrice($product_id)
     {
+
+        // Set the Price Levels 
+        //id=pricequantit
         $path =
             "/inventoryitem/" . $product_id . "/price/quantity=0,pricelevel=1";
         $httpMethod = "GET";
@@ -216,7 +219,7 @@ class NetSuiteApi
     public function getAllCustomers()
     {
 
-        Log::debug("In the Customer Method");
+        // Log::debug("In the Customer Method");
         $path = "/customer";
         $httpMethod ="GET";
         $result = $this->sendRequest($httpMethod, $path); 
@@ -232,8 +235,8 @@ class NetSuiteApi
 
         $result = $this->sendRequest($httpMethod, $path);
 
-        Log::info('This is inside the Netsuite API Call Result...');
-        Log::debug($path);
+        // Log::info('This is inside the Netsuite API Call Result...');
+        // Log::debug($path);
         // Log::debug(json_encode($result));
         return $result;
     }
@@ -244,8 +247,8 @@ class NetSuiteApi
         $httpMethod = "GET";
         $subscriptions = $this->sendRequest($httpMethod, $path);
 
-        Log::info('Getting the Subscription Data from the API');
-        Log::debug(json_encode($subscriptions));
+        // Log::info('Getting the Subscription Data from the API');
+        // Log::debug(json_encode($subscriptions));
 
         return $subscriptions;
 
