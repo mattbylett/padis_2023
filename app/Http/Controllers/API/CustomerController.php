@@ -31,10 +31,11 @@ class CustomerController extends Controller
     $mbrEmail = $request->input('customerEmail');
     $mbrGroups = $request->input('category');
     $mbrName = $request->input('attention');
-    // $subs    = $request->input('subscriptions');
+    $subs    = $request->input('subscriptions');
 
     Log::debug('id : ' . $id);
-    Log::debug( 'mbr_name' . $mbrName);
+    Log::debug( 'mbr_name ' . $mbrName);
+    Log::debug( 'subscriptions ' . $subs);
     
 
     $netSuiteApi = new NetSuiteApi();
