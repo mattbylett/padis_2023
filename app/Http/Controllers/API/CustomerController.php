@@ -35,7 +35,7 @@ class CustomerController extends Controller
 
     Log::debug('id : ' . $id);
     Log::debug( 'mbr_name ' . $mbrName);
-    Log::debug( 'subscriptions ' . $subs);
+    Log::debug( 'subscriptions ' . json_encode($subs));
     
 
     $netSuiteApi = new NetSuiteApi();
