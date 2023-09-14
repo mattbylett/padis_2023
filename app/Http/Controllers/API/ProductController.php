@@ -244,10 +244,10 @@ public function featuredProducts(Request $request)
                 ", " .
                 $website_display_rubbish .
                 ", " .
-                $website_display_packnet .
-                ", " .
-                $website_display_hand .
-                ", " .
+                // $website_display_packnet .
+                // ", " .
+                // $website_display_hand .
+                // ", " .
                 $website_display_car . 
                 ", " . 
                 $website_display_soluclean
