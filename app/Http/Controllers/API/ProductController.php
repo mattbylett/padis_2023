@@ -1061,7 +1061,7 @@ public function featuredProducts(Request $request)
     }
 
     // Create a reusable function to handle The Website World Conections
-function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $additionalText = null, $removeData) {
+function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null, ) {
             Log::info(gettype($httpInstance));
             if ($displayFlag) {
                 $preparedData = $data; // Copying the data
