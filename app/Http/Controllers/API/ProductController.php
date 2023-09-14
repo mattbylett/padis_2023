@@ -206,19 +206,19 @@ public function featuredProducts(Request $request)
             }
         }
 
-        $website_display_packnet = false;
-        if (isset($result->custitem18)) {
-            if ($result->custitem18) {
-                $website_display_packnet = true;
-            }
-        }
+        // $website_display_packnet = false;
+        // if (isset($result->custitem18)) {
+        //     if ($result->custitem18) {
+        //         $website_display_packnet = true;
+        //     }
+        // }
 
-        $website_display_hand = false;
-        if (isset($result->custitem19)) {
-            if ($result->custitem19) {
-                $website_display_hand = true;
-            }
-        }
+        // $website_display_hand = false;
+        // if (isset($result->custitem19)) {
+        //     if ($result->custitem19) {
+        //         $website_display_hand = true;
+        //     }
+        // }
 
         $website_display_car = false;
         if (isset($result->custitem20)) {
@@ -585,8 +585,12 @@ public function featuredProducts(Request $request)
 
         Log::info("Mapping Data = " . json_encode($data));
 
-        processWebsiteData($website_display_hand, $http_hand, $p_code, $data, $type, "209709");
-        processWebsiteData($website_display_packnet, $http_packnet, $p_code, $data, $type, "209710");
+
+        $website_display_hand = boolval($request->input('custitem19', false));
+        $this->processWebsiteData($website_display_hand, $http_hand, $p_code, $data, $type, "209709");
+
+        $website_display_packnet = boolval($request->input('custitem18', false));
+        $this->processWebsiteData($website_display_packnet, $http_packnet, $p_code, $data, $type, "209710");
         // ... repeat for other websites
 
 
