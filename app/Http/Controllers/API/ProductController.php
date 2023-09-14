@@ -585,12 +585,6 @@ public function featuredProducts(Request $request)
 
         Log::info("Mapping Data = " . json_encode($data));
 
-
-        $website_display_hand = boolval($request->input('custitem19', false));
-        $this->processWebsiteData($website_display_hand, $http_hand, $p_code, $data, $type, "209709");
-
-        $website_display_packnet = boolval($request->input('custitem18', false));
-        $this->processWebsiteData($website_display_packnet, $http_packnet, $p_code, $data, $type, "209710");
         // ... repeat for other websites
 
 
@@ -611,15 +605,15 @@ public function featuredProducts(Request $request)
             "apiKey" => config("services.website.car_api_key"),
         ]);
 
-        // $http_hand = Http::withHeaders([
-        //     "apiID" => config("services.website.hand_api_id"),
-        //     "apiKey" => config("services.website.hand_api_key"),
-        // ]);
+        $http_hand = Http::withHeaders([
+            "apiID" => config("services.website.hand_api_id"),
+            "apiKey" => config("services.website.hand_api_key"),
+        ]);
 
-        // $http_packnet = Http::withHeaders([
-        //     "apiID" => config("services.website.packnet_api_id"),
-        //     "apiKey" => config("services.website.packnet_api_key"),
-        // ]);
+        $http_packnet = Http::withHeaders([
+            "apiID" => config("services.website.packnet_api_id"),
+            "apiKey" => config("services.website.packnet_api_key"),
+        ]);
 
         $http_rubbish = Http::withHeaders([
             "apiID" => config("services.website.rubbish_api_id"),
@@ -644,6 +638,14 @@ public function featuredProducts(Request $request)
         ]);
 
         $base_uri = config("services.website.base_uri");
+
+
+
+        $website_display_hand = boolval($request->input('custitem19', false));
+        $this->processWebsiteData($website_display_hand, $http_hand, $p_code, $data, $type, "209709");
+
+        $website_display_packnet = boolval($request->input('custitem18', false));
+        $this->processWebsiteData($website_display_packnet, $http_packnet, $p_code, $data, $type, "209710");
 
         try {
             if ($type == "delete") {
