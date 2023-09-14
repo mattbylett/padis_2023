@@ -24,7 +24,6 @@ class ProductController extends BaseController
             if (!$product) {
                 Product::create([
                   "name" => $item["p_code"] ?? null,
-                //   "internal_id" => $item[""] ?? null,
                   "pid" => $item["id"] ?? null,
                   "website_additional_text" => $item["p_additionaltext"] ?? null,
                   "vendor_name" => $item["p_suppliername"] ?? null,
@@ -134,7 +133,6 @@ public function featuredProducts(Request $request)
     return;
 }
 
-
     public function updateProduct(Request $request)
     {
         Log::info("API request call from NetSuite ");
@@ -152,6 +150,7 @@ public function featuredProducts(Request $request)
         do {
             $result = $netSuiteApi->getOneProductInfo($id);
         } while ($result == "error");
+        // dd($result->custitem36);
 
         do {
             $base_price = $netSuiteApi->getBasePrice($id);
@@ -585,11 +584,6 @@ public function featuredProducts(Request $request)
 
         Log::info("Mapping Data = " . json_encode($data));
 
-        processWebsiteData($website_display_hand, $http_hand, $p_code, $data, $type, "209709");
-        processWebsiteData($website_display_packnet, $http_packnet, $p_code, $data, $type, "209710");
-        // ... repeat for other websites
-
-
         $removeData = [
             "p_code" => $p_code,
             "p_order" => "-999",
@@ -607,15 +601,15 @@ public function featuredProducts(Request $request)
             "apiKey" => config("services.website.car_api_key"),
         ]);
 
-        // $http_hand = Http::withHeaders([
-        //     "apiID" => config("services.website.hand_api_id"),
-        //     "apiKey" => config("services.website.hand_api_key"),
-        // ]);
+        $http_hand = Http::withHeaders([
+            "apiID" => config("services.website.hand_api_id"),
+            "apiKey" => config("services.website.hand_api_key"),
+        ]);
 
-        // $http_packnet = Http::withHeaders([
-        //     "apiID" => config("services.website.packnet_api_id"),
-        //     "apiKey" => config("services.website.packnet_api_key"),
-        // ]);
+        $http_packnet = Http::withHeaders([
+            "apiID" => config("services.website.packnet_api_id"),
+            "apiKey" => config("services.website.packnet_api_key"),
+        ]);
 
         $http_rubbish = Http::withHeaders([
             "apiID" => config("services.website.rubbish_api_id"),
@@ -676,16 +670,16 @@ public function featuredProducts(Request $request)
                     Log::error($th->getMessage());
                 }
 
-                // try {
-                //     $response = $http_packnet->post(
-                //         "{$base_uri}/product",
-                //         $removeData
-                //     );
-                //     $result = $response->json();
-                //     Log::info("Website Packnet Success");
-                // } catch (\Throwable $th) {
-                //     Log::error($th->getMessage());
-                // }
+                try {
+                    $response = $http_packnet->post(
+                        "{$base_uri}/product",
+                        $removeData
+                    );
+                    $result = $response->json();
+                    Log::info("Website Packnet Success");
+                } catch (\Throwable $th) {
+                    Log::error($th->getMessage());
+                }
 
                 try {
                     $response = $http_rubbish->post(
@@ -807,41 +801,41 @@ public function featuredProducts(Request $request)
 
                 Log::info("Website Car Success");
 
-                // if ($website_display_hand) {
-                //     $data_hand = $data;
-                //     if ($type == "create") {
-                //         $data_hand["p_groupid"] = "209709";
-                //     } else {
-                //         $response_hand = $http_hand->get(
-                //             "{$base_uri}/products?p_code=" . $p_code
-                //         );
-                //         $result_hand = $response_hand->json();
-                //         if (isset($result_hand["resultCount"])) {
-                //             if ($result_hand["resultCount"] == 0) {
-                //                 $data_hand["p_groupid"] = "209709";
-                //             }
-                //         }
-                //     }
-                //     $response_hand = $http_hand->post(
-                //         "{$base_uri}/product",
-                //         $data_hand
-                //     );
-                //     $result_hand = $response_hand->json();
-                // } else {
-                //     $response_hand = $http_hand->get(
-                //         "{$base_uri}/products?p_code=" . $p_code
-                //     );
-                //     $result_hand = $response_hand->json();
-                //     if (isset($result_hand["resultCount"])) {
-                //         if ($result_hand["resultCount"] != 0) {
-                //             $response_hand = $http_hand->post(
-                //                 "{$base_uri}/product",
-                //                 $removeData
-                //             );
-                //             $result_hand = $response_hand->json();
-                //         }
-                //     }
-                // }
+                if ($website_display_hand) {
+                    $data_hand = $data;
+                    if ($type == "create") {
+                        $data_hand["p_groupid"] = "209709";
+                    } else {
+                        $response_hand = $http_hand->get(
+                            "{$base_uri}/products?p_code=" . $p_code
+                        );
+                        $result_hand = $response_hand->json();
+                        if (isset($result_hand["resultCount"])) {
+                            if ($result_hand["resultCount"] == 0) {
+                                $data_hand["p_groupid"] = "209709";
+                            }
+                        }
+                    }
+                    $response_hand = $http_hand->post(
+                        "{$base_uri}/product",
+                        $data_hand
+                    );
+                    $result_hand = $response_hand->json();
+                } else {
+                    $response_hand = $http_hand->get(
+                        "{$base_uri}/products?p_code=" . $p_code
+                    );
+                    $result_hand = $response_hand->json();
+                    if (isset($result_hand["resultCount"])) {
+                        if ($result_hand["resultCount"] != 0) {
+                            $response_hand = $http_hand->post(
+                                "{$base_uri}/product",
+                                $removeData
+                            );
+                            $result_hand = $response_hand->json();
+                        }
+                    }
+                }
 
                 Log::info("Website Hand Success");
 
@@ -1050,29 +1044,5 @@ public function featuredProducts(Request $request)
 
         return;
     }
-
-    // Create a reusable function to handle The Website World Conections
-        function processWebsiteData($displayFlag, $httpInstance, $p_code, $data, $type, $groupId, $additionalText = null) {
-            if ($displayFlag) {
-                $preparedData = $data; // Copying the data
-                if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
-                    $preparedData["p_groupid"] = $groupId;
-                }
-                if ($additionalText) {
-                    $preparedData["p_additionaltext"] = $additionalText;
-                }
-                $response = $httpInstance->post("{$base_uri}/product", $preparedData);
-                $result = $response->json();
-                Log::info("Success for website with groupId: $groupId");
-            } else {
-                $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
-                $result = $response->json();
-                if (isset($result["resultCount"]) && $result["resultCount"] != 0) {
-                    $response = $httpInstance->post("{$base_uri}/product", $removeData);
-                    $result = $response->json();
-                }
-            }
-        }
-
 }
 
