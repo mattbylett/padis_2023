@@ -646,7 +646,7 @@ public function featuredProducts(Request $request)
 ;
 
         $website_display_packnet = boolval($request->input('custitem18', false));
-        $this->processWebsiteData($website_display_packnet, $base_uri, $http_packnet, $p_code, $data, $type, "209710");
+        $this->processWebsiteData($website_display_packnet, $http_packnet, $base_uri,  $p_code, $data, $type, "209710");
 
 
 
