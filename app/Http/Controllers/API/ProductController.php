@@ -637,15 +637,14 @@ public function featuredProducts(Request $request)
             "apiKey" => config("services.website.soluclean_api_key"),
         ]);
 
-        $base_uri = config("services.website.base_uri");
-
-
-
         $website_display_hand = boolval($request->input('custitem19', false));
         $this->processWebsiteData($website_display_hand, $http_hand, $p_code, $data, $type, "209709");
 
         $website_display_packnet = boolval($request->input('custitem18', false));
         $this->processWebsiteData($website_display_packnet, $http_packnet, $p_code, $data, $type, "209710");
+
+
+        $base_uri = config("services.website.base_uri");
 
         try {
             if ($type == "delete") {
