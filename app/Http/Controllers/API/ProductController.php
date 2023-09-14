@@ -642,7 +642,7 @@ public function featuredProducts(Request $request)
 
         $website_display_hand = boolval($request->input('custitem19', false));
         $this->processWebsiteData($website_display_hand,$base_uri, $http_hand, $p_code, $data, $type, "209709");
-
+Log::info('$http_hand = ' . gettype($http_hand));
         $website_display_packnet = boolval($request->input('custitem18', false));
         $this->processWebsiteData($website_display_packnet, $base_uri, $http_packnet, $p_code, $data, $type, "209710");
 
@@ -1060,6 +1060,7 @@ public function featuredProducts(Request $request)
 
     // Create a reusable function to handle The Website World Conections
         function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $additionalText = null) {
+            Log::info(gettype('$httpInstance = '.$httpInstance));
             if ($displayFlag) {
                 $preparedData = $data; // Copying the data
                 if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
