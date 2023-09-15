@@ -1065,28 +1065,55 @@ public function featuredProducts(Request $request)
     }
 
     // Create a reusable function to handle The Website World Conections
-function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null, ) {
-            Log::info(gettype($httpInstance));
-            if ($displayFlag) {
-                $preparedData = $data; // Copying the data
-                if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
-                    $preparedData["p_groupid"] = $groupId;
-                }
-                if ($additionalText) {
-                    $preparedData["p_additionaltext"] = $additionalText;
-                }
-                $response = $httpInstance->post("{$base_uri}/product", $preparedData);
-                $result = $response->json();
-                Log::info("Success for website with groupId: $groupId");
-            } else {
-                $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
-                $result = $response->json();
-                if (isset($result["resultCount"]) && $result["resultCount"] != 0) {
-                    $response = $httpInstance->post("{$base_uri}/product", $removeData);
-                    $result = $response->json();
-                }
-            }
+    function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null) {
+    Log::info(gettype($httpInstance));
+    if ($displayFlag) {
+        $preparedData = $data; // Copying the data
+
+        // Get product details first
+        $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
+        $result = $response->json();
+
+        if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
+            $preparedData["p_groupid"] = $groupId;
         }
+        if ($additionalText) {
+            $preparedData["p_additionaltext"] = $additionalText;
+        }
+        $response = $httpInstance->post("{$base_uri}/product", $preparedData);
+        $result = $response->json();
+        Log::info("Success for website with groupId: $groupId");
+    } else {
+        $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
+        $result = $response->json();
+        if (isset($result["resultCount"]) && $result["resultCount"] != 0) {
+            $response = $httpInstance->post("{$base_uri}/product", $removeData);
+            $result = $response->json();
+        }
+    }
+}
+// function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null, ) {
+//             Log::info(gettype($httpInstance));
+//             if ($displayFlag) {
+//                 $preparedData = $data; // Copying the data
+//                 if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
+//                     $preparedData["p_groupid"] = $groupId;
+//                 }
+//                 if ($additionalText) {
+//                     $preparedData["p_additionaltext"] = $additionalText;
+//                 }
+//                 $response = $httpInstance->post("{$base_uri}/product", $preparedData);
+//                 $result = $response->json();
+//                 Log::info("Success for website with groupId: $groupId");
+//             } else {
+//                 $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
+//                 $result = $response->json();
+//                 if (isset($result["resultCount"]) && $result["resultCount"] != 0) {
+//                     $response = $httpInstance->post("{$base_uri}/product", $removeData);
+//                     $result = $response->json();
+//                 }
+//             }
+//         }
 
 }
 
