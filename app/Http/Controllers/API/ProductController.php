@@ -1081,8 +1081,8 @@ public function featuredProducts(Request $request)
         Log::info('Response content: ' . $response->body());
 
 
-        // $result = $response->json();
-        // Log::info('Get Request Response in processWebData: ', ['response' => $response]);
+        $result1 = $response->json();
+        Log::info('Alternative Decode Method: ', $result1);
 
 
         if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
