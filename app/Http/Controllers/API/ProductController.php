@@ -1072,14 +1072,17 @@ public function featuredProducts(Request $request)
     if ($displayFlag) {
         $preparedData = $data; // Copying the data
 
-        // Get product details first
+        // Get product details first  from Website World
         $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
+        Log::info('This is the Response: ' . $response);
 
+        //Deccode the response using json encode
         $result = json_decode($response->body(), false);
         Log::info('Decoded Result: ', ['result' => $result]);
 
+        //decode the response directly - This was the original method that was working
         $result1 = $response->json();
-        Log::info('Alternative Decode Method: ' . $result1);
+        Log::info('Original Decode Method: ' . $result1);
 
         if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
             $preparedData["p_groupid"] = $groupId;
