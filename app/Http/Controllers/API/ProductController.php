@@ -178,12 +178,12 @@ public function featuredProducts(Request $request)
 
         Log::info("p_code = " . $p_code );
 
-        $website_display_insinc = false;
-        if (isset($result->custitem14)) {
-            if ($result->custitem14) {
-                $website_display_insinc = true;
-            }
-        }
+        // $website_display_insinc = false;
+        // if (isset($result->custitem14)) {
+        //     if ($result->custitem14) {
+        //         $website_display_insinc = true;
+        //     }
+        // }
 
         $website_display_cafe = false;
         if (isset($result->custitem15)) {
@@ -649,6 +649,9 @@ public function featuredProducts(Request $request)
         $website_display_cafe = boolval($request->input('custitem18', false));
         $this->processWebsiteData($website_display_cafe, $http_cafe, $base_uri,  $p_code, $data, $type, "209706", $removeData);
 
+        $website_display_insinc = boolval($request->input('custitem14', false));
+        $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
+
 
 
         try {
@@ -730,16 +733,16 @@ public function featuredProducts(Request $request)
                     Log::error($th->getMessage());
                 }
 
-                try {
-                    $response = $http_insinc->post(
-                        "{$base_uri}/product",
-                        $removeData
-                    );
-                    $result = $response->json();
-                    Log::info("Website Insinc Remove Success");
-                } catch (\Throwable $th) {
-                    Log::error($th->getMessage());
-                }
+                // try {
+                //     $response = $http_insinc->post(
+                //         "{$base_uri}/product",
+                //         $removeData
+                //     );
+                //     $result = $response->json();
+                //     Log::info("Website Insinc Remove Success");
+                // } catch (\Throwable $th) {
+                //     Log::error($th->getMessage());
+                // }
             } else {
                 // if ($website_display_cafe) {
                 //     $data_cafe = $data;
@@ -1010,45 +1013,45 @@ public function featuredProducts(Request $request)
 
                 Log::info("Website Soluclean Success");
 
-                if ($website_display_insinc) {
-                    $data_insinc = $data;
-                    $data_insinc["p_additionaltext"] = $p_additionaltext_insinc;
-                    if ($type == "create") {
-                        $data_insinc["p_groupid"] = "209705";
-                    } else {
-                        $response_insinc = $http_insinc->get(
-                            "{$base_uri}/products?p_code=" . $p_code
-                        );
-                        $result_insinc = $response_insinc->json();
-                        if (isset($result_insinc["resultCount"])) {
-                            if ($result_insinc["resultCount"] == 0) {
-                                $data_insinc["p_groupid"] = "209705";
-                            }
-                        }
-                    }
+                // if ($website_display_insinc) {
+                //     $data_insinc = $data;
+                //     $data_insinc["p_additionaltext"] = $p_additionaltext_insinc;
+                //     if ($type == "create") {
+                //         $data_insinc["p_groupid"] = "209705";
+                //     } else {
+                //         $response_insinc = $http_insinc->get(
+                //             "{$base_uri}/products?p_code=" . $p_code
+                //         );
+                //         $result_insinc = $response_insinc->json();
+                //         if (isset($result_insinc["resultCount"])) {
+                //             if ($result_insinc["resultCount"] == 0) {
+                //                 $data_insinc["p_groupid"] = "209705";
+                //             }
+                //         }
+                //     }
 
-                    $data_insinc["p_groupid8"] = $weekly_specials_insinc;
+                //     $data_insinc["p_groupid8"] = $weekly_specials_insinc;
 
-                    $response_insinc = $http_insinc->post(
-                        "{$base_uri}/product",
-                        $data_insinc
-                    );
-                    $result_insinc = $response_insinc->json();
-                } else {
-                    $response_insinc = $http_insinc->get(
-                        "{$base_uri}/products?p_code=" . $p_code
-                    );
-                    $result_insinc = $response_insinc->json();
-                    if (isset($result_insinc["resultCount"])) {
-                        if ($result_insinc["resultCount"] != 0) {
-                            $response_insinc = $http_insinc->post(
-                                "{$base_uri}/product",
-                                $removeData
-                            );
-                            $result_insinc = $response_insinc->json();
-                        }
-                    }
-                }
+                //     $response_insinc = $http_insinc->post(
+                //         "{$base_uri}/product",
+                //         $data_insinc
+                //     );
+                //     $result_insinc = $response_insinc->json();
+                // } else {
+                //     $response_insinc = $http_insinc->get(
+                //         "{$base_uri}/products?p_code=" . $p_code
+                //     );
+                //     $result_insinc = $response_insinc->json();
+                //     if (isset($result_insinc["resultCount"])) {
+                //         if ($result_insinc["resultCount"] != 0) {
+                //             $response_insinc = $http_insinc->post(
+                //                 "{$base_uri}/product",
+                //                 $removeData
+                //             );
+                //             $result_insinc = $response_insinc->json();
+                //         }
+                //     }
+                // }
 
                 Log::info("Website Insinc Success");
 		// Log::info($data_insinc);
