@@ -1075,14 +1075,14 @@ public function featuredProducts(Request $request)
         Log::info('Full GET URL: ' . "{$base_uri}/products?p_code=" . $p_code);
         Log::info('Response Status Code: ' . $response->status());
 
-        $result = json_decode($response->body(), true);
-        Log::info('Decoded Result: ', ['result' => $result]);
-        Log::info('Response type: ' . gettype($response));
-        Log::info('Response content: ' . $response->body());
+        // $result = json_decode($response->body(), true);
+        // Log::info('Decoded Result: ', ['result' => $result]);
+        // Log::info('Response type: ' . gettype($response));
+        // Log::info('Response content: ' . $response->body());
 
 
         $result1 = $response->json();
-        Log::info('Alternative Decode Method: ', $result1);
+        Log::info('Alternative Decode Method: ' . $result1);
 
 
         if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
