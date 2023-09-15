@@ -1069,7 +1069,19 @@ public function featuredProducts(Request $request)
     function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null) {
     Log::info(gettype($httpInstance));
 
-$client = new Client();
+// Set API credentials
+$apiID = config("services.website.insinc_api_id");
+$apiKey = config("services.website.insinc_api_key");
+
+// Initialize the Guzzle client
+$client = new Client([
+    'headers' => [
+        'apiID' => $apiID,
+        'apiKey' => $apiKey
+    ]
+]);
+
+// Make the GET request
 $response = $client->get("{$base_uri}/products?p_code=" . $p_code);
 $body = $response->getBody();
 $decoded = json_decode($body, true);
