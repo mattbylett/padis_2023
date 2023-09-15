@@ -221,12 +221,12 @@ public function featuredProducts(Request $request)
         //     }
         // }
 
-        $website_display_car = false;
-        if (isset($result->custitem20)) {
-            if ($result->custitem20) {
-                $website_display_car = true;
-            }
-        }
+        // $website_display_car = false;
+        // if (isset($result->custitem20)) {
+        //     if ($result->custitem20) {
+        //         $website_display_car = true;
+        //     }
+        // }
 
         $website_display_soluclean = false;
         if (isset($result->custitem43)) {
@@ -235,24 +235,24 @@ public function featuredProducts(Request $request)
             }
         }
 
-        Log::info(
-            "Website insinc, cafe, disposable, rubbish, packnet, hand, car, soluclean == " .
-                // $website_display_insinc .
-                // ", " .
-                // $website_display_cafe .
-                // ", " .
-                $website_display_disposable .
-                ", " .
-                $website_display_rubbish .
-                ", " .
-                // $website_display_packnet .
-                // ", " .
-                // $website_display_hand .
-                // ", " .
-                $website_display_car . 
-                ", " . 
-                $website_display_soluclean
-        );
+        // Log::info(
+        //     "Website insinc, cafe, disposable, rubbish, packnet, hand, car, soluclean == " .
+        //         // $website_display_insinc .
+        //         // ", " .
+        //         // $website_display_cafe .
+        //         // ", " .
+        //         $website_display_disposable .
+        //         ", " .
+        //         $website_display_rubbish .
+        //         ", " .
+        //         // $website_display_packnet .
+        //         // ", " .
+        //         // $website_display_hand .
+        //         // ", " .
+        //         $website_display_car . 
+        //         ", " . 
+        //         $website_display_soluclean
+        // );
 
         $p_suppliername = $vendor_name;
 
@@ -644,6 +644,9 @@ public function featuredProducts(Request $request)
         $website_display_hand = boolval($request->input('custitem19', false));
         $this->processWebsiteData($website_display_hand, $http_hand, $base_uri, $p_code, $data, $type, "209709", $removeData);
 
+        $website_display_car = boolval($request->input('custitem20', false));
+        $this->processWebsiteData($website_display_car, $http_car, $base_uri, $p_code, $data, $type, "209709", $removeData);
+
         $website_display_packnet = boolval($request->input('custitem18', false));
         $this->processWebsiteData($website_display_packnet, $http_packnet, $base_uri,  $p_code, $data, $type, "209710", $removeData);
 
@@ -668,16 +671,16 @@ public function featuredProducts(Request $request)
                 //     Log::error($th->getMessage());
                 // }
 
-                try {
-                    $response = $http_car->post(
-                        "{$base_uri}/product",
-                        $removeData
-                    );
-                    $result = $response->json();
-                    Log::info("Website Car Success");
-                } catch (\Throwable $th) {
-                    Log::error($th->getMessage());
-                }
+                // try {
+                //     $response = $http_car->post(
+                //         "{$base_uri}/product",
+                //         $removeData
+                //     );
+                //     $result = $response->json();
+                //     Log::info("Website Car Success");
+                // } catch (\Throwable $th) {
+                //     Log::error($th->getMessage());
+                // }
 
                 // try {
                 //     $response = $http_hand->post(
@@ -783,41 +786,41 @@ public function featuredProducts(Request $request)
 
                 Log::info("Website Cafe Success");
 
-                if ($website_display_car) {
-                    $data_car = $data;
-                    if ($type == "create") {
-                        $data_car["p_groupid"] = "209707";
-                    } else {
-                        $response_car = $http_car->get(
-                            "{$base_uri}/products?p_code=" . $p_code
-                        );
-                        $result_car = $response_car->json();
-                        if (isset($result_car["resultCount"])) {
-                            if ($result_car["resultCount"] == 0) {
-                                $data_car["p_groupid"] = "209707";
-                            }
-                        }
-                    }
-                    $response_car = $http_car->post(
-                        "{$base_uri}/product",
-                        $data_car
-                    );
-                    $result_car = $response_car->json();
-                } else {
-                    $response_car = $http_car->get(
-                        "{$base_uri}/products?p_code=" . $p_code
-                    );
-                    $result_car = $response_car->json();
-                    if (isset($result_car["resultCount"])) {
-                        if ($result_car["resultCount"] != 0) {
-                            $response_car = $http_car->post(
-                                "{$base_uri}/product",
-                                $removeData
-                            );
-                            $result_car = $response_car->json();
-                        }
-                    }
-                }
+                // if ($website_display_car) {
+                //     $data_car = $data;
+                //     if ($type == "create") {
+                //         $data_car["p_groupid"] = "209707";
+                //     } else {
+                //         $response_car = $http_car->get(
+                //             "{$base_uri}/products?p_code=" . $p_code
+                //         );
+                //         $result_car = $response_car->json();
+                //         if (isset($result_car["resultCount"])) {
+                //             if ($result_car["resultCount"] == 0) {
+                //                 $data_car["p_groupid"] = "209707";
+                //             }
+                //         }
+                //     }
+                //     $response_car = $http_car->post(
+                //         "{$base_uri}/product",
+                //         $data_car
+                //     );
+                //     $result_car = $response_car->json();
+                // } else {
+                //     $response_car = $http_car->get(
+                //         "{$base_uri}/products?p_code=" . $p_code
+                //     );
+                //     $result_car = $response_car->json();
+                //     if (isset($result_car["resultCount"])) {
+                //         if ($result_car["resultCount"] != 0) {
+                //             $response_car = $http_car->post(
+                //                 "{$base_uri}/product",
+                //                 $removeData
+                //             );
+                //             $result_car = $response_car->json();
+                //         }
+                //     }
+                // }
 
                 Log::info("Website Car Success");
 
