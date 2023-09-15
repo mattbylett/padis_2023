@@ -641,27 +641,28 @@ public function featuredProducts(Request $request)
         $base_uri = config("services.website.base_uri");
 
         $website_display_hand = boolval($request->input('custitem19', false));
-        Log::info('http_hand = '. gettype($http_hand));
-    $this->processWebsiteData($website_display_hand, $http_hand, $base_uri, $p_code, $data, $type, "209709", $removeData);
-;
+        $this->processWebsiteData($website_display_hand, $http_hand, $base_uri, $p_code, $data, $type, "209709", $removeData);
 
         $website_display_packnet = boolval($request->input('custitem18', false));
         $this->processWebsiteData($website_display_packnet, $http_packnet, $base_uri,  $p_code, $data, $type, "209710", $removeData);
+
+        $website_display_cafe = boolval($request->input('custitem18', false));
+        $this->processWebsiteData($website_display_cafe, $http_cafe, $base_uri,  $p_code, $data, $type, "209706", $removeData);
 
 
 
         try {
             if ($type == "delete") {
-                try {
-                    $response = $http_cafe->post(
-                        "{$base_uri}/product",
-                        $removeData
-                    );
-                    $result = $response->json();
-                    Log::info("Website Cafe Success");
-                } catch (\Throwable $th) {
-                    Log::error($th->getMessage());
-                }
+                // try {
+                //     $response = $http_cafe->post(
+                //         "{$base_uri}/product",
+                //         $removeData
+                //     );
+                //     $result = $response->json();
+                //     Log::info("Website Cafe Success");
+                // } catch (\Throwable $th) {
+                //     Log::error($th->getMessage());
+                // }
 
                 try {
                     $response = $http_car->post(
@@ -674,16 +675,16 @@ public function featuredProducts(Request $request)
                     Log::error($th->getMessage());
                 }
 
-                try {
-                    $response = $http_hand->post(
-                        "{$base_uri}/product",
-                        $removeData
-                    );
-                    $result = $response->json();
-                    Log::info("Website Hand Success");
-                } catch (\Throwable $th) {
-                    Log::error($th->getMessage());
-                }
+                // try {
+                //     $response = $http_hand->post(
+                //         "{$base_uri}/product",
+                //         $removeData
+                //     );
+                //     $result = $response->json();
+                //     Log::info("Website Hand Success");
+                // } catch (\Throwable $th) {
+                //     Log::error($th->getMessage());
+                // }
 
                 // try {
                 //     $response = $http_packnet->post(
@@ -740,41 +741,41 @@ public function featuredProducts(Request $request)
                     Log::error($th->getMessage());
                 }
             } else {
-                if ($website_display_cafe) {
-                    $data_cafe = $data;
-                    if ($type == "create") {
-                        $data_cafe["p_groupid"] = "209706";
-                    } else {
-                        $response_cafe = $http_cafe->get(
-                            "{$base_uri}/products?p_code=" . $p_code
-                        );
-                        $result_cafe = $response_cafe->json();
-                        if (isset($result_cafe["resultCount"])) {
-                            if ($result_cafe["resultCount"] == 0) {
-                                $data_cafe["p_groupid"] = "209706";
-                            }
-                        }
-                    }
-                    $response_cafe = $http_cafe->post(
-                        "{$base_uri}/product",
-                        $data_cafe
-                    );
-                    $result_cafe = $response_cafe->json();
-                } else {
-                    $response_cafe = $http_cafe->get(
-                        "{$base_uri}/products?p_code=" . $p_code
-                    );
-                    $result_cafe = $response_cafe->json();
-                    if (isset($result_cafe["resultCount"])) {
-                        if ($result_cafe["resultCount"] != 0) {
-                            $response_cafe = $http_cafe->post(
-                                "{$base_uri}/product",
-                                $removeData
-                            );
-                            $result_cafe = $response_cafe->json();
-                        }
-                    }
-                }
+                // if ($website_display_cafe) {
+                //     $data_cafe = $data;
+                //     if ($type == "create") {
+                //         $data_cafe["p_groupid"] = "209706";
+                //     } else {
+                //         $response_cafe = $http_cafe->get(
+                //             "{$base_uri}/products?p_code=" . $p_code
+                //         );
+                //         $result_cafe = $response_cafe->json();
+                //         if (isset($result_cafe["resultCount"])) {
+                //             if ($result_cafe["resultCount"] == 0) {
+                //                 $data_cafe["p_groupid"] = "209706";
+                //             }
+                //         }
+                //     }
+                //     $response_cafe = $http_cafe->post(
+                //         "{$base_uri}/product",
+                //         $data_cafe
+                //     );
+                //     $result_cafe = $response_cafe->json();
+                // } else {
+                //     $response_cafe = $http_cafe->get(
+                //         "{$base_uri}/products?p_code=" . $p_code
+                //     );
+                //     $result_cafe = $response_cafe->json();
+                //     if (isset($result_cafe["resultCount"])) {
+                //         if ($result_cafe["resultCount"] != 0) {
+                //             $response_cafe = $http_cafe->post(
+                //                 "{$base_uri}/product",
+                //                 $removeData
+                //             );
+                //             $result_cafe = $response_cafe->json();
+                //         }
+                //     }
+                // }
 
                 Log::info("Website Cafe Success");
 
@@ -854,41 +855,41 @@ public function featuredProducts(Request $request)
 
                 Log::info("Website Hand Success");
 
-                if ($website_display_packnet) {
-                    $data_packnet = $data;
-                    if ($type == "create") {
-                        $data_packnet["p_groupid"] = "209710";
-                    } else {
-                        $response_packnet = $http_packnet->get(
-                            "{$base_uri}/products?p_code=" . $p_code
-                        );
-                        $result_packnet = $response_packnet->json();
-                        if (isset($result_packnet["resultCount"])) {
-                            if ($result_packnet["resultCount"] == 0) {
-                                $data_packnet["p_groupid"] = "209710";
-                            }
-                        }
-                    }
-                    $response_packnet = $http_packnet->post(
-                        "{$base_uri}/product",
-                        $data_packnet
-                    );
-                    $result_packnet = $response_packnet->json();
-                } else {
-                    $response_packnet = $http_packnet->get(
-                        "{$base_uri}/products?p_code=" . $p_code
-                    );
-                    $result_packnet = $response_packnet->json();
-                    if (isset($result_packnet["resultCount"])) {
-                        if ($result_packnet["resultCount"] != 0) {
-                            $response_packnet = $http_packnet->post(
-                                "{$base_uri}/product",
-                                $removeData
-                            );
-                            $result_packnet = $response_packnet->json();
-                        }
-                    }
-                }
+                // if ($website_display_packnet) {
+                //     $data_packnet = $data;
+                //     if ($type == "create") {
+                //         $data_packnet["p_groupid"] = "209710";
+                //     } else {
+                //         $response_packnet = $http_packnet->get(
+                //             "{$base_uri}/products?p_code=" . $p_code
+                //         );
+                //         $result_packnet = $response_packnet->json();
+                //         if (isset($result_packnet["resultCount"])) {
+                //             if ($result_packnet["resultCount"] == 0) {
+                //                 $data_packnet["p_groupid"] = "209710";
+                //             }
+                //         }
+                //     }
+                //     $response_packnet = $http_packnet->post(
+                //         "{$base_uri}/product",
+                //         $data_packnet
+                //     );
+                //     $result_packnet = $response_packnet->json();
+                // } else {
+                //     $response_packnet = $http_packnet->get(
+                //         "{$base_uri}/products?p_code=" . $p_code
+                //     );
+                //     $result_packnet = $response_packnet->json();
+                //     if (isset($result_packnet["resultCount"])) {
+                //         if ($result_packnet["resultCount"] != 0) {
+                //             $response_packnet = $http_packnet->post(
+                //                 "{$base_uri}/product",
+                //                 $removeData
+                //             );
+                //             $result_packnet = $response_packnet->json();
+                //         }
+                //     }
+                // }
 
                 Log::info("Website Packnet Success");
 
@@ -1050,7 +1051,7 @@ public function featuredProducts(Request $request)
                 }
 
                 Log::info("Website Insinc Success");
-		Log::info($data_insinc);
+		// Log::info($data_insinc);
 		Log::info($result_insinc);
             }
         } catch (\Throwable $th) {
