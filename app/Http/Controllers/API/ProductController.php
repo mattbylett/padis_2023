@@ -178,12 +178,12 @@ public function featuredProducts(Request $request)
 
         Log::info("p_code = " . $p_code );
 
-        // $website_display_insinc = false;
-        // if (isset($result->custitem14)) {
-        //     if ($result->custitem14) {
-        //         $website_display_insinc = true;
-        //     }
-        // }
+        $website_display_insinc = false;
+        if (isset($result->custitem14)) {
+            if ($result->custitem14) {
+                $website_display_insinc = true;
+            }
+        }
 
         // $website_display_cafe = false;
         // if (isset($result->custitem15)) {
@@ -649,7 +649,7 @@ public function featuredProducts(Request $request)
         $website_display_cafe = boolval($request->input('custitem18', false));
         $this->processWebsiteData($website_display_cafe, $http_cafe, $base_uri,  $p_code, $data, $type, "209706", $removeData);
 
-        $website_display_insinc = boolval($request->input('custitem14', false));
+      //  $website_display_insinc = boolval($request->input('custitem14', false));
         $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
 
 
