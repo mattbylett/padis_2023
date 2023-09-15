@@ -645,7 +645,7 @@ public function featuredProducts(Request $request)
         $this->processWebsiteData($website_display_hand, $http_hand, $base_uri, $p_code, $data, $type, "209709", $removeData);
 
         $website_display_car = boolval($request->input('custitem20', false));
-        $this->processWebsiteData($website_display_car, $http_car, $base_uri, $p_code, $data, $type, "209709", $removeData);
+        $this->processWebsiteData($website_display_car, $http_car, $base_uri, $p_code, $data, $type, "209707", $removeData);
 
         $website_display_packnet = boolval($request->input('custitem18', false));
         $this->processWebsiteData($website_display_packnet, $http_packnet, $base_uri,  $p_code, $data, $type, "209710", $removeData);
@@ -654,13 +654,13 @@ public function featuredProducts(Request $request)
         $this->processWebsiteData($website_display_cafe, $http_cafe, $base_uri,  $p_code, $data, $type, "209706", $removeData);
 
         $website_display_rubbish = boolval($request->input('custitem17', false));
-        $this->processWebsiteData($website_display_rubbish, $http_rubbish, $base_uri,  $p_code, $data, $type, "209706", $removeData);
+        $this->processWebsiteData($website_display_rubbish, $http_rubbish, $base_uri,  $p_code, $data, $type, "209711", $removeData);
 
         $website_display_disposable = boolval($request->input('custitem16', false));
-        $this->processWebsiteData($website_display_disposable, $http_gloves, $base_uri,  $p_code, $data, $type, "209706", $removeData);
+        $this->processWebsiteData($website_display_disposable, $http_gloves, $base_uri,  $p_code, $data, $type, "209708", $removeData);
 
-        $website_display_soluclean = boolval($request->input('custitem16', false));
-        $this->processWebsiteData($website_display_soluclean, $http_soluclean, $base_uri,  $p_code, $data, $type, "209706", $removeData);
+        $website_display_soluclean = boolval($request->input('custitem43', false));
+        $this->processWebsiteData($website_display_soluclean, $http_soluclean, $base_uri,  $p_code, $data, $type, "244504", $removeData);
 
       //  $website_display_insinc = boolval($request->input('custitem14', false));
         $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
@@ -1087,6 +1087,9 @@ public function featuredProducts(Request $request)
         // Get product details first  from Website World
         $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
         Log::info('This is the Response: ' . $response);
+
+        $testing = json_encode($response['resultCount']);
+        Log::info('Directly from the Response Object : ' . $testing);
 
         //Deccode the response using json encode
         $result = json_decode($response->body(), false);
