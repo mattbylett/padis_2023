@@ -1088,8 +1088,8 @@ public function featuredProducts(Request $request)
         $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
         Log::info('This is the Response: ' . $response);
 
-        $testing = $response->resultCount;
-        Log::info('Directly from the Response Object : ' . $testing);
+        // $testing = $response->resultCount;
+        // Log::info('Directly from the Response Object : ' . $testing);
 
         //Deccode the response using json encode
         $result = json_decode($response->body(), false);
