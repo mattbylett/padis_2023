@@ -1073,6 +1073,7 @@ public function featuredProducts(Request $request)
         // Get product details first
         $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
         Log::info('Full GET URL: ' . "{$base_uri}/products?p_code=" . $p_code);
+        Log::info('Response Status Code: ' . $response->status());
 
         $result = json_decode($response->body(), true);
         Log::info('Decoded Result: ', ['result' => $result]);
