@@ -1072,8 +1072,11 @@ public function featuredProducts(Request $request)
 
         // Get product details first
         $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
+        Log::info('Full GET URL: ' . "{$base_uri}/products?p_code=" . $p_code);
+
         $result = $response->json();
-        Log::info('Get Request in processWebData: '. $result);
+        Log::info('Get Request Response in processWebData: ', ['response' => $response]);
+
 
         if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
             $preparedData["p_groupid"] = $groupId;
