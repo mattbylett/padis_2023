@@ -185,12 +185,12 @@ public function featuredProducts(Request $request)
         //     }
         // }
 
-        $website_display_cafe = false;
-        if (isset($result->custitem15)) {
-            if ($result->custitem15) {
-                $website_display_cafe = true;
-            }
-        }
+        // $website_display_cafe = false;
+        // if (isset($result->custitem15)) {
+        //     if ($result->custitem15) {
+        //         $website_display_cafe = true;
+        //     }
+        // }
 
         $website_display_disposable = false;
         if (isset($result->custitem16)) {
@@ -236,10 +236,10 @@ public function featuredProducts(Request $request)
 
         Log::info(
             "Website insinc, cafe, disposable, rubbish, packnet, hand, car, soluclean == " .
-                $website_display_insinc .
-                ", " .
-                $website_display_cafe .
-                ", " .
+                // $website_display_insinc .
+                // ", " .
+                // $website_display_cafe .
+                // ", " .
                 $website_display_disposable .
                 ", " .
                 $website_display_rubbish .
