@@ -1055,7 +1055,7 @@ public function featuredProducts(Request $request)
 
                 Log::info("Website Insinc Success");
 		// Log::info($data_insinc);
-		Log::info($result_insinc);
+		// Log::info($result_insinc);
             }
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
