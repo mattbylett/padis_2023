@@ -193,19 +193,19 @@ public function featuredProducts(Request $request)
         //     }
         // }
 
-        $website_display_disposable = false;
-        if (isset($result->custitem16)) {
-            if ($result->custitem16) {
-                $website_display_disposable = true;
-            }
-        }
+        // $website_display_disposable = false;
+        // if (isset($result->custitem16)) {
+        //     if ($result->custitem16) {
+        //         $website_display_disposable = true;
+        //     }
+        // }
 
-        $website_display_rubbish = false;
-        if (isset($result->custitem17)) {
-            if ($result->custitem17) {
-                $website_display_rubbish = true;
-            }
-        }
+        // $website_display_rubbish = false;
+        // if (isset($result->custitem17)) {
+        //     if ($result->custitem17) {
+        //         $website_display_rubbish = true;
+        //     }
+        // }
 
         // $website_display_packnet = false;
         // if (isset($result->custitem18)) {
@@ -653,6 +653,12 @@ public function featuredProducts(Request $request)
         $website_display_cafe = boolval($request->input('custitem18', false));
         $this->processWebsiteData($website_display_cafe, $http_cafe, $base_uri,  $p_code, $data, $type, "209706", $removeData);
 
+        $website_display_rubbish = boolval($request->input('custitem17', false));
+        $this->processWebsiteData($website_display_rubbish, $http_rubbish, $base_uri,  $p_code, $data, $type, "209706", $removeData);
+
+        $website_display_disposable = boolval($request->input('custitem16', false));
+        $this->processWebsiteData($website_display_disposable, $http_gloves, $base_uri,  $p_code, $data, $type, "209706", $removeData);
+
       //  $website_display_insinc = boolval($request->input('custitem14', false));
         $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
 
@@ -704,27 +710,27 @@ public function featuredProducts(Request $request)
                 //     Log::error($th->getMessage());
                 // }
 
-                try {
-                    $response = $http_rubbish->post(
-                        "{$base_uri}/product",
-                        $removeData
-                    );
-                    $result = $response->json();
-                    Log::info("Website Rubbish Success");
-                } catch (\Throwable $th) {
-                    Log::error($th->getMessage());
-                }
+                // try {
+                //     $response = $http_rubbish->post(
+                //         "{$base_uri}/product",
+                //         $removeData
+                //     );
+                //     $result = $response->json();
+                //     Log::info("Website Rubbish Success");
+                // } catch (\Throwable $th) {
+                //     Log::error($th->getMessage());
+                // }
 
-                try {
-                    $response = $http_gloves->post(
-                        "{$base_uri}/product",
-                        $removeData
-                    );
-                    $result = $response->json();
-                    Log::info("Website Gloves Success");
-                } catch (\Throwable $th) {
-                    Log::error($th->getMessage());
-                }
+                // try {
+                //     $response = $http_gloves->post(
+                //         "{$base_uri}/product",
+                //         $removeData
+                //     );
+                //     $result = $response->json();
+                //     Log::info("Website Gloves Success");
+                // } catch (\Throwable $th) {
+                //     Log::error($th->getMessage());
+                // }
 
                 try {
                     $response = $http_soluclean->post(
@@ -900,81 +906,81 @@ public function featuredProducts(Request $request)
 
                 Log::info("Website Packnet Success");
 
-                if ($website_display_rubbish) {
-                    $data_rubbish = $data;
-                    if ($type == "create") {
-                        $data_rubbish["p_groupid"] = "209711";
-                    } else {
-                        $response_rubbish = $http_rubbish->get(
-                            "{$base_uri}/products?p_code=" . $p_code
-                        );
-                        $result_rubbish = $response_rubbish->json();
-                        Log::info($result_rubbish);
-                        if (isset($result_rubbish["resultCount"])) {
-                            if ($result_rubbish["resultCount"] == 0) {
-                                $data_rubbish["p_groupid"] = "209711";
-                            }
-                        }
-                    }
-                    $response_rubbish = $http_rubbish->post(
-                        "{$base_uri}/product",
-                        $data_rubbish
-                    );
-                    $result_rubbish = $response_rubbish->json();
-                } else {
-                    $response_rubbish = $http_rubbish->get(
-                        "{$base_uri}/products?p_code=" . $p_code
-                    );
-                    $result_rubbish = $response_rubbish->json();
-                    if (isset($result_rubbish["resultCount"])) {
-                        if ($result_rubbish["resultCount"] != 0) {
-                            $response_rubbish = $http_rubbish->post(
-                                "{$base_uri}/product",
-                                $removeData
-                            );
-                            $result_rubbish = $response_rubbish->json();
-                        }
-                    }
-                }
+                // if ($website_display_rubbish) {
+                //     $data_rubbish = $data;
+                //     if ($type == "create") {
+                //         $data_rubbish["p_groupid"] = "209711";
+                //     } else {
+                //         $response_rubbish = $http_rubbish->get(
+                //             "{$base_uri}/products?p_code=" . $p_code
+                //         );
+                //         $result_rubbish = $response_rubbish->json();
+                //         Log::info($result_rubbish);
+                //         if (isset($result_rubbish["resultCount"])) {
+                //             if ($result_rubbish["resultCount"] == 0) {
+                //                 $data_rubbish["p_groupid"] = "209711";
+                //             }
+                //         }
+                //     }
+                //     $response_rubbish = $http_rubbish->post(
+                //         "{$base_uri}/product",
+                //         $data_rubbish
+                //     );
+                //     $result_rubbish = $response_rubbish->json();
+                // } else {
+                //     $response_rubbish = $http_rubbish->get(
+                //         "{$base_uri}/products?p_code=" . $p_code
+                //     );
+                //     $result_rubbish = $response_rubbish->json();
+                //     if (isset($result_rubbish["resultCount"])) {
+                //         if ($result_rubbish["resultCount"] != 0) {
+                //             $response_rubbish = $http_rubbish->post(
+                //                 "{$base_uri}/product",
+                //                 $removeData
+                //             );
+                //             $result_rubbish = $response_rubbish->json();
+                //         }
+                //     }
+                // }
 
                 Log::info("Website Rubbish Success");
 
-                if ($website_display_disposable) {
-                    $data_gloves = $data;
-                    if ($type == "create") {
-                        $data_gloves["p_groupid"] = "209708";
-                    } else {
-                        $response_gloves = $http_gloves->get(
-                            "{$base_uri}/products?p_code=" . $p_code
-                        );
-                        $result_gloves = $response_gloves->json();
-                        if (isset($result_gloves["resultCount"])) {
-                            if ($result_gloves["resultCount"] == 0) {
-                                $data_gloves["p_groupid"] = "209708";
-                            }
-                        }
-                    }
-                    $response_gloves = $http_gloves->post(
-                        "{$base_uri}/product",
-                        $data_gloves
-                    );
-                    $result_gloves = $response_gloves->json();
-                    Log::info($result_gloves);
-                } else {
-                    $response_gloves = $http_gloves->get(
-                        "{$base_uri}/products?p_code=" . $p_code
-                    );
-                    $result_gloves = $response_gloves->json();
-                    if (isset($result_gloves["resultCount"])) {
-                        if ($result_gloves["resultCount"] != 0) {
-                            $response_gloves = $http_gloves->post(
-                                "{$base_uri}/product",
-                                $removeData
-                            );
-                            $result_gloves = $response_gloves->json();
-                        }
-                    }
-                }
+                // if ($website_display_disposable) {
+                //     $data_gloves = $data;
+                //     if ($type == "create") {
+                //         $data_gloves["p_groupid"] = "209708";
+                //     } else {
+                //         $response_gloves = $http_gloves->get(
+                //             "{$base_uri}/products?p_code=" . $p_code
+                //         );
+                //         $result_gloves = $response_gloves->json();
+                //         if (isset($result_gloves["resultCount"])) {
+                //             if ($result_gloves["resultCount"] == 0) {
+                //                 $data_gloves["p_groupid"] = "209708";
+                //             }
+                //         }
+                //     }
+                //     $response_gloves = $http_gloves->post(
+                //         "{$base_uri}/product",
+                //         $data_gloves
+                //     );
+                //     $result_gloves = $response_gloves->json();
+                //     Log::info($result_gloves);
+                // } else {
+                //     $response_gloves = $http_gloves->get(
+                //         "{$base_uri}/products?p_code=" . $p_code
+                //     );
+                //     $result_gloves = $response_gloves->json();
+                //     if (isset($result_gloves["resultCount"])) {
+                //         if ($result_gloves["resultCount"] != 0) {
+                //             $response_gloves = $http_gloves->post(
+                //                 "{$base_uri}/product",
+                //                 $removeData
+                //             );
+                //             $result_gloves = $response_gloves->json();
+                //         }
+                //     }
+                // }
 
                 Log::info("Website Gloves Success");
 
