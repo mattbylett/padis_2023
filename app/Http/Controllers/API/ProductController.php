@@ -665,11 +665,20 @@ public function updateProduct(Request $request)
                 Log::info('The Response was not successful '. $response->status());
                 } 
 
-                Log::debug('Attempting to convert the response to JSON.');
-                $result = $response->json();
-                Log::debug('JSON Result Type: ' . gettype($result));
-                Log::debug('JSON Result: ', ['result' =>  $result]);
-                Log::debug('Successfully converted the response to JSON.');
+                $decodedOuter = json_decode($response->body(), true);
+                    if (isset($decodedOuter['response'])) {
+                        $decodedInner = json_decode($decodedOuter['response'], true);
+                        Log::debug('Inner JSON Result: ', ['result' =>  $decodedInner]);
+                    } else {
+                        Log::error('The "response" key does not exist in the outer JSON structure.');
+                    }
+
+
+                // Log::debug('Attempting to convert the response to JSON.');
+                // $result = $response->json();
+                // Log::debug('JSON Result Type: ' . gettype($result));
+                // Log::debug('JSON Result: ', ['result' =>  $result]);
+                // Log::debug('Successfully converted the response to JSON.');
 
                 if($result) {
                     Log::debug('Result ', ['result' => $result]);
