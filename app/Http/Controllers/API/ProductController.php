@@ -673,6 +673,13 @@ public function updateProduct(Request $request)
                         Log::error('The "response" key does not exist in the outer JSON structure.');
                     }
 
+                $result = json_decode($response->body(), true);
+                if(isset($result->response)) {
+                    $decodedInner = json_decode($result->response, true);
+                    Log::debug('Working Off The Result ', []);
+                } else {
+                        Log::error('The "response" key does not exist in the outer JSON structure.');
+                    }
 
                 // Log::debug('Attempting to convert the response to JSON.');
                 // $result = $response->json();
