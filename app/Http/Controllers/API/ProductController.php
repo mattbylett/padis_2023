@@ -663,8 +663,10 @@ public function updateProduct(Request $request)
                     Log::info('The Response was successful '. $response->status());
                     
                     $decodedOuter = json_decode($response->body(), true);
+                    Log::debug('Decoded Outer : ', ['Outer' => $decodedOuter]);
                     
                     if (isset($decodedOuter['response'])) {
+                        Log::debug('I found the response in the outer ' );
                         $decodedInner = json_decode($decodedOuter['response'], true);
                         Log::debug('Inner JSON Result: ', ['result' =>  $decodedInner]);
                     } else {
