@@ -154,9 +154,9 @@ public function updateProduct(Request $request)
             $result = $netSuiteApi->getOneProductInfo($id);
         } while ($result == "error");
 
-        do {
-            $base_price = $netSuiteApi->getBasePrice($id);
-        } while ($base_price === "error");
+        // do {
+        //     $base_price = $netSuiteApi->getBasePrice($id);
+        // } while ($base_price === "error");
 
         do {
             $vendor_name = $netSuiteApi->getVendorName($id);
