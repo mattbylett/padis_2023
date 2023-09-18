@@ -189,6 +189,8 @@ public function updateProduct(Request $request)
     $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
     // $base_price = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
 
+    $p_price = $base_price;
+
     // Fetch prices for different levels
     $prices = [];
     for ($i = 1; $i <= 5; $i++) {
