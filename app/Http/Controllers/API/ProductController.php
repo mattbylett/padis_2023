@@ -174,32 +174,28 @@ public function updateProduct(Request $request)
 
         Log::info("NetSuite Result = " . json_encode($result));
 
-    Log::info("API request call from NetSuite ");
+        Log::info("API request call from NetSuite ");
 
-    $id = $request->internalID;
-    if (!isset($id)) {
-        return;
-    }
+        $id = $request->internalID;
+        if (!isset($id)) {
+            return;
+        }
 
-    Log::info("API request from NetSuite " . $id);
+        Log::info("API request from NetSuite " . $id);
 
-    $netSuiteApi = new NetSuiteApi();
+        $netSuiteApi = new NetSuiteApi();
 
-    // Fetch product info
-    $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
-    Log::info('Product Info Result: ' . json_encode($productInfo));
+        // Fetch product info
+        $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
+        Log::info('Product Info Result: ' . json_encode($productInfo));
 
-    $p_price = $base_price;
+        $p_price = $base_price;
 
-    // Fetch prices for different levels
-    $prices = [];
-    for ($i = 1; $i <= 5; $i++) {
-        $prices["pricequantity" . $i] = $netSuiteApi->getPriceByLevel($id, $i);
-    }
-
-    // Log::info('Prices' . json_encode($prices));
-    // Now you have an array $prices with keys pricequantity1, pricequantity2, ... pricequantity5
-    // Map these to Website World as needed
+        // Fetch prices for different levels
+        $prices = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $prices["pricequantity" . $i] = $netSuiteApi->getPriceByLevel($id, $i);
+        }
 
         $p_priceBreakA_minqty = $prices['pricequantity1'];
         $p_priceBreakB_minqty = $prices['pricequantity2'];
@@ -649,81 +645,54 @@ public function updateProduct(Request $request)
 
         $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
 
-        // try {
-        //     if ($type == "delete") {
-        //         Log::info("This is for Type Delete - Unlikely to show");
-        //     } else {
-
-        //         Log::info("Website Cafe Success");
-
-        //         Log::info("Website Car Success");
-
-        //         Log::info("Website Hand Success");
-
-        //         Log::info("Website Packnet Success");
-
-        //         Log::info("Website Rubbish Success");
-
-        //         Log::info("Website Gloves Success");
-
-        //         Log::info("Website Soluclean Success");
-
-        //         Log::info("Website Insinc Success");
-
-        //     }
-        // } catch (\Throwable $th) {
-        //     Log::error($th->getMessage());
-        // }
-
         return;
     }
 
     // Create a reusable function to handle The Website World Conections
     function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null) {
-    // Log::info(gettype($httpInstance));
 
-    if ($displayFlag) {
-        $preparedData = $data; // Copying the data
+        if ($displayFlag) {
+                $preparedData = $data; // Copying the data
 
-        // Get product details first  from Website World
-        $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
-        Log::debug('This is the Response: ' . $response);
+                // Get product details first  from Website World
+                $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
+                Log::debug('This is the Response: ' . $response);
 
-        if ($response->successful()) {
-            Log::info('The Response was successful'. $response->status());
-        } else {
-           Log::info('The Response was not successful'. $response->status());
-        }
+                if ($response->successful()) {
+                    Log::info('The Response was successful'. $response->status());
+                } else {
+                Log::info('The Response was not successful'. $response->status());
+                }
 
-        $result = $response->json();
+                $result = $response->json();
 
-        if($result) {
-            Log::debug('Result ', ['result' => $result]);
-        } else {
-           Log::info( 'Something Went Wrong in the Conversion');
-        }
+                if($result) {
+                    Log::debug('Result ', ['result' => $result]);
+                } else {
+                Log::info( 'Something Went Wrong in the Conversion');
+                }
 
 
-        if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
-            $preparedData["p_groupid"] = $groupId;
-        }
-        if ($additionalText) {
-            $preparedData["p_additionaltext"] = $additionalText;
-        }
-        $response = $httpInstance->post("{$base_uri}/product", $preparedData);
-        $result = $response->json();
-        // Log::info("Success for website with groupId: $groupId");
-    } else {
-        $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
-        $result = $response->json();
-        if (isset($result["resultCount"]) && $result["resultCount"] != 0) {
-            $response = $httpInstance->post("{$base_uri}/product", $removeData);
-            $result = $response->json();
-        }
+                if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
+                    $preparedData["p_groupid"] = $groupId;
+                }
+                if ($additionalText) {
+                    $preparedData["p_additionaltext"] = $additionalText;
+                }
+                $response = $httpInstance->post("{$base_uri}/product", $preparedData);
+                $result = $response->json();
+                // Log::info("Success for website with groupId: $groupId");
+                } else {
+                    $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
+                    $result = $response->json();
+                    if (isset($result["resultCount"]) && $result["resultCount"] != 0) {
+                        $response = $httpInstance->post("{$base_uri}/product", $removeData);
+                        $result = $response->json();
+                    }
+            }
+
+
     }
-
-    Log::info('This is the End of the function');
-}
-
+    
 }
 
