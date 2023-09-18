@@ -689,18 +689,19 @@ public function updateProduct(Request $request)
         $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
         Log::debug('This is the Response: ' . $response);
 
-        $resultCount = $response->body()->resultCount;
-        Log::debug('Result Count = ' . $resultCount);
+        if ($response->successful()) {
+            'The Response was successful';
+        } else {
+            'The Response was Not successful';
+        }
 
-        // $testing = $response->resultCount;
-        // Log::debug('Directly from the Response Object : ' . $testing);
-
-        //Deccode the response using json encode
-        // $result = json_decode($response->body(), false);
-        // Log::debug('Decoded Result: ', ['result' => $result]);
-
-        //decode the response directly - This was the original method that was working
         $result = $response->json();
+
+        if($result) {
+            Log::debug('Result ', ['result' => $result]);
+        } else {
+            'Something Went Wrong in the Conversion';
+        }
         // Add debug log to print the result
         Log::debug('Original Decode Method: ', ['result' => $result]);
 
