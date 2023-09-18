@@ -661,21 +661,22 @@ public function updateProduct(Request $request)
 
                 if ($response->successful()) {
                     Log::info('The Response was successful '. $response->status());
-                } else {
-                Log::info('The Response was not successful '. $response->status());
-                } 
-
-                $decodedOuter = json_decode($response->body(), true);
+                    
+                    $decodedOuter = json_decode($response->body(), true);
+                    
                     if (isset($decodedOuter['response'])) {
                         $decodedInner = json_decode($decodedOuter['response'], true);
                         Log::debug('Inner JSON Result: ', ['result' =>  $decodedInner]);
                     } else {
                         Log::error('The "response" key does not exist in the outer JSON structure.');
                     }
+                } else {
+                    Log::info('The Response was not successful '. $response->status());
+                } 
 
                 $result = json_decode($response->body(), true);
-                if(isset($result->response)) {
-                    $decodedInner = json_decode($result->response, true);
+                if(isset($result['response'])) {
+                    $decodedInner = json_decode($result['response'], true);
                     Log::debug('Working Off The Result ', []);
                 } else {
                         Log::error('The "response" key does not exist in the outer JSON structure.');
