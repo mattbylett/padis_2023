@@ -197,10 +197,19 @@ public function updateProduct(Request $request)
         $prices["pricequantity" . $i] = $netSuiteApi->getPriceByLevel($id, $i);
     }
 
-    Log::info('Prices' . json_encode($prices));
+    // Log::info('Prices' . json_encode($prices));
     // Now you have an array $prices with keys pricequantity1, pricequantity2, ... pricequantity5
     // Map these to Website World as needed
 
+    $priceTableUpload = [
+        'p_priceBreakA_minqty' => $prices['pricequantity1'],
+        'p_priceBreakB_minqty' => 20,
+        'p_priceBreakC_minqty' => 30,
+        'p_priceBreakD_minqty' => 40,
+
+    ];
+
+    Log::info('Price Table Info: ' . json_encode($priceTableUpload));
 
 
         $p_code = $result->itemId;
