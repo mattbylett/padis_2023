@@ -667,6 +667,8 @@ public function updateProduct(Request $request)
 
                 Log::debug('Attempting to convert the response to JSON.');
                 $result = $response->json();
+                Log::debug('JSON Result Type: ' . gettype($result));
+                Log::debug('JSON Result: ', $result);
                 Log::debug('Successfully converted the response to JSON.');
 
                 if($result) {
