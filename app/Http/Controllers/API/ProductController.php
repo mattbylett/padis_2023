@@ -690,9 +690,9 @@ public function updateProduct(Request $request)
         Log::debug('This is the Response: ' . $response);
 
         if ($response->successful()) {
-            'The Response was successful';
+            Log::info('The Response was successful'. $response->status());
         } else {
-            'The Response was Not successful';
+           Log::info('The Response was not successful'. $response->status());
         }
 
         $result = $response->json();
@@ -700,10 +700,9 @@ public function updateProduct(Request $request)
         if($result) {
             Log::debug('Result ', ['result' => $result]);
         } else {
-            'Something Went Wrong in the Conversion';
+           Log::info( 'Something Went Wrong in the Conversion');
         }
-        // Add debug log to print the result
-        Log::debug('Original Decode Method: ', ['result' => $result]);
+
 
         if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
             $preparedData["p_groupid"] = $groupId;
