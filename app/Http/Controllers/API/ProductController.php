@@ -687,14 +687,17 @@ public function updateProduct(Request $request)
 
         // Get product details first  from Website World
         $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
-        // Log::info('This is the Response: ' . $response);
+        Log::debug('This is the Response: ' . $response);
+
+        $resultCount = $response->body()->resultCount;
+        Log::debug('Result Count = ' . $resultCount);
 
         // $testing = $response->resultCount;
-        // Log::info('Directly from the Response Object : ' . $testing);
+        // Log::debug('Directly from the Response Object : ' . $testing);
 
         //Deccode the response using json encode
         // $result = json_decode($response->body(), false);
-        // Log::info('Decoded Result: ', ['result' => $result]);
+        // Log::debug('Decoded Result: ', ['result' => $result]);
 
         //decode the response directly - This was the original method that was working
         $result = $response->json();
