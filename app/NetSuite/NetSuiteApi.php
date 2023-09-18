@@ -165,24 +165,24 @@ class NetSuiteApi
     }
 }
 
-    // public function getBasePrice($product_id)
-    // {
+    public function getBasePrice($product_id)
+    {
 
-    //     $path =
-    //         "/inventoryitem/" . $product_id . "/price/quantity=0,pricelevel=1";
-    //     $httpMethod = "GET";
+        $path =
+            "/inventoryitem/" . $product_id . "/price/quantity=0,pricelevel=1";
+        $httpMethod = "GET";
 
-    //     $result = $this->sendRequest($httpMethod, $path);
-    //     if ($result == "error") {
-    //         return $result;
-    //     } else {
-    //         if (isset($result->price)) {
-    //             return $result->price;
-    //         } else {
-    //             return 0;
-    //         }
-    //     }
-    // }
+        $result = $this->sendRequest($httpMethod, $path);
+        if ($result == "error") {
+            return $result;
+        } else {
+            if (isset($result->price)) {
+                return $result->price;
+            } else {
+                return 0;
+            }
+        }
+    }
 
     public function getVendorName($product_id)
     {
