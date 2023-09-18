@@ -201,16 +201,11 @@ public function updateProduct(Request $request)
     // Now you have an array $prices with keys pricequantity1, pricequantity2, ... pricequantity5
     // Map these to Website World as needed
 
-    $p_priceBreakA_minqty = $prices['pricequantity1'];
-    $p_priceBreakB_minqty = $prices['pricequantity2'];
-    $p_priceBreakC_minqty = $prices['pricequantity3'];
-    $p_priceBreakD_minqty = $prices['pricequantity4'];
-    $p_priceBreakE_minqty = $prices['pricequantity5'];
-
-
-
-    Log::info('Random Test : ' . json_encode($p_priceBreakC_minqty ));
-
+        $p_priceBreakA_minqty = $prices['pricequantity1'];
+        $p_priceBreakB_minqty = $prices['pricequantity2'];
+        $p_priceBreakC_minqty = $prices['pricequantity3'];
+        $p_priceBreakD_minqty = $prices['pricequantity4'];
+        $p_priceBreakE_minqty = $prices['pricequantity5'];
 
         $p_code = $result->itemId;
 
@@ -516,7 +511,11 @@ public function updateProduct(Request $request)
             "p_sale_ends" => $p_sale_ends,
             "p_qtyinstock" => $p_qtyinstock,
             "p_order" => 1,
-            "p_priceBreakA_minqty" => $p_priceBreakA_minqty
+            "p_priceBreakA_minqty" => $p_priceBreakA_minqty,
+            "p_priceBreakB_minqty" => $p_priceBreakB_minqty,
+            "p_priceBreakC_minqty" => $p_priceBreakC_minqty,
+            "p_priceBreakD_minqty" => $p_priceBreakD_minqty,
+            "p_priceBreakE_minqty" => $p_priceBreakE_minqty,
         ];
 
         Log::info('Data For Website World : ' . json_encode($data));
@@ -694,12 +693,13 @@ public function updateProduct(Request $request)
         // Log::info('Directly from the Response Object : ' . $testing);
 
         //Deccode the response using json encode
-        $result = json_decode($response->body(), false);
+        // $result = json_decode($response->body(), false);
         // Log::info('Decoded Result: ', ['result' => $result]);
 
         //decode the response directly - This was the original method that was working
-        $result1 = $response->json();
-        Log::info('Original Decode Method: ' . $result1);
+        $result = $response->json();
+        // Add debug log to print the result
+        Log::debug('Original Decode Method: ', ['result' => $result]);
 
         if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
             $preparedData["p_groupid"] = $groupId;
