@@ -201,15 +201,15 @@ public function updateProduct(Request $request)
     // Now you have an array $prices with keys pricequantity1, pricequantity2, ... pricequantity5
     // Map these to Website World as needed
 
-    $priceTableUpload = [
-        'p_priceBreakA_minqty' => $prices['pricequantity1'],
-        'p_priceBreakB_minqty' => 20,
-        'p_priceBreakC_minqty' => 30,
-        'p_priceBreakD_minqty' => 40,
+    $p_priceBreakA_minqty = $prices['pricequantity1'];
+    $p_priceBreakB_minqty = $prices['pricequantity2'];
+    $p_priceBreakC_minqty = $prices['pricequantity3'];
+    $p_priceBreakD_minqty = $prices['pricequantity4'];
+    $p_priceBreakE_minqty = $prices['pricequantity5'];
 
-    ];
 
-    Log::info('Price Table Info: ' . json_encode($priceTableUpload));
+
+    Log::info('Random Test : ' . json_encode($p_priceBreakC_minqty ));
 
 
         $p_code = $result->itemId;
@@ -516,7 +516,10 @@ public function updateProduct(Request $request)
             "p_sale_ends" => $p_sale_ends,
             "p_qtyinstock" => $p_qtyinstock,
             "p_order" => 1,
+            "p_priceBreakA_minqty" => $p_priceBreakA_minqty
         ];
+
+        Log::info('Data For Website World : ' . json_encode($data));
 
         if ($p_img != "") {
             $data["p_img"] = $p_img;
@@ -570,14 +573,14 @@ public function updateProduct(Request $request)
             $data["p_additionaltext"] = $p_additionaltext;
         }
 
-        Log::info("Mapping Data = " . json_encode($data));
+        // Log::info("Mapping Data = " . json_encode($data));
 
         $removeData = [
             "p_code" => $p_code,
             "p_order" => "-999",
         ];
 
-        Log::info("Netsuite Type = " . $type);
+        // Log::info("Netsuite Type = " . $type);
 
         $http_cafe = Http::withHeaders([
             "apiID" => config("services.website.cafe_api_id"),
@@ -678,21 +681,21 @@ public function updateProduct(Request $request)
 
     // Create a reusable function to handle The Website World Conections
     function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null) {
-    Log::info(gettype($httpInstance));
+    // Log::info(gettype($httpInstance));
 
     if ($displayFlag) {
         $preparedData = $data; // Copying the data
 
         // Get product details first  from Website World
         $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
-        Log::info('This is the Response: ' . $response);
+        // Log::info('This is the Response: ' . $response);
 
         // $testing = $response->resultCount;
         // Log::info('Directly from the Response Object : ' . $testing);
 
         //Deccode the response using json encode
         $result = json_decode($response->body(), false);
-        Log::info('Decoded Result: ', ['result' => $result]);
+        // Log::info('Decoded Result: ', ['result' => $result]);
 
         //decode the response directly - This was the original method that was working
         $result1 = $response->json();
@@ -706,7 +709,7 @@ public function updateProduct(Request $request)
         }
         $response = $httpInstance->post("{$base_uri}/product", $preparedData);
         $result = $response->json();
-        Log::info("Success for website with groupId: $groupId");
+        // Log::info("Success for website with groupId: $groupId");
     } else {
         $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
         $result = $response->json();
@@ -715,6 +718,8 @@ public function updateProduct(Request $request)
             $result = $response->json();
         }
     }
+
+    Log::info('This is the End of the function');
 }
 
 }
