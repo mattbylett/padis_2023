@@ -656,14 +656,14 @@ public function updateProduct(Request $request)
 
                 // Get product details first  from Website World
                 $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
-                Log::debug('This is the Response: ' . $response->body());
-
+                Log::debug('Response Headers:', ['headers' => $response->headers()]);
+                Log::debug('Raw Response:', ['response' => $response->body()]);
 
                 if ($response->successful()) {
-                    Log::info('The Response was successful'. $response->status());
+                    Log::info('The Response was successful '. $response->status());
                 } else {
-                Log::info('The Response was not successful'. $response->status());
-                }
+                Log::info('The Response was not successful '. $response->status());
+                } 
 
                 Log::debug('Attempting to convert the response to JSON.');
                 $result = $response->json();
