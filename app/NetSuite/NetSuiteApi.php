@@ -123,6 +123,26 @@ class NetSuiteApi
 
      }
 
+    public function fetchFromNetSuite($httpMethod, $path) {
+    $retries = 0;
+    $max_retries = 3;
+
+        do {
+            $result = $this->sendRequest($httpMethod, $path);
+            $retries++;
+            if ($result !== "error") {
+                return $result;
+            }
+        } while ($retries < $max_retries && $result === "error");
+
+        // Handle the case where the maximum retries have been exhausted.
+        if ($result === "error") {
+            // You can throw an exception or handle it differently based on your requirements.
+            throw new \Exception("Max retries reached for NetSuite API call");
+        }
+    }
+
+
     public function getOneProductInfo($product_id)
     {
         $path = "/inventoryitem/" . $product_id;
@@ -132,26 +152,37 @@ class NetSuiteApi
         return $result;
     }
 
-    public function getBasePrice($product_id)
-    {
+    public function getPriceByLevel($product_id, $level) {
+    $path = "/inventoryitem/" . $product_id . "/price/quantity=0,pricelevel=" . $level;
+    $httpMethod = "GET";
 
-        // Set the Price Levels 
-        //id=pricequantit
-        $path =
-            "/inventoryitem/" . $product_id . "/price/quantity=0,pricelevel=1";
-        $httpMethod = "GET";
+    $result = $this->fetchFromNetSuite($httpMethod, $path);
 
-        $result = $this->sendRequest($httpMethod, $path);
-        if ($result == "error") {
-            return $result;
-        } else {
-            if (isset($result->price)) {
-                return $result->price;
-            } else {
-                return 0;
-            }
-        }
+    if (isset($result->price)) {
+        return $result->price;
+    } else {
+        return 0;
     }
+}
+
+    // public function getBasePrice($product_id)
+    // {
+
+    //     $path =
+    //         "/inventoryitem/" . $product_id . "/price/quantity=0,pricelevel=1";
+    //     $httpMethod = "GET";
+
+    //     $result = $this->sendRequest($httpMethod, $path);
+    //     if ($result == "error") {
+    //         return $result;
+    //     } else {
+    //         if (isset($result->price)) {
+    //             return $result->price;
+    //         } else {
+    //             return 0;
+    //         }
+    //     }
+    // }
 
     public function getVendorName($product_id)
     {

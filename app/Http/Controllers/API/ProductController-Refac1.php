@@ -174,31 +174,6 @@ public function updateProduct(Request $request)
 
         Log::info("NetSuite Result = " . json_encode($result));
 
-    Log::info("API request call from NetSuite ");
-
-    $id = $request->internalID;
-    if (!isset($id)) {
-        return;
-    }
-
-    Log::info("API request from NetSuite " . $id);
-
-    $netSuiteApi = new NetSuiteApi();
-
-    // Fetch product info
-    $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
-    // $base_price = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
-
-    // Fetch prices for different levels
-    $prices = [];
-    for ($i = 1; $i <= 5; $i++) {
-        $prices["pricequantity" . $i] = $netSuiteApi->getPriceByLevel($id, $i);
-    }
-
-    // Now you have an array $prices with keys pricequantity1, pricequantity2, ... pricequantity5
-    // Map these to Website World as needed
-
-
 
         $p_code = $result->itemId;
 
@@ -256,27 +231,7 @@ public function updateProduct(Request $request)
             }
         }
 
-        $productData = []; // This will be used to store the mapped product data
-
-            // Map base price
-            $productData['p_price'] = $base_price;
-
-            // Map price quantities 
-            $priceBreakMapping = [
-                'pricequantity1' => 'p_priceBreakA_minqty',
-                'pricequantity2' => 'p_priceBreakB_minqty',
-                'pricequantity3' => 'p_priceBreakC_minqty',
-                'pricequantity4' => 'p_priceBreakD_minqty',
-                'pricequantity5' => 'p_priceBreakE_minqty',
-                // ... add more mappings if needed
-            ];
-
-            foreach ($priceBreakMapping as $netSuiteField => $websiteWorldField) {
-                if (isset($prices[$netSuiteField])) {
-                    $productData[$websiteWorldField] = $prices[$netSuiteField ];
-                }
-            }
-
+        $p_price = $base_price;
 
         $p_title = "";
         if (isset($result->custitem5)) {
