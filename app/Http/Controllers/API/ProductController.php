@@ -187,7 +187,7 @@ public function updateProduct(Request $request)
 
     // Fetch product info
     $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
-    // $base_price = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
+    Log::info('Product Info Result: ' . json_encode($productInfo));
 
     $p_price = $base_price;
 
@@ -197,6 +197,7 @@ public function updateProduct(Request $request)
         $prices["pricequantity" . $i] = $netSuiteApi->getPriceByLevel($id, $i);
     }
 
+    Log::info('Prices' . json_encode($prices));
     // Now you have an array $prices with keys pricequantity1, pricequantity2, ... pricequantity5
     // Map these to Website World as needed
 
