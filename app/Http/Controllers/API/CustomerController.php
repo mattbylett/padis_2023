@@ -37,7 +37,7 @@ class CustomerController extends Controller
 
 
     Log::debug('id : ' . $id);
-    Log::debug( 'mbr_name ' . $mbrName);
+
     Log::debug( 'subscriptions ' . json_encode($subs));
     
 
@@ -68,7 +68,7 @@ class CustomerController extends Controller
             Log::debug("Newsletter Email ", ["email" => $newsletterEmail]);
         }
 
-     
+         Log::debug( 'mbr_name ' . $mbrName);
 
         $category = $result->category->refName;
         if(isset($category)) {
