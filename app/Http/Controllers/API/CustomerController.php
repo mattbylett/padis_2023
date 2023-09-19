@@ -34,10 +34,10 @@ class CustomerController extends Controller
     $subs = $request->input('subscriptions');
     foreach ($subs as $subscription) {
         $subscriptionId = $subscription['id'];
-        Log::info('Sub ID: ' / $subscriptionId);
+        Log::info('Sub ID: ' . $subscriptionId);
 
         $subscriptionName = $subscription['name'];
-        Log::info('Sub Name: ' / $subscriptionName);
+        Log::info('Sub Name: ' . $subscriptionName);
     }
     Log::debug('id : ' . $id);
    
