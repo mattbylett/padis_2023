@@ -216,7 +216,7 @@ public function updateProduct(Request $request)
 
         $p_code = $result->itemId;
 
-      Log::info("prices = " . $prices );
+      Log::info("prices = " . json_encode($prices) );
 
         $website_display_insinc = false;
         if (isset($result->custitem14)) {
