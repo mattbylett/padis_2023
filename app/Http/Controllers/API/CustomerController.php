@@ -33,17 +33,17 @@ class CustomerController extends Controller
     // $mbrName = $request->input('attention');
     $subs = $request->input('subscriptions');
     foreach ($subs as $subscription) {
-        $subscriptionId = $subscription['id'];
-        Log::info('Sub ID: ' . $subscriptionId);
+        // $subscriptionId = $subscription['id'];
+        // Log::info('Sub ID: ' . $subscriptionId);
 
-        $subscriptionName = $subscription['name'];
-        Log::info('Sub Name: ' . $subscriptionName);
-        // if ($subscription['id'] == 14) {
-        //     $mbr_reference = 135;
-        // break;
-        // }
+        // $subscriptionName = $subscription['name'];
+        // Log::info('Sub Name: ' . $subscriptionName);
+        if ($subscription['id'] == 14) {
+            $mbr_level = 135;
+        break;
+        }
     }
-    Log::debug('mbr_reference: ' . $mbr_reference);
+    Log::debug('mbr_level: ' . $mbr_level);
    
 
     $netSuiteApi = new NetSuiteApi();
@@ -122,10 +122,8 @@ class CustomerController extends Controller
                 break;
         }
 
-        if(isset($subscriptionId) && $subscriptionId == 14) {
-            $mbr_reference = 135;
-        } else {
-            $mbr_reference = 0;
+        if(!$mbr_level) {
+            $mbr_level ='0';
         }
 
         $customerData = 
@@ -141,7 +139,7 @@ class CustomerController extends Controller
                 ],
             'mbr_discount' => $discount,
             'mbr_reference' => $id,
-            'mbr_level'     => $mbr_reference
+            'mbr_level'     => $mbr_level
         ];
 
         Log::info('Logging The Customer Data From Netsuite');
