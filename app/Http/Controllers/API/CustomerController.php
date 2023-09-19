@@ -56,14 +56,14 @@ class CustomerController extends Controller
             // Log::debug('Category Name: ' . json_encode($cat));
         }
 
-        $newsletterName = $result->custentity15->refName;
+        $newsletterName = $result->custentity15;
         if(isset($newsletterName)) {
             $mbr_name = $newsletterName;
 
             Log::debug("Newsletter Name: ", ["name" => $newsletterName]);
         }
 
-        $newsletterEmail = $result->custentity5->refName;
+        $newsletterEmail = $result->custentity5;
         if(isset($newsletterEmail)) {
             $mbr_email = $newsletterEmail;
 
