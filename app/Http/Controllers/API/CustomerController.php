@@ -33,12 +33,7 @@ class CustomerController extends Controller
     // $mbrName = $request->input('attention');
     $subs = $request->input('subscriptions');
     foreach ($subs as $subscription) {
-        // $subscriptionId = $subscription['id'];
-        // Log::info('Sub ID: ' . $subscriptionId);
-
-        // $subscriptionName = $subscription['name'];
-        // Log::info('Sub Name: ' . $subscriptionName);
-        if ($subscription['id'] == 14) {
+        if (isset($subscription['id']) && $subscription['id'] == 14) {
             $mbr_level = 135;
         break;
         }
