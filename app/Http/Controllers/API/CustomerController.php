@@ -31,25 +31,25 @@ class CustomerController extends Controller
     $mbrEmail = $request->input('customerEmail');
     $mbrGroups = $request->input('category');
     // $mbrName = $request->input('attention');
-    $subs    = $request->input('subscriptions');
+    $subs = $request->input('subscriptions');
+    foreach ($subs as $subscription) {
+        $subscriptionId = $subscription['id'];
+        Log::info('Sub ID: ' / $subscriptionId);
 
-
-
-
+        $subscriptionName = $subscription['name'];
+        Log::info('Sub Name: ' / $subscriptionName);
+    }
     Log::debug('id : ' . $id);
-
-    Log::debug( 'subscriptions ' . json_encode($subs));
-    
+   
 
     $netSuiteApi = new NetSuiteApi();
 
         do {
         $result = $netSuiteApi->getSingleCustomer($id);
         } while ($result === ' this error');
-
-        do {
-            $subscriptions = $netSuiteApi->getSubscriptions($id);
-        } while ($result === ' this error');
+        // do {
+        //     $subscriptions = $netSuiteApi->getSubscriptions($id);
+        // } while ($result === ' this error');
 
 
         if (property_exists($result, 'custentity15') && isset($result->custentity15)) {
@@ -91,23 +91,7 @@ class CustomerController extends Controller
             // Log::debug('Price Level: ' . $priceLevel);
         }
         $priceCategory = "Price Level: $priceLevel";
-        // foreach ($subs as $sub) {
-        //     Log::debug('subscriptions retuned from the Script : ' . $sub->refName);
-        // }
 
-        // $customerData = 
-        // [
-        //     'DeleteMissingArrayElements' => true,
-        //     'mbr_company'=> $mbrCompany,
-        //     'mbr_email' => $mbrEmail,
-        //     'memberGroups' => [
-        //         [
-        //             "name" => $cat
-        //         ]      
-        //     ],
-        //     'terms' => $terms,
-        //     'priceLevel' => $priceLevel
-        // ];
         switch ($priceLevel) {
             case 'Base Price':
                 $discount = 0;

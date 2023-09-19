@@ -10,15 +10,61 @@ define(["N/record", "N/https"], function (record, https) {
         var internalID = customerRecord.id;
         var type = context.type;
 
-        // Here you'd use the appropriate field names for the customer data you need
-        var customerName = customerRecord.getValue("entityid");
+        var customerName = customerRecord.getValue("companyname");
         var customerEmail = customerRecord.getValue("email");
+        var category = customerRecord.getValue("category");
+
+        var loadedCustomerRecord = record.load({
+            type: record.Type.CUSTOMER,
+            id: internalID,
+        });
+
+        var attention;
+        var numLines = loadedCustomerRecord.getLineCount({
+            sublistId: "addressbook",
+        });
+
+        for (var i = 0; i < numLines; i++) {
+            var subrecord = loadedCustomerRecord.getSublistSubrecord({
+                sublistId: "addressbook",
+                fieldId: "addressbookaddress",
+                line: i,
+            });
+
+            attention = subrecord.getValue({
+                fieldId: "attention",
+            });
+        }
+
+        var subscriptions = [];
+        var subscriptionCount = customerRecord.getLineCount({
+            sublistId: "subscriptions",
+        });
+        for (var j = 0; j < subscriptionCount; j++) {
+            var subscriptionId = customerRecord.getSublistValue({
+                sublistId: "subscriptions",
+                fieldId: "subscription",
+                line: j,
+            });
+            var subscriptionText = customerRecord.getSublistText({
+                sublistId: "subscriptions",
+                fieldId: "subscription",
+                line: j,
+            });
+            subscriptions.push({
+                id: subscriptionId,
+                name: subscriptionText,
+            });
+        }
 
         var postData = {
             type: type,
             internalID: internalID,
             customerName: customerName,
             customerEmail: customerEmail,
+            category: category,
+            attention: attention,
+            subscriptions: subscriptions,
         };
 
         postData = JSON.stringify(postData);
@@ -32,16 +78,14 @@ define(["N/record", "N/https"], function (record, https) {
                 headers: header,
                 body: postData,
             });
-            log.debug({
-                title: "API CALL",
-                details:
-                    context.type + " internal id = " + internalID + " Success",
-            });
+            log.debug({ title: "API Response", details: response });
+            if (response.code !== 200) {
+                log.error({ title: "API CALL Error", details: response });
+            } else {
+                log.debug({ title: "API CALL", details: "Success" });
+            }
         } catch (er) {
-            log.debug({
-                title: "API CALL",
-                details: "ERROR",
-            });
+            log.error({ title: "API CALL Exception", details: er });
         }
     }
 
