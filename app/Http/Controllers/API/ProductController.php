@@ -661,12 +661,12 @@ public function updateProduct(Request $request)
 
                 if ($response->successful()) {
                     Log::info('The Response was successful '. $response->status());
-                    
+                    $decodedOuter = $response->json();
                     // $decodedOuter = json_decode($response->body(), true);
                     // Log::debug('Decoded Outer : ', ['Outer' => $decodedOuter]);
-                    $cleanedResponse = str_replace("\xEF\xBB\xBF", '', $response->body());
+                    // $cleanedResponse = str_replace("\xEF\xBB\xBF", '', $response->body());
                     // $decodedOuter = json_decode($cleanedResponse, true);
-                    $decodedOuter = $cleanedResponse->json();
+                    // $decodedOuter = $cleanedResponse->json();
                     Log::debug('Decoded Outer : ', ['Outer' => $decodedOuter]);
 
                     if ($decodedOuter === null && json_last_error() !== JSON_ERROR_NONE) {
