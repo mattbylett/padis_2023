@@ -146,11 +146,11 @@ public function updateProduct(Request $request)
             return;
         }
 
-        Log::info("API request from NetSuite " . $id);
+        // Log::info("API request from NetSuite " . $id);
 
         // Retrieve pricingData from the request
     $pricingData = $request->input('pricingData', null);
-
+        Log::info('Getting Pricing Data');
     if ($pricingData) {
         Log::info("Received Pricing Data: " . json_encode($pricingData));
 
@@ -189,20 +189,16 @@ public function updateProduct(Request $request)
 
         Log::info("NetSuite Result = " . json_encode($result));
 
-        Log::info("API request call from NetSuite ");
-
         $id = $request->internalID;
         if (!isset($id)) {
             return;
         }
 
-        Log::info("API request from NetSuite " . $id);
-
         $netSuiteApi = new NetSuiteApi();
 
         // Fetch product info
         $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
-        Log::info('Product Info Result: ' . json_encode($productInfo));
+ //       Log::info('Product Info Result: ' . json_encode($productInfo));
 
         $p_price = $base_price;
 
@@ -220,7 +216,7 @@ public function updateProduct(Request $request)
 
         $p_code = $result->itemId;
 
-        Log::info("p_code = " . $p_code );
+  //      Log::info("p_code = " . $p_code );
 
         $website_display_insinc = false;
         if (isset($result->custitem14)) {
@@ -529,7 +525,7 @@ public function updateProduct(Request $request)
             "p_priceBreakE_minqty" => $p_priceBreakE_minqty,
         ];
 
-        Log::info('Data For Website World : ' . json_encode($data));
+   //     Log::info('Data For Website World : ' . json_encode($data));
 
         if ($p_img != "") {
             $data["p_img"] = $p_img;
@@ -682,7 +678,7 @@ public function updateProduct(Request $request)
                     // $cleanedResponse = str_replace("\xEF\xBB\xBF", '', $response->body());
                     // $decodedOuter = json_decode($cleanedResponse, true);
                     // $decodedOuter = $cleanedResponse->json();
-                    Log::debug('Decoded Outer : ', ['Outer' => $decodedOuter]);
+   //                 Log::debug('Decoded Outer : ', ['Outer' => $decodedOuter]);
 
                     if ($decodedOuter === null && json_last_error() !== JSON_ERROR_NONE) {
                         Log::error('JSON decoding error: ' . json_last_error_msg());
