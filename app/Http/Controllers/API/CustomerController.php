@@ -23,9 +23,9 @@ class CustomerController extends Controller
 
     public function updateCustomer(Request $request)
     {
-    Log::info("API Customer request call to NetSuite ");
-    Log::info(' This Is The Request Data');
-    Log::debug($request->all());
+    // Log::info("API Customer request call to NetSuite ");
+    // Log::info(' This Is The Request Data');
+    // Log::debug($request->all());
     $id = $request->input('internalID');
     $mbrCompany = $request->input('customerName');
     $mbrEmail = $request->input('customerEmail');
@@ -38,7 +38,7 @@ class CustomerController extends Controller
         break;
         }
     }
-    Log::debug('mbr_level: ' . $mbr_level);
+    // Log::debug('mbr_level: ' . $mbr_level);
    
 
     $netSuiteApi = new NetSuiteApi();
@@ -49,18 +49,18 @@ class CustomerController extends Controller
 
         if (property_exists($result, 'custentity15') && isset($result->custentity15)) {
             $mbrName = $result->custentity15;
-            Log::debug("Newsletter Name: ", ["name" => $mbrName]);
+            // Log::debug("Newsletter Name: ", ["name" => $mbrName]);
         } else {
             $mbrName = $request->input('attention');
-            Log::debug("Member Name: ", ["name" => $mbrName]);
+            // Log::debug("Member Name: ", ["name" => $mbrName]);
         }
 
         if (property_exists($result, 'custentity5') && isset($result->custentity5)) {
             $mbrEmail = $result->custentity5;
-            Log::debug("Newsletter Email: ", ["email" => $mbrEmail]);
+            // Log::debug("Newsletter Email: ", ["email" => $mbrEmail]);
         } else {
             $mbrEmail = $request->input('customerEmail');
-            Log::debug("Member Email: ", ["email" => $mbrEmail]);
+            // Log::debug("Member Email: ", ["email" => $mbrEmail]);
         }        
 
         $category = $result->category->refName;
@@ -165,9 +165,9 @@ class CustomerController extends Controller
 
             if ($response->successful()) {
                 $customer = $response->json();
-                Log::debug('Customer: ' . json_encode($customer));
+                Log::debug('Customer Updated : ' . json_encode($customer));
             } else {
-                Log::error('Request failed with status: ' . $response->status());
+                Log::error('Request failed with status : ' . $response->status());
                 // Handle the failure, maybe retry or notify someone
             }
 
