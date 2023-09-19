@@ -187,14 +187,14 @@ public function updateProduct(Request $request)
             );
         } while ($net_website_additional_text === "error");
 
-        Log::info("NetSuite Result = " . json_encode($result));
+        // Log::info("NetSuite Result = " . json_encode($result));
 
-        $id = $request->internalID;
-        if (!isset($id)) {
-            return;
-        }
+        // $id = $request->internalID;
+        // if (!isset($id)) {
+        //     return;
+        // }
 
-        $netSuiteApi = new NetSuiteApi();
+        // $netSuiteApi = new NetSuiteApi();
 
         // Fetch product info
         $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
@@ -216,7 +216,7 @@ public function updateProduct(Request $request)
 
         $p_code = $result->itemId;
 
-  //      Log::info("p_code = " . $p_code );
+      Log::info("prices = " . $prices );
 
         $website_display_insinc = false;
         if (isset($result->custitem14)) {
