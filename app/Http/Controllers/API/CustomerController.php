@@ -38,8 +38,12 @@ class CustomerController extends Controller
 
         $subscriptionName = $subscription['name'];
         Log::info('Sub Name: ' . $subscriptionName);
+        // if ($subscription['id'] == 14) {
+        //     $mbr_reference = 135;
+        // break;
+        // }
     }
-    Log::debug('id : ' . $id);
+    Log::debug('mbr_reference: ' . $mbr_reference);
    
 
     $netSuiteApi = new NetSuiteApi();
@@ -47,10 +51,6 @@ class CustomerController extends Controller
         do {
         $result = $netSuiteApi->getSingleCustomer($id);
         } while ($result === ' this error');
-        // do {
-        //     $subscriptions = $netSuiteApi->getSubscriptions($id);
-        // } while ($result === ' this error');
-
 
         if (property_exists($result, 'custentity15') && isset($result->custentity15)) {
             $mbrName = $result->custentity15;
@@ -66,12 +66,7 @@ class CustomerController extends Controller
         } else {
             $mbrEmail = $request->input('customerEmail');
             Log::debug("Member Email: ", ["email" => $mbrEmail]);
-        }
-
-        
-
-         Log::debug( 'mbr_name ' . $mbrName);
-         Log::debug( 'mbr_email ' . $mbrEmail);
+        }        
 
         $category = $result->category->refName;
         if(isset($category)) {
@@ -127,6 +122,12 @@ class CustomerController extends Controller
                 break;
         }
 
+        if(isset($subscriptionId) && $subscriptionId == 14) {
+            $mbr_reference = 135;
+        } else {
+            $mbr_reference = 0;
+        }
+
         $customerData = 
         [
             'DeleteMissingArrayElements' => true,
@@ -140,7 +141,7 @@ class CustomerController extends Controller
                 ],
             'mbr_discount' => $discount,
             'mbr_reference' => $id,
-            'mbr_level'     => 135
+            'mbr_level'     => $mbr_reference
         ];
 
         Log::info('Logging The Customer Data From Netsuite');
