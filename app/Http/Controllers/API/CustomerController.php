@@ -52,21 +52,23 @@ class CustomerController extends Controller
         } while ($result === ' this error');
 
 
-        $newsletterName ? $result->custentity15 : '';
-        if(isset($newsletterName)) {
-            $mbrName = $newsletterName;
-            Log::debug("Newsletter Name: ", ["name" => $newsletterName]);
+        if (property_exists($result, 'custentity15') && isset($result->custentity15)) {
+            $mbrName = $result->custentity15;
+            Log::debug("Newsletter Name: ", ["name" => $mbrName]);
         } else {
             $mbrName = $request->input('attention');
-            Log::debug("Newsletter Name: ", ["name" => $newsletterName]);
+            Log::debug("Member Name: ", ["name" => $mbrName]);
         }
 
-        $newsletterEmail = $result->custentity5;
-        if(isset($newsletterEmail)) {
-            $mbr_email = $newsletterEmail;
-
-            Log::debug("Newsletter Email ", ["email" => $newsletterEmail]);
+        if (property_exists($result, 'custentity5') && isset($result->custentity5)) {
+            $mbrEmail = $result->custentity5;
+            Log::debug("Newsletter Name: ", ["name" => $mbrName]);
+        } else {
+            $mbrEmail = $request->input('customerEmail');
+            Log::debug("Member Email: ", ["email" => $mbrEmail]);
         }
+
+        
 
          Log::debug( 'mbr_name ' . $mbrName);
 
