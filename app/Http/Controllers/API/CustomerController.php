@@ -30,8 +30,26 @@ class CustomerController extends Controller
     $mbrCompany = $request->input('customerName');
     $mbrEmail = $request->input('customerEmail');
     $mbrGroups = $request->input('category');
-    $mbrName = $request->input('attention');
+    // $mbrName = $request->input('attention');
     $subs    = $request->input('subscriptions');
+
+
+        $newsletterName = $result->custentity15;
+        if(isset($newsletterName)) {
+            $mbrName = $newsletterName;
+            Log::debug("Newsletter Name: ", ["name" => $newsletterName]);
+        } else {
+            $mbrName = $request->input('attention');
+            Log::debug("Newsletter Name: ", ["name" => $newsletterName]);
+        }
+
+        $newsletterEmail = $result->custentity5;
+        if(isset($newsletterEmail)) {
+            $mbr_email = $newsletterEmail;
+
+            Log::debug("Newsletter Email ", ["email" => $newsletterEmail]);
+        }
+
 
     Log::debug('id : ' . $id);
     Log::debug( 'mbr_name ' . $mbrName);
@@ -56,19 +74,6 @@ class CustomerController extends Controller
             // Log::debug('Category Name: ' . json_encode($cat));
         }
 
-        $newsletterName = $result->custentity15;
-        if(isset($newsletterName)) {
-            $mbr_name = $newsletterName;
-
-            Log::debug("Newsletter Name: ", ["name" => $newsletterName]);
-        }
-
-        $newsletterEmail = $result->custentity5;
-        if(isset($newsletterEmail)) {
-            $mbr_email = $newsletterEmail;
-
-            Log::debug("Newsletter Email ", ["email" => $newsletterEmail]);
-        }
 
         $terms = $result->terms->refName;
         if(isset($terms)) {
@@ -169,7 +174,8 @@ class CustomerController extends Controller
         // call The API and see if the Email Exists - Fetch ID
         try {
 
-            $url = "{$base_uri}/member?mbr_email={$mbrEmail}";
+            $url = "{$base_uri}/member?mbr_reference={$id}";
+            // $url = "{$base_uri}/member?mbr_email={$mbrEmail}";
             // $response = $http_insinc->get(
             //     "{$base_uri}/member?mbr_email={$mbrEmail}", $mbrEmail
             // );
