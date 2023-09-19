@@ -34,21 +34,6 @@ class CustomerController extends Controller
     $subs    = $request->input('subscriptions');
 
 
-        $newsletterName = $result->custentity15;
-        if(isset($newsletterName)) {
-            $mbrName = $newsletterName;
-            Log::debug("Newsletter Name: ", ["name" => $newsletterName]);
-        } else {
-            $mbrName = $request->input('attention');
-            Log::debug("Newsletter Name: ", ["name" => $newsletterName]);
-        }
-
-        $newsletterEmail = $result->custentity5;
-        if(isset($newsletterEmail)) {
-            $mbr_email = $newsletterEmail;
-
-            Log::debug("Newsletter Email ", ["email" => $newsletterEmail]);
-        }
 
 
     Log::debug('id : ' . $id);
@@ -65,6 +50,23 @@ class CustomerController extends Controller
         do {
             $subscriptions = $netSuiteApi->getSubscriptions($id);
         } while ($result === ' this error');
+
+
+        $newsletterName = $result->custentity15;
+        if(isset($newsletterName)) {
+            $mbrName = $newsletterName;
+            Log::debug("Newsletter Name: ", ["name" => $newsletterName]);
+        } else {
+            $mbrName = $request->input('attention');
+            Log::debug("Newsletter Name: ", ["name" => $newsletterName]);
+        }
+
+        $newsletterEmail = $result->custentity5;
+        if(isset($newsletterEmail)) {
+            $mbr_email = $newsletterEmail;
+
+            Log::debug("Newsletter Email ", ["email" => $newsletterEmail]);
+        }
 
      
 
