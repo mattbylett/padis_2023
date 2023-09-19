@@ -46,6 +46,13 @@ define(["N/record", "N/https"], function (record, https) {
                 fieldId: "subscription",
                 line: j,
             });
+
+            var isSubscribed = customerRecord.getSublistValue({
+                sublistId: "subscriptions",
+                fieldId: "subscribed",
+                line: j,
+            });
+
             var subscriptionText = customerRecord.getSublistText({
                 sublistId: "subscriptions",
                 fieldId: "subscription",
@@ -54,6 +61,7 @@ define(["N/record", "N/https"], function (record, https) {
             subscriptions.push({
                 id: subscriptionId,
                 name: subscriptionText,
+                value: isSubscribed,
             });
         }
 

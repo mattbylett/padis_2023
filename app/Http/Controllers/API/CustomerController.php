@@ -30,10 +30,10 @@ class CustomerController extends Controller
     $mbrCompany = $request->input('customerName');
     $mbrEmail = $request->input('customerEmail');
     $mbrGroups = $request->input('category');
-    // $mbrName = $request->input('attention');
+    $mbr_level = '0';
     $subs = $request->input('subscriptions');
     foreach ($subs as $subscription) {
-        if (isset($subscription['id']) && $subscription['id'] == 14) {
+        if ($subscription['id'] == 14 && $subscription['value'] == true) {
             $mbr_level = 135;
         break;
         }
@@ -115,10 +115,6 @@ class CustomerController extends Controller
             default:
                $discount = 0;
                 break;
-        }
-
-        if(!$mbr_level) {
-            $mbr_level ='0';
         }
 
         $customerData = 
