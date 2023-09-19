@@ -52,7 +52,7 @@ class CustomerController extends Controller
         } while ($result === ' this error');
 
 
-        $newsletterName = $result->custentity15;
+        $newsletterName ? $result->custentity15 : '';
         if(isset($newsletterName)) {
             $mbrName = $newsletterName;
             Log::debug("Newsletter Name: ", ["name" => $newsletterName]);
