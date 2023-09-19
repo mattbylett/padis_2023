@@ -62,7 +62,7 @@ class CustomerController extends Controller
 
         if (property_exists($result, 'custentity5') && isset($result->custentity5)) {
             $mbrEmail = $result->custentity5;
-            Log::debug("Newsletter Name: ", ["name" => $mbrName]);
+            Log::debug("Newsletter Email: ", ["email" => $mbrEmail]);
         } else {
             $mbrEmail = $request->input('customerEmail');
             Log::debug("Member Email: ", ["email" => $mbrEmail]);
@@ -71,6 +71,7 @@ class CustomerController extends Controller
         
 
          Log::debug( 'mbr_name ' . $mbrName);
+         Log::debug( 'mbr_email ' . $mbrEmail);
 
         $category = $result->category->refName;
         if(isset($category)) {
