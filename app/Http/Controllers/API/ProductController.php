@@ -148,6 +148,21 @@ public function updateProduct(Request $request)
 
         Log::info("API request from NetSuite " . $id);
 
+        // Retrieve pricingData from the request
+    $pricingData = $request->input('pricingData', null);
+
+    if ($pricingData) {
+        Log::info("Received Pricing Data: " . json_encode($pricingData));
+
+        // Now, you can handle the pricing data as needed.
+        // For example:
+        $baseDiscount = $pricingData['baseDiscount'] ?? null;
+        $quantityPricingType = $pricingData['quantityPricingType'] ?? null;
+        
+      Log::debug('Base Discount: ', ['base' => $baseDiscount]);
+      Log::debug('Pricing Data: ', ['data' => $quantityPricingType]);
+    }
+
         $netSuiteApi = new NetSuiteApi();
 
         do {
