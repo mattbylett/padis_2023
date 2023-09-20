@@ -411,7 +411,7 @@ public function updateProduct(Request $request)
         if (isset($result->custitem42)) {
             if ($result->custitem42) {
                 $p_promote = "Home Page - Featured";                
-                $weekly_specials_insinc = 124022;
+                // $weekly_specials_insinc = 124022;
             }
         }
 
@@ -525,7 +525,7 @@ public function updateProduct(Request $request)
             "p_priceBreakE_minqty" => $p_priceBreakE_minqty,
         ];
 
-   //     Log::info('Data For Website World : ' . json_encode($data));
+       Log::info('Data For Website World : ' . json_encode($data));
 
         if ($p_img != "") {
             $data["p_img"] = $p_img;
