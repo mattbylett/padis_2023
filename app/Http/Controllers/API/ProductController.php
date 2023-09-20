@@ -106,9 +106,9 @@ public function featuredProducts(Request $request)
 
     foreach ($products as $product) {
         $updatedProduct = [
+            'DeleteMissingArrayElements' => true,
             'p_code' => $product['itemId'],
             'promotions' => [
-                'DeleteMissingArrayElements' => true,
                 'promo_tag' => 'Home Page - Featured',
                 'promo_order' => 1
             ]
