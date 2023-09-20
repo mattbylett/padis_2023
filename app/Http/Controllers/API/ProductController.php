@@ -669,9 +669,9 @@ public function updateProduct(Request $request)
                 $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
                 $content = $response->getBody();  // Assuming $response is your response object.
                 $content_utf8 = mb_convert_encoding($content, 'UTF-8', 'ISO-8859-1');
-                $decoded_data = json_decode($content_utf8, true);
+                $decodedOuter = json_decode($content_utf8, true);
                 Log::debug('Response Headers:', ['headers' => $response->headers()]);
-                Log::debug('Raw Response:', ['response' => $response->body()]);
+                Log::debug('Converted Data:', ['response' => $decodedOuter]);
 
                 if ($response->successful()) {
                     Log::info('The Response was successful '. $response->status());
