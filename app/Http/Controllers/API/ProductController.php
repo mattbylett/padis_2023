@@ -669,58 +669,13 @@ public function updateProduct(Request $request)
                 $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
                 $content = $response->getBody();  // Assuming $response is your response object.
                 $content_utf8 = mb_convert_encoding($content, 'UTF-8', 'ISO-8859-1');
-                $decodedOuter = json_decode($content_utf8, true);
-                Log::debug('Response Headers:', ['headers' => $response->headers()]);
-                Log::debug('Converted Data:', ['response' => $decodedOuter]);
-                Log::info('Encoding the converted Data... Stand By:');
-                $result = $decodedOuter;
-                Log::debug('This is the Result: ', $result);
-
-//                 if ($response->successful()) {
-//                     Log::info('The Response was successful '. $response->status());
-//                     $decodedOuter = $response->json();
-//                     // $decodedOuter = json_decode($response->body(), true);
-//                     // Log::debug('Decoded Outer : ', ['Outer' => $decodedOuter]);
-//                     // $cleanedResponse = str_replace("\xEF\xBB\xBF", '', $response->body());
-//                     // $decodedOuter = json_decode($cleanedResponse, true);
-//                     // $decodedOuter = $cleanedResponse->json();
-//    //                 Log::debug('Decoded Outer : ', ['Outer' => $decodedOuter]);
-
-//                     if ($decodedOuter === null && json_last_error() !== JSON_ERROR_NONE) {
-//                         Log::error('JSON decoding error: ' . json_last_error_msg());
-//                     }
-                    
-//                     if (isset($decodedOuter['response'])) {
-//                         Log::debug('I found the response in the outer ' );
-//                         $decodedInner = json_decode($decodedOuter['response'], true);
-//                         Log::debug('Inner JSON Result: ', ['result' =>  $decodedInner]);
-//                     } else {
-//                         Log::error('The "response" key does not exist in the outer JSON structure.');
-//                     }
-//                 } else {
-//                     Log::info('The Response was not successful '. $response->status());
-//                 } 
-
-                // $result = json_decode($response->body(), true);
-                // if(isset($result['response'])) {
-                //     $decodedInner = json_decode($result['response'], true);
-                //     Log::debug('Working Off The Result ', []);
-                // } else {
-                //         Log::error('The "response" key does not exist in the outer JSON structure.');
-                //     }
-
-                // Log::debug('Attempting to convert the response to JSON.');
-                // $result = $response->json();
-                // Log::debug('JSON Result Type: ' . gettype($result));
-                // Log::debug('JSON Result: ', ['result' =>  $result]);
-                // Log::debug('Successfully converted the response to JSON.');
+                $result= json_decode($content_utf8, true);
 
                 if($result) {
                     Log::debug('Result ', ['result' => $result]);
                 } else {
                 Log::info( 'Something Went Wrong in the Conversion');
                 }
-
 
                 if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
                     $preparedData["p_groupid"] = $groupId;
