@@ -673,7 +673,7 @@ public function updateProduct(Request $request)
                 Log::debug('Response Headers:', ['headers' => $response->headers()]);
                 Log::debug('Converted Data:', ['response' => $decodedOuter]);
                 Log::info('Encoding the converted Data... Stand By:');
-                $result = $decodedOuter->json();
+                $result = $decodedOuter;
                 Log::debug('This is the Result: ', $result);
 
 //                 if ($response->successful()) {
