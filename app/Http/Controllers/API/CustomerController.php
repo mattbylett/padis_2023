@@ -35,6 +35,44 @@ class CustomerController extends Controller
         break;
         }
     }  
+        if($mbr_level == 0) {
+            $unsubscribe = 
+            [
+                'mbr_reference' => $id,
+                'mbr_email' => $mbrEmail,
+                'mbr_level' => 0
+            ];
+
+        $http_insinc = Http::withHeaders([
+            "apiID" => config("services.website.insinc_api_id"),
+            "apiKey" => config("services.website.insinc_api_key"),
+        ]);
+
+        $base_uri = config("services.website.base_uri");
+       
+        // call The API and see if the Email Exists - Fetch ID
+        try {
+
+            $url = "{$base_uri}/member?mbr_reference={$id}";
+
+            $response = $http_insinc->post("{$url}", $unsubscribe);
+
+        // If Email Exists - then Update (Include Id)
+            if ($response->successful()) {
+                $customer = $response->json();
+                Log::debug('Customer Unsubscribed : ' . json_encode($customer));
+            } else {
+                Log::error('Request failed with status : ' . $response->status());
+                // Handle the failure, maybe retry or notify someone
+            }
+
+        // If email Doesnt exist - then Create (same request - no ID)
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        } 
+
+        }
 
     $netSuiteApi = new NetSuiteApi();
 
@@ -117,8 +155,7 @@ class CustomerController extends Controller
                    ["name" => $priceCategory]   
                 ],
             'mbr_discount' => $discount,
-            'mbr_reference' => $id,
-            'mbr_level'     => $mbr_level
+            'mbr_reference' => $id
         ];
 
         Log::info('Logging The Customer Data From Netsuite');
