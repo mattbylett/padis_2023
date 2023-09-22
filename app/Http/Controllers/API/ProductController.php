@@ -653,11 +653,11 @@ public function updateProduct(Request $request)
                 } else {
                     $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
                     $result = $response->json();
-                    Log::debug('Inside The Edit Block - Result: ', $result);
+                    Log::debug('Inside The Edit Block - Result: ', ['result' => $result]);
                     if (isset($result["resultCount"]) && $result["resultCount"] != 0) {
                         $response = $httpInstance->post("{$base_uri}/product", $removeData);
                         $result = $response->json();
-                        Log::debug('Product Updated : ', $result);
+                        Log::debug('Product Updated : ', ['result' => $result]);
                     }
             }
 
