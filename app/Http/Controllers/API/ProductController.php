@@ -190,7 +190,7 @@ public function updateProduct(Request $request)
         } while ($net_website_additional_text === "error");
 
         $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
-        Log::debug("$productInfo", json_encode($productInfo));
+        Log::debug("Product Info: " . json_encode($productInfo));
 
         // Getting the Insinc Site Ready For Additional Text
 
@@ -201,7 +201,7 @@ public function updateProduct(Request $request)
             }
         }
 
-         $p_code = $result->itemId;
+         $p_code = $productInfo->itemId;
          Log::debug('$result->itemId = ', ['p_code' => $pcode]);
 
         // Mapping The Fields From Netsuite to Website World
