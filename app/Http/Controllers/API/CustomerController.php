@@ -17,24 +17,47 @@ class CustomerController extends Controller
         return view('netsuite.dashboard');
     }
 
+    private function sendRequestToWebsiteWorld($url, $data)
+{
+    $http_insinc = Http::withHeaders([
+        "apiID" => config("services.website.insinc_api_id"),
+        "apiKey" => config("services.website.insinc_api_key"),
+    ]);
 
+    try {
+        $response = $http_insinc->post($url, $data);
 
-    // Get All Customers
+        if ($response->successful()) {
+            $customer = $response->json();
+            Log::debug('Customer Updated : ' . json_encode($customer));
+        } else {
+            Log::error('Request failed with status : ' . $response->status());
+        }
+    } catch (\Throwable $th) {
+        Log::error($th->getMessage());
+    }
+}
+    // Netsuite Triggers URL after Update
 
     public function updateCustomer(Request $request)
     {
-    $id = $request->input('internalID');
-    $mbrCompany = $request->input('customerName');
-    $mbrEmail = $request->input('customerEmail');
-    $mbrGroups = $request->input('category');
-    $mbr_level = '0';
-    $subs = $request->input('subscriptions');
-    foreach ($subs as $subscription) {
-        if ($subscription['id'] == 14 && $subscription['value'] == true) {
-            $mbr_level = 135;
-        break;
-        }
-    }  
+        //Get Needed Fields from the request
+        $id = $request->input('internalID');
+        $mbrCompany = $request->input('customerName');
+        $mbrEmail = $request->input('customerEmail');
+        $mbrGroups = $request->input('category');
+
+        //Subsctiptions Relate to Opt in and  Opt Out - We need to handle this first
+        $mbr_level = '0'; // set to unsubscribe by default
+        $subs = $request->input('subscriptions');
+        foreach ($subs as $subscription) {
+            // check to see if Newsletter For  Website World is set  and If So  Set mbr_level to  subscribed
+            if ($subscription['id'] == 14 && $subscription['value'] == true) {
+                $mbr_level = 135;
+            break;  // as soon as its set - move on
+            }
+        }  
+        // if mbr_level is still zero then unsuubscribe in Website World
         if($mbr_level == 0) {
             $unsubscribe = 
             [
@@ -42,44 +65,20 @@ class CustomerController extends Controller
                 'mbr_email' => $mbrEmail,
                 'mbr_level' => 0
             ];
-
-        $http_insinc = Http::withHeaders([
-            "apiID" => config("services.website.insinc_api_id"),
-            "apiKey" => config("services.website.insinc_api_key"),
-        ]);
-
-        $base_uri = config("services.website.base_uri");
-       
-        // call The API and see if the Email Exists - Fetch ID
-        try {
-
+          // Call the private function to post Subscription details  
             $url = "{$base_uri}/member?mbr_reference={$id}";
-
-            $response = $http_insinc->post("{$url}", $unsubscribe);
-
-        // If Email Exists - then Update (Include Id)
-            if ($response->successful()) {
-                $customer = $response->json();
-                Log::debug('Customer Unsubscribed : ' . json_encode($customer));
-            } else {
-                Log::error('Request failed with status : ' . $response->status());
-                // Handle the failure, maybe retry or notify someone
-            }
-
-        // If email Doesnt exist - then Create (same request - no ID)
-
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-        } 
+            $this->sendRequestToWebsiteWorld($url, $unsubscribe);
 
         }
 
-    $netSuiteApi = new NetSuiteApi();
+        // Call the Netsuite Class and pull in all the customer data for this customer
+        $netSuiteApi = new NetSuiteApi();
 
         do {
         $result = $netSuiteApi->getSingleCustomer($id);
         } while ($result === ' this error');
 
+        // Check to see if Customer name for Newsletters is set and if it is so the update
         if (property_exists($result, 'custentity15') && isset($result->custentity15)) {
             $mbrName = $result->custentity15;
             // $mbrEmail = $result->custentity5;
@@ -143,6 +142,7 @@ class CustomerController extends Controller
                 break;
         }
 
+        // Create  the mapping array for pushing through to Website World
         $customerData = 
         [
             'DeleteMissingArrayElements' => true,
@@ -162,48 +162,12 @@ class CustomerController extends Controller
         Log::debug(json_encode($customerData));
 
 
-        $mbrEmail = $customerData['mbr_email'];
-
-        // Log::info('Getting The Email To Search For Customer in API');
-        // Log::debug(json_encode($mbrEmail));
-
-       // Connect to Website World
-        $http_insinc = Http::withHeaders([
-            "apiID" => config("services.website.insinc_api_id"),
-            "apiKey" => config("services.website.insinc_api_key"),
-        ]);
-
-        $base_uri = config("services.website.base_uri");
-       
-        // call The API and see if the Email Exists - Fetch ID
-        try {
-
-            $url = "{$base_uri}/member?mbr_reference={$id}";
-            // $url = "{$base_uri}/member?mbr_email={$mbrEmail}";
-            // $response = $http_insinc->get(
-            //     "{$base_uri}/member?mbr_email={$mbrEmail}", $mbrEmail
-            // );
-
-            $response = $http_insinc->post("{$url}", $customerData);
-
-        // If Email Exists - then Update (Include Id)
-
-            if ($response->successful()) {
-                $customer = $response->json();
-                Log::debug('Customer Updated : ' . json_encode($customer));
-            } else {
-                Log::error('Request failed with status : ' . $response->status());
-                // Handle the failure, maybe retry or notify someone
-            }
-
-        // If email Doesnt exist - then Create (same request - no ID)
-
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-        } 
+       // Connect to Website World using the private function
+        $url = "{$base_uri}/member?mbr_reference={$id}";
+        $this->sendRequestToWebsiteWorld($url, $customerData);
 
         } else {
-
+            // if Customer Name For Newlsetter does not exist.  Do Nothing
             return;
         }
        
