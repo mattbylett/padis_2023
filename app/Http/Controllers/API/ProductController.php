@@ -467,7 +467,6 @@ public function updateProduct(Request $request)
 
         ];
 
-        Log::info('Data For Website World : ' . json_encode($data));
 
         if ($pricingQuantities != []){
             for ($priceBreak = 1; $priceBreak < count($pricingQuantities); $priceBreak++) {
@@ -475,6 +474,8 @@ public function updateProduct(Request $request)
          }   
 
         }
+
+        Log::info('Data For Website World : ' . json_encode($data));
 
 
         if ($p_img != "") {
