@@ -4,71 +4,94 @@
  * @NScriptType usereventscript
  */
 
-define(["N/record", "N/https"], function (record, https) {
+define(["N/https", "N/runtime"], function (https, runtime) {
     function sendProductData(context) {
         var prodNewRecord = context.newRecord;
         var internalID = prodNewRecord.id;
         var type = context.type;
         var productCode = prodNewRecord.getValue("itemid");
 
-        // Get the associated Quantity Pricing Schedule ID
-        var qtyPricingScheduleID = prodNewRecord.getValue(
-            "QuantityPricingSchedule"
-        );
+        var remainingUsage = runtime.getCurrentScript().getRemainingUsage();
+        log.debug("Remaining units", remainingUsage);
 
-        log.debug("Quantity Pricing Schedule ID", qtyPricingScheduleID);
+        log.debug("Starting pricingQuantities loop");
 
-        var pricingData = null;
-        if (qtyPricingScheduleID) {
-            var qtyPricingRecord = record.load({
-                type: "QuantityPricingSchedule", // assuming this is the correct record type
-                id: qtyPricingScheduleID,
-            });
+        var pricingQuantities = [];
+        var i = 1; // Assuming the numbering starts from 1
 
-            pricingData = {
-                baseDiscount: qtyPricingRecord.getValue("basediscount"),
-                quantityPricingType: qtyPricingRecord.getValue(
-                    "overallQuantityPricingType"
-                ),
-                // Add other fields as needed
-            };
+        while (true) {
+            var currentFieldId = "pricequantity" + i;
+
+            // Trying to get the value of the current field.
+            // If the field does not exist, getValue will return null or throw an error.
+            var fieldValue = null;
+            try {
+                fieldValue = prodNewRecord.getValue(currentFieldId);
+            } catch (error) {
+                // If error occurs (field not found), break out of the loop
+                break;
+            }
+
+            // If no error and a valid value is returned, push to the array
+            if (fieldValue !== null && fieldValue !== "") {
+                pricingQuantities.push(fieldValue);
+            } else {
+                // If fieldValue is null or empty, you can choose to break out of the loop or continue.
+                break;
+            }
+
+            i++; // Increment the counter for the next iteration
         }
 
-        log.debug("Pricing Data", pricingData); // This outputs an empy array
+        log.debug("Pricing Quantities", pricingQuantities);
+        log.debug("Ending pricingQuantities loop");
 
-        var pricingLevels = [];
+        var remainingUsage = runtime.getCurrentScript().getRemainingUsage();
+        log.debug("Remaining units", remainingUsage);
 
-        log.debug("Before getting line count for level");
+        log.debug("Starting basePrices loop");
+        var basePrices = [];
+        var basePriceCounter = 1; // Assuming the numbering starts from 1
 
-        try {
-            var lineCount = prodNewRecord.getLineCount({ sublistId: "level" });
-            log.debug("Line count for level", lineCount); // This outputs -1 to the Log
-        } catch (error) {
-            log.debug("Error getting line count", error);
+        log.debug("This should be #1 - ", basePriceCounter);
+        while (true) {
+            var basePriceId = "price_2_" + basePriceCounter + "_formattedValue";
+            log.debug("this is the basePriceId - ", basePriceId);
+            // Trying to get the value of the current field.
+            // If the field does not exist, getValue will return null or throw an error.
+            var fieldValue = null;
+            try {
+                fieldValue = prodNewRecord.getValue(basePriceId);
+            } catch (error) {
+                // If error occurs (field not found), break out of the loop
+                break;
+            }
+
+            // If no error and a valid value is returned, push to the array
+            if (fieldValue !== null && fieldValue !== "") {
+                basePrices.push(fieldValue);
+            } else {
+                // If fieldValue is null or empty, you can choose to break out of the loop or continue.
+                break;
+            }
+
+            basePriceCounter++; // Increment the counter for the next iteration
         }
-        for (var i = 0; i < lineCount; i++) {
-            var discount = prodNewRecord.getSublistValue({
-                sublistId: "level",
-                fieldId: "levelDiscount",
-                line: i,
-            });
-            var quantity = prodNewRecord.getSublistValue({
-                sublistId: "level",
-                fieldId: "levelCount",
-                line: i,
-            });
-            // Store these in an array or object
-            pricingLevels.push({ discount: discount, quantity: quantity });
-        }
 
-        log.debug("Pricing Levels", pricingLevels);
+        log.debug("Base Prices", basePrices);
+        log.debug("Ending basePrices loop");
+
+        var remainingUsage = runtime.getCurrentScript().getRemainingUsage();
+        log.debug("Remaining units", remainingUsage);
+
+        log.debug("Starting API call");
 
         var postData = {
             type: type,
             internalID: internalID,
             productCode: productCode,
-            pricingData: pricingData,
-            pricingLevels: pricingLevels, // Include pricing levels in postData
+            pricingQuantities: pricingQuantities,
+            basePrices: basePrices,
         };
         postData = JSON.stringify(postData);
 
@@ -94,6 +117,10 @@ define(["N/record", "N/https"], function (record, https) {
                 details: "ERROR",
             });
         }
+
+        log.debug("Ending API call");
+        var remainingUsage = runtime.getCurrentScript().getRemainingUsage();
+        log.debug("Remaining units", remainingUsage);
     }
 
     return {

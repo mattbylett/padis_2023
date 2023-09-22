@@ -23,9 +23,6 @@ class CustomerController extends Controller
 
     public function updateCustomer(Request $request)
     {
-    // Log::info("API Customer request call to NetSuite ");
-    // Log::info(' This Is The Request Data');
-    // Log::debug($request->all());
     $id = $request->input('internalID');
     $mbrCompany = $request->input('customerName');
     $mbrEmail = $request->input('customerEmail');
@@ -37,9 +34,7 @@ class CustomerController extends Controller
             $mbr_level = 135;
         break;
         }
-    }
-    // Log::debug('mbr_level: ' . $mbr_level);
-   
+    }  
 
     $netSuiteApi = new NetSuiteApi();
 
@@ -49,19 +44,12 @@ class CustomerController extends Controller
 
         if (property_exists($result, 'custentity15') && isset($result->custentity15)) {
             $mbrName = $result->custentity15;
+            // $mbrEmail = $result->custentity5;
             // Log::debug("Newsletter Name: ", ["name" => $mbrName]);
-        } else {
-            $mbrName = $request->input('attention');
-            // Log::debug("Member Name: ", ["name" => $mbrName]);
-        }
-
         if (property_exists($result, 'custentity5') && isset($result->custentity5)) {
             $mbrEmail = $result->custentity5;
-            // Log::debug("Newsletter Email: ", ["email" => $mbrEmail]);
-        } else {
-            $mbrEmail = $request->input('customerEmail');
-            // Log::debug("Member Email: ", ["email" => $mbrEmail]);
-        }        
+            Log::debug("Newsletter Email: ", ["email" => $mbrEmail]);
+        }  
 
         $category = $result->category->refName;
         if(isset($category)) {
@@ -175,7 +163,13 @@ class CustomerController extends Controller
 
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
-        }        
+        } 
+
+        } else {
+
+            return;
+        }
+       
         return;
     }
 

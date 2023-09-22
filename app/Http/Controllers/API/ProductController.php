@@ -106,9 +106,10 @@ public function featuredProducts(Request $request)
 
     foreach ($products as $product) {
         $updatedProduct = [
-            'DeleteMissingArrayElements' => true,
             'p_code' => $product['itemId'],
+            'DeleteMissingArrayElements' => true,
             'promotions' => [
+
                 'promo_tag' => 'Home Page - Featured',
                 'promo_order' => 1
             ]
@@ -146,22 +147,20 @@ public function updateProduct(Request $request)
             return;
         }
 
-        // Log::info("API request from NetSuite " . $id);
-
         // Retrieve pricingData from the request
-    $pricingData = $request->input('pricingData', null);
-        Log::info('Getting Pricing Data');
-    if ($pricingData) {
-        Log::info("Received Pricing Data: " . json_encode($pricingData));
+            $pricingData = $request->input('pricingData', null);
+                Log::info('Getting Pricing Data');
+            if ($pricingData) {
+                Log::info("Received Pricing Data: " . json_encode($pricingData));
 
-        // Now, you can handle the pricing data as needed.
-        // For example:
-        $baseDiscount = $pricingData['baseDiscount'] ?? null;
-        $quantityPricingType = $pricingData['quantityPricingType'] ?? null;
-        
-      Log::debug('Base Discount: ', ['base' => $baseDiscount]);
-      Log::debug('Pricing Data: ', ['data' => $quantityPricingType]);
-    }
+                // Now, you can handle the pricing data as needed.
+                // For example:
+                $baseDiscount = $pricingData['baseDiscount'] ?? null;
+                $quantityPricingType = $pricingData['quantityPricingType'] ?? null;
+                
+            Log::debug('Base Discount: ', ['base' => $baseDiscount]);
+            Log::debug('Pricing Data: ', ['data' => $quantityPricingType]);
+            }
 
         $netSuiteApi = new NetSuiteApi();
 
@@ -187,36 +186,9 @@ public function updateProduct(Request $request)
             );
         } while ($net_website_additional_text === "error");
 
-        // Log::info("NetSuite Result = " . json_encode($result));
-
-        // $id = $request->internalID;
-        // if (!isset($id)) {
-        //     return;
-        // }
-
-        // $netSuiteApi = new NetSuiteApi();
-
-        // Fetch product info
         $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
- //       Log::info('Product Info Result: ' . json_encode($productInfo));
 
-        $p_price = $base_price;
-
-        // Fetch prices for different levels
-        $prices = [];
-        for ($i = 1; $i <= 5; $i++) {
-            $prices["pricequantity" . $i] = $netSuiteApi->getPriceByLevel($id, $i);
-        }
-
-        $p_priceBreakA_minqty = $prices['pricequantity1'];
-        $p_priceBreakB_minqty = $prices['pricequantity2'];
-        $p_priceBreakC_minqty = $prices['pricequantity3'];
-        $p_priceBreakD_minqty = $prices['pricequantity4'];
-        $p_priceBreakE_minqty = $prices['pricequantity5'];
-
-        $p_code = $result->itemId;
-
-      Log::info("prices = " . json_encode($prices) );
+        // Getting the Insinc Site Ready For Additional Text
 
         $website_display_insinc = false;
         if (isset($result->custitem14)) {
@@ -224,6 +196,16 @@ public function updateProduct(Request $request)
                 $website_display_insinc = true;
             }
         }
+
+        // Mapping The Fields From Netsuite to Website World
+
+            $p_price = $base_price;
+
+             $p_priceBreakA_minqty = '';
+             $p_priceBreakB_minqty = '';
+             $p_priceBreakC_minqty = '';
+             $p_priceBreakD_minqty = '';
+             $p_priceBreakE_minqty = '';
 
         $p_suppliername = $vendor_name;
 
@@ -269,28 +251,6 @@ public function updateProduct(Request $request)
                 $p_details = $result->salesDescription;
             }
         }
-
-        $productData = []; // This will be used to store the mapped product data
-
-            // Map base price
-            $productData['p_price'] = $base_price;
-
-            // Map price quantities 
-            $priceBreakMapping = [
-                'pricequantity1' => 'p_priceBreakA_minqty',
-                'pricequantity2' => 'p_priceBreakB_minqty',
-                'pricequantity3' => 'p_priceBreakC_minqty',
-                'pricequantity4' => 'p_priceBreakD_minqty',
-                'pricequantity5' => 'p_priceBreakE_minqty',
-                // ... add more mappings if needed
-            ];
-
-            foreach ($priceBreakMapping as $netSuiteField => $websiteWorldField) {
-                if (isset($prices[$netSuiteField])) {
-                    $productData[$websiteWorldField] = $prices[$netSuiteField ];
-                }
-            }
-
 
         $p_title = "";
         if (isset($result->custitem5)) {
@@ -525,7 +485,7 @@ public function updateProduct(Request $request)
             "p_priceBreakE_minqty" => $p_priceBreakE_minqty,
         ];
 
-       Log::info('Data For Website World : ' . json_encode($data));
+        Log::info('Data For Website World : ' . json_encode($data));
 
         if ($p_img != "") {
             $data["p_img"] = $p_img;
@@ -579,14 +539,12 @@ public function updateProduct(Request $request)
             $data["p_additionaltext"] = $p_additionaltext;
         }
 
-        // Log::info("Mapping Data = " . json_encode($data));
 
         $removeData = [
             "p_code" => $p_code,
             "p_order" => "-999",
         ];
-
-        // Log::info("Netsuite Type = " . $type);
+        // Creating Connection Strings to the Website World API
 
         $http_cafe = Http::withHeaders([
             "apiID" => config("services.website.cafe_api_id"),
@@ -623,8 +581,6 @@ public function updateProduct(Request $request)
             "apiKey" => config("services.website.insinc_api_key"),
         ]);
 
-
-
         $http_soluclean = Http::withHeaders([
             "apiID" => config("services.website.soluclean_api_id"),
             "apiKey" => config("services.website.soluclean_api_key"),
@@ -656,12 +612,13 @@ public function updateProduct(Request $request)
 
         $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
 
+        Log::info('Data Processing Complete!');
+        
         return;
     }
 
     // Create a reusable function to handle The Website World Conections
-    function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null) {
-
+    function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null)     {
         if ($displayFlag) {
                 $preparedData = $data; // Copying the data
 
@@ -685,7 +642,7 @@ public function updateProduct(Request $request)
                 }
                 $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                 $result = $response->json();
-                // Log::info("Success for website with groupId: $groupId");
+                Log::info("Success for website with groupId: $groupId");
                 } else {
                     $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
                     $result = $response->json();
@@ -694,6 +651,7 @@ public function updateProduct(Request $request)
                         $result = $response->json();
                     }
             }
+
 
 
     }
