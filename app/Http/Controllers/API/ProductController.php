@@ -150,13 +150,6 @@ public function updateProduct(Request $request)
         $pricingQuantities = $request->input('pricingQuantities', null);
         Log::debug('Getting the Bulk Price Breaks : ', $pricingQuantities);
 
-        $priceBreaks = [];
-        for ($priceBreak = 1; $priceBreak < count($pricingQuantities); $priceBreak++) {
-            $priceBreaks["p_priceBreak" . chr(65 + $priceBreak) . '_minqty'] = $pricingQuantities[$priceBreak];
-        }
-
-        Log::info('Pricing  Quantities : ' . json_encode($priceBreaks));
-
         $netSuiteApi = new NetSuiteApi();
 
         do {
@@ -475,6 +468,14 @@ public function updateProduct(Request $request)
         ];
 
         Log::info('Data For Website World : ' . json_encode($data));
+
+        if ($pricingQuantities != []){
+            for ($priceBreak = 1; $priceBreak < count($pricingQuantities); $priceBreak++) {
+            $data["p_priceBreak" . chr(65 + $priceBreak) . '_minqty'] = $pricingQuantities[$priceBreak];
+         }   
+
+        }
+
 
         if ($p_img != "") {
             $data["p_img"] = $p_img;
