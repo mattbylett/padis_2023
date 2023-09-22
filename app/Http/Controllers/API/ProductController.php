@@ -151,19 +151,19 @@ public function updateProduct(Request $request)
         Log::debug('Getting the Bulk Price Breaks : ', $pricingQuantities);
 
         // Retrieve pricingData from the request
-            $pricingData = $request->input('pricingData', null);
-                Log::info('Getting Pricing Data');
-            if ($pricingData) {
-                Log::info("Received Pricing Data: " . json_encode($pricingData));
+            // $pricingData = $request->input('pricingData', null);
+            //     Log::info('Getting Pricing Data');
+            // if ($pricingData) {
+            //     Log::info("Received Pricing Data: " . json_encode($pricingData));
 
-                // Now, you can handle the pricing data as needed.
-                // For example:
-                $baseDiscount = $pricingData['baseDiscount'] ?? null;
-                $quantityPricingType = $pricingData['quantityPricingType'] ?? null;
+            //     // Now, you can handle the pricing data as needed.
+            //     // For example:
+            //     $baseDiscount = $pricingData['baseDiscount'] ?? null;
+            //     $quantityPricingType = $pricingData['quantityPricingType'] ?? null;
                 
-            Log::debug('Base Discount: ', ['base' => $baseDiscount]);
-            Log::debug('Pricing Data: ', ['data' => $quantityPricingType]);
-            }
+            // Log::debug('Base Discount: ', ['base' => $baseDiscount]);
+            // Log::debug('Pricing Data: ', ['data' => $quantityPricingType]);
+            // }
 
         $netSuiteApi = new NetSuiteApi();
 
@@ -208,8 +208,8 @@ public function updateProduct(Request $request)
 
             $p_price = $base_price;
 
-             $p_priceBreakA_minqty = '';
-             $p_priceBreakB_minqty = '';
+             $p_priceBreakA_minqty = $pricingQuantities[0];
+             $p_priceBreakB_minqty = $pricingQuantities[1];
              $p_priceBreakC_minqty = '';
              $p_priceBreakD_minqty = '';
              $p_priceBreakE_minqty = '';
