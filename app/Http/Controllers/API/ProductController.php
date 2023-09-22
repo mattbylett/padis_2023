@@ -202,7 +202,7 @@ public function updateProduct(Request $request)
         }
 
          $p_code = $productInfo->itemId;
-         Log::debug('$result->itemId = ', ['p_code' => $pcode]);
+         Log::debug('$result->itemId = ', ['p_code' => $p_code]);
 
         // Mapping The Fields From Netsuite to Website World
 
