@@ -18,27 +18,27 @@ class CustomerController extends Controller
     }
 
     private function sendRequestToWebsiteWorld($url, $data)
-{
-    $http_insinc = Http::withHeaders([
-        "apiID" => config("services.website.insinc_api_id"),
-        "apiKey" => config("services.website.insinc_api_key"),
-    ]);
+    {
+        $http_insinc = Http::withHeaders([
+            "apiID" => config("services.website.insinc_api_id"),
+            "apiKey" => config("services.website.insinc_api_key"),
+        ]);
 
 
 
-    try {
-        $response = $http_insinc->post($url, $data);
+        try {
+            $response = $http_insinc->post($url, $data);
 
-        if ($response->successful()) {
-            $customer = $response->json();
-            Log::debug('Customer Updated : ' . json_encode($customer));
-        } else {
-            Log::error('Request failed with status : ' . $response->status());
+            if ($response->successful()) {
+                $customer = $response->json();
+                Log::debug('Customer Updated : ' . json_encode($customer));
+            } else {
+                Log::error('Request failed with status : ' . $response->status());
+            }
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
         }
-    } catch (\Throwable $th) {
-        Log::error($th->getMessage());
     }
-}
     // Netsuite Triggers URL after Update
 
     public function updateCustomer(Request $request)
