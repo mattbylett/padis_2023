@@ -147,6 +147,9 @@ public function updateProduct(Request $request)
             return;
         }
 
+        $pricingQuantities = $request->input('pricingQuantities', null);
+        Log::debug('Getting the Bulk Price Breaks : ', $pricingQuantities);
+
         // Retrieve pricingData from the request
             $pricingData = $request->input('pricingData', null);
                 Log::info('Getting Pricing Data');
@@ -187,6 +190,7 @@ public function updateProduct(Request $request)
         } while ($net_website_additional_text === "error");
 
         $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
+        Log::debug("$productInfo'itemId' = ", ['p_code' => $pcode]);
 
         // Getting the Insinc Site Ready For Additional Text
 
@@ -196,6 +200,9 @@ public function updateProduct(Request $request)
                 $website_display_insinc = true;
             }
         }
+
+         $p_code = $result->itemId;
+         Log::debug('$result->itemId = ', ['p_code' => $pcode]);
 
         // Mapping The Fields From Netsuite to Website World
 
