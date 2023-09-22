@@ -23,8 +23,8 @@ class CustomerController extends Controller
         "apiID" => config("services.website.insinc_api_id"),
         "apiKey" => config("services.website.insinc_api_key"),
     ]);
-    
-    $base_uri = config("services.website.base_uri");
+
+
 
     try {
         $response = $http_insinc->post($url, $data);
@@ -48,7 +48,7 @@ class CustomerController extends Controller
         $mbrCompany = $request->input('customerName');
         $mbrEmail = $request->input('customerEmail');
         $mbrGroups = $request->input('category');
-
+        $base_uri = config("services.website.base_uri");
         //Subsctiptions Relate to Opt in and  Opt Out - We need to handle this first
         $mbr_level = '0'; // set to unsubscribe by default
         $subs = $request->input('subscriptions');
