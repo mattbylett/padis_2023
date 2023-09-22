@@ -155,7 +155,7 @@ public function updateProduct(Request $request)
             $priceBreaks["p_priceBreak" . chr(65 + $priceBreak) . '_minqty'] = $pricingQuantities[$priceBreak];
         }
 
-        Log::info('Pricing  Quantities : ' . $priceBreaks);
+        Log::info('Pricing  Quantities : ' . json_encode($priceBreaks));
 
         $netSuiteApi = new NetSuiteApi();
 
