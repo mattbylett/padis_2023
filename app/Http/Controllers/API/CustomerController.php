@@ -23,6 +23,8 @@ class CustomerController extends Controller
         "apiID" => config("services.website.insinc_api_id"),
         "apiKey" => config("services.website.insinc_api_key"),
     ]);
+    
+    $base_uri = config("services.website.base_uri");
 
     try {
         $response = $http_insinc->post($url, $data);
