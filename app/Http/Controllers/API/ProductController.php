@@ -150,20 +150,12 @@ public function updateProduct(Request $request)
         $pricingQuantities = $request->input('pricingQuantities', null);
         Log::debug('Getting the Bulk Price Breaks : ', $pricingQuantities);
 
-        // Retrieve pricingData from the request
-            // $pricingData = $request->input('pricingData', null);
-            //     Log::info('Getting Pricing Data');
-            // if ($pricingData) {
-            //     Log::info("Received Pricing Data: " . json_encode($pricingData));
+        $priceBreaks = [];
+        for ($priceBreak = 1; $priceBreak < count($pricingQuantities); $priceBreak++) {
+            $priceBreaks["p_priceBreak" . chr(65 + $priceBreak) . '_minqty'] = $pricingQuantities[$priceBreak];
+        }
 
-            //     // Now, you can handle the pricing data as needed.
-            //     // For example:
-            //     $baseDiscount = $pricingData['baseDiscount'] ?? null;
-            //     $quantityPricingType = $pricingData['quantityPricingType'] ?? null;
-                
-            // Log::debug('Base Discount: ', ['base' => $baseDiscount]);
-            // Log::debug('Pricing Data: ', ['data' => $quantityPricingType]);
-            // }
+        Log::info('Pricing  Quantities : ' . $priceBreaks);
 
         $netSuiteApi = new NetSuiteApi();
 
@@ -206,13 +198,7 @@ public function updateProduct(Request $request)
 
         // Mapping The Fields From Netsuite to Website World
 
-            $p_price = $base_price;
-
-             $p_priceBreakA_minqty = $pricingQuantities[0];
-             $p_priceBreakB_minqty = $pricingQuantities[1];
-             $p_priceBreakC_minqty = '';
-             $p_priceBreakD_minqty = '';
-             $p_priceBreakE_minqty = '';
+        $p_price = $base_price;
 
         $p_suppliername = $vendor_name;
 
@@ -485,11 +471,7 @@ public function updateProduct(Request $request)
             "p_sale_ends" => $p_sale_ends,
             "p_qtyinstock" => $p_qtyinstock,
             "p_order" => 1,
-            "p_priceBreakA_minqty" => $p_priceBreakA_minqty,
-            "p_priceBreakB_minqty" => $p_priceBreakB_minqty,
-            "p_priceBreakC_minqty" => $p_priceBreakC_minqty,
-            "p_priceBreakD_minqty" => $p_priceBreakD_minqty,
-            "p_priceBreakE_minqty" => $p_priceBreakE_minqty,
+
         ];
 
         Log::info('Data For Website World : ' . json_encode($data));
