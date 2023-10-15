@@ -623,11 +623,6 @@ public function updateProduct(Request $request)
                 $preparedData = $data; // Copying the data
                 Log::debug('PreparedData: ', ['data' => $preparedData]);
 
-                $preparedDataToSend = ['data' => $preparedData];
-                $jsonData = json_encode($preparedDataToSend);
-
-                Log::debug('jsonData: ', ['json' => $jsonData]);
-                
                 // Get product details first  from Website World
                 $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
                 $content = $response->getBody();  // Assuming $response is your response object.
@@ -646,9 +641,10 @@ public function updateProduct(Request $request)
                 if ($additionalText) {
                     $preparedData["p_additionaltext"] = $additionalText;
                 }
-                $response = $httpInstance->post("{$base_uri}/product", $jsonData);
-                // $response = $httpInstance->post("{$base_uri}/product", $preparedData);
+                $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                 $result = $response->json();
+
+                Log::debug('Result: ', ['Posted Data: ' => $result]);
                 // Log::info("Success for website with groupId: $groupId");
                 } else {
                     $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
