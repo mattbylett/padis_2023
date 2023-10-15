@@ -627,11 +627,11 @@ public function updateProduct(Request $request)
                 $content_utf8 = mb_convert_encoding($content, 'UTF-8', 'ISO-8859-1');
                 $result= json_decode($content_utf8, true);
 
-                // if($result) {
-                //     Log::debug('Result ', ['result' => $result]);
-                // } else {
-                // Log::info( 'Something Went Wrong in the Conversion');
-                // }
+                if($result) {
+                    Log::debug('Result ', ['result' => $result]);
+                } else {
+                Log::info( 'Something Went Wrong in the Conversion');
+                }
 
                 if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
                     $preparedData["p_groupid"] = $groupId;
