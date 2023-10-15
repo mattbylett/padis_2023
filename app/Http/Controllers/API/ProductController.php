@@ -622,7 +622,7 @@ public function updateProduct(Request $request)
                 $preparedData = $data; // Copying the data
 
                 // Get product details first  from Website World
-                $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
+                $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
                 $content = $response->getBody();  // Assuming $response is your response object.
                 $content_utf8 = mb_convert_encoding($content, 'UTF-8', 'ISO-8859-1');
                 $result= json_decode($content_utf8, true);
@@ -643,7 +643,7 @@ public function updateProduct(Request $request)
                 $result = $response->json();
                 Log::info("Success for website with groupId: $groupId");
                 } else {
-                    $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
+                    $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
                     $result = $response->json();
                     if (isset($result["resultCount"]) && $result["resultCount"] != 0) {
                         $response = $httpInstance->post("{$base_uri}/product", $removeData);
