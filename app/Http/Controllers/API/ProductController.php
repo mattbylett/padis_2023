@@ -189,16 +189,16 @@ public function updateProduct(Request $request)
 
         $p_price = $base_price;
 
-        $p_pricebreaka_minqty = isset($result->custitem49) ? $result->custitem49 : '';
-        $p_pricebreaka = isset($result->custitem50) ? $p_price - ($p_price * ($result->custitem50 / 100)) : '';
-        $p_pricebreakb_minqty = isset($result->custitem51) ? $result->custitem51 : '';
-        $p_pricebreakb = isset($result->custitem56) ? $p_price - ($p_price * ($result->custitem56 / 100)) : '';
-        $p_pricebreakc_minqty = isset($result->custitem52) ? $result->custitem52 : '';
-        $p_pricebreakc = isset($result->custitem57) ? $p_price - ($p_price * ($result->custitem57 / 100)) : '';
-        $p_pricebreakd_minqty = isset($result->custitem53) ? $result->custitem53 : '';
-        $p_pricebreakd = isset($result->custitem58) ? $p_price - ($p_price * ($result->custitem58 / 100)) : '';
-        $p_pricebreake_minqty = isset($result->custitem54) ? $result->custitem54 : '';
-        $p_pricebreake = isset($result->custitem59) ? $p_price - ($p_price * ($result->custitem59 / 100)) : '';
+        $p_pricebreaka_minqty = isset($result->custitem49) ? $result->custitem49 : 0;
+        $p_pricebreaka = isset($result->custitem50) ? $p_price - ($p_price * ($result->custitem50 / 100)) : 0;
+        $p_pricebreakb_minqty = isset($result->custitem51) ? $result->custitem51 : 0;
+        $p_pricebreakb = isset($result->custitem56) ? $p_price - ($p_price * ($result->custitem56 / 100)) : 0;
+        $p_pricebreakc_minqty = isset($result->custitem52) ? $result->custitem52 : 0;
+        $p_pricebreakc = isset($result->custitem57) ? $p_price - ($p_price * ($result->custitem57 / 100)) : 0;
+        $p_pricebreakd_minqty = isset($result->custitem53) ? $result->custitem53 : 0;
+        $p_pricebreakd = isset($result->custitem58) ? $p_price - ($p_price * ($result->custitem58 / 100)) : 0;
+        $p_pricebreake_minqty = isset($result->custitem54) ? $result->custitem54 : 0;
+        $p_pricebreake = isset($result->custitem59) ? $p_price - ($p_price * ($result->custitem59 / 100)) : 0;
 
         $p_suppliername = $vendor_name;
 
