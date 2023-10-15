@@ -174,6 +174,8 @@ public function updateProduct(Request $request)
 
         $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
 
+        $p_code = $productInfo->itemId;
+
         // Getting the Insinc Site Ready For Additional Text
 
         $website_display_insinc = false;
