@@ -620,18 +620,18 @@ public function updateProduct(Request $request)
     {
         if ($displayFlag) {
                 $preparedData = $data; // Copying the data
-
+                Log::debug('PreparedData: ', ['data' => $preparedData]);
                 // Get product details first  from Website World
                 $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
                 $content = $response->getBody();  // Assuming $response is your response object.
                 $content_utf8 = mb_convert_encoding($content, 'UTF-8', 'ISO-8859-1');
                 $result= json_decode($content_utf8, true);
 
-                if($result) {
-                    Log::debug('Result ', ['result' => $result]);
-                } else {
-                Log::info( 'Something Went Wrong in the Conversion');
-                }
+                // if($result) {
+                //     Log::debug('Result ', ['result' => $result]);
+                // } else {
+                // Log::info( 'Something Went Wrong in the Conversion');
+                // }
 
                 if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
                     $preparedData["p_groupid"] = $groupId;
