@@ -106,10 +106,9 @@ public function featuredProducts(Request $request)
 
     foreach ($products as $product) {
         $updatedProduct = [
-            'p_code' => $product['itemId'],
             'DeleteMissingArrayElements' => true,
+            'p_code' => $product['itemId'],
             'promotions' => [
-
                 'promo_tag' => 'Home Page - Featured',
                 'promo_order' => 1
             ]
@@ -147,8 +146,7 @@ public function updateProduct(Request $request)
             return;
         }
 
-        $pricingQuantities = $request->input('pricingQuantities', null);
-        Log::debug('Getting the Bulk Price Breaks : ', $pricingQuantities);
+        // $pricingQuantities = $request->input('pricingQuantities');
 
         $netSuiteApi = new NetSuiteApi();
 
@@ -175,7 +173,6 @@ public function updateProduct(Request $request)
         } while ($net_website_additional_text === "error");
 
         $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
-        Log::debug("Product Info: " . json_encode($productInfo));
 
         // Getting the Insinc Site Ready For Additional Text
 
@@ -186,12 +183,20 @@ public function updateProduct(Request $request)
             }
         }
 
-         $p_code = $productInfo->itemId;
-         Log::debug('$result->itemId = ', ['p_code' => $p_code]);
-
         // Mapping The Fields From Netsuite to Website World
 
         $p_price = $base_price;
+
+        $p_priceBreakA_minqty = isset($result->custitem49) ? $result->custitem49 : '';
+        $p_pricebreaka = isset($result->custitem50) ? $p_price - ($p_price * ($result->custitem50 / 100)) : '';
+        $p_priceBreakB_minqty = isset($result->custitem51) ? $result->custitem51 : '';
+        $p_pricebreakb = isset($result->custitem56) ? $p_price - ($p_price * ($result->custitem56 / 100)) : '';
+        $p_priceBreakC_minqty = isset($result->custitem52) ? $result->custitem52 : '';
+        $p_pricebreakc = isset($result->custitem57) ? $p_price - ($p_price * ($result->custitem57 / 100)) : '';
+        $p_priceBreakD_minqty = isset($result->custitem53) ? $result->custitem53 : '';
+        $p_pricebreakd = isset($result->custitem58) ? $p_price - ($p_price * ($result->custitem58 / 100)) : '';
+        $p_priceBreakE_minqty = isset($result->custitem54) ? $result->custitem54 : '';
+        $p_pricebreake = isset($result->custitem59) ? $p_price - ($p_price * ($result->custitem59 / 100)) : '';
 
         $p_suppliername = $vendor_name;
 
@@ -464,19 +469,19 @@ public function updateProduct(Request $request)
             "p_sale_ends" => $p_sale_ends,
             "p_qtyinstock" => $p_qtyinstock,
             "p_order" => 1,
-
+            "p_priceBreakA_minqty" => $p_priceBreakA_minqty,
+            "p_priceBreakB_minqty" => $p_priceBreakB_minqty,
+            "p_priceBreakC_minqty" => $p_priceBreakC_minqty,
+            "p_priceBreakD_minqty" => $p_priceBreakD_minqty,
+            "p_priceBreakE_minqty" => $p_priceBreakE_minqty,
+            "p_pricebreakb"        => $p_pricebreakb,
+            "p_pricebreakc"        => $p_pricebreakc,
+            "p_pricebreakd"        => $p_pricebreakd,
+            "p_pricebreake"        => $p_pricebreake,
+            "p_pricebreaka"        => $p_pricebreaka,
         ];
 
-
-        if ($pricingQuantities != []){
-            for ($priceBreak = 1; $priceBreak < count($pricingQuantities); $priceBreak++) {
-            $data["p_priceBreak" . chr(65 + $priceBreak) . '_minqty'] = $pricingQuantities[$priceBreak];
-         }   
-
-        }
-
         Log::info('Data For Website World : ' . json_encode($data));
-
 
         if ($p_img != "") {
             $data["p_img"] = $p_img;
@@ -604,12 +609,13 @@ public function updateProduct(Request $request)
         $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
 
         Log::info('Data Processing Complete!');
-        
+
         return;
     }
 
     // Create a reusable function to handle The Website World Conections
-    function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null)     {
+    function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null)     
+    {
         if ($displayFlag) {
                 $preparedData = $data; // Copying the data
 
@@ -637,11 +643,9 @@ public function updateProduct(Request $request)
                 } else {
                     $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
                     $result = $response->json();
-                    Log::debug('Inside The Edit Block - Result: ', ['result' => $result]);
                     if (isset($result["resultCount"]) && $result["resultCount"] != 0) {
                         $response = $httpInstance->post("{$base_uri}/product", $removeData);
                         $result = $response->json();
-                        Log::debug('Product Updated : ', ['result' => $result]);
                     }
             }
 

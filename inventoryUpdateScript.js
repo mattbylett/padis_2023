@@ -11,8 +11,8 @@ define(["N/https", "N/runtime"], function (https, runtime) {
         var type = context.type;
         var productCode = prodNewRecord.getValue("itemid");
 
-        var remainingUsage = runtime.getCurrentScript().getRemainingUsage();
-        log.debug("Remaining units", remainingUsage);
+        // var remainingUsage = runtime.getCurrentScript().getRemainingUsage();
+        // log.debug("Remaining units", remainingUsage);
 
         log.debug("Starting pricingQuantities loop");
 
@@ -43,46 +43,11 @@ define(["N/https", "N/runtime"], function (https, runtime) {
             i++; // Increment the counter for the next iteration
         }
 
-        log.debug("Pricing Quantities", pricingQuantities);
+        // log.debug("Pricing Quantities", pricingQuantities);
         log.debug("Ending pricingQuantities loop");
 
         var remainingUsage = runtime.getCurrentScript().getRemainingUsage();
-        log.debug("Remaining units", remainingUsage);
-
-        log.debug("Starting basePrices loop");
-        var basePrices = [];
-        var basePriceCounter = 1; // Assuming the numbering starts from 1
-
-        log.debug("This should be #1 - ", basePriceCounter);
-        while (true) {
-            var basePriceId = "price_2_" + basePriceCounter + "_formattedValue";
-            log.debug("this is the basePriceId - ", basePriceId);
-            // Trying to get the value of the current field.
-            // If the field does not exist, getValue will return null or throw an error.
-            var fieldValue = null;
-            try {
-                fieldValue = prodNewRecord.getValue(basePriceId);
-            } catch (error) {
-                // If error occurs (field not found), break out of the loop
-                break;
-            }
-
-            // If no error and a valid value is returned, push to the array
-            if (fieldValue !== null && fieldValue !== "") {
-                basePrices.push(fieldValue);
-            } else {
-                // If fieldValue is null or empty, you can choose to break out of the loop or continue.
-                break;
-            }
-
-            basePriceCounter++; // Increment the counter for the next iteration
-        }
-
-        log.debug("Base Prices", basePrices);
-        log.debug("Ending basePrices loop");
-
-        var remainingUsage = runtime.getCurrentScript().getRemainingUsage();
-        log.debug("Remaining units", remainingUsage);
+        log.error("Remaining units", remainingUsage);
 
         log.debug("Starting API call");
 
@@ -91,7 +56,7 @@ define(["N/https", "N/runtime"], function (https, runtime) {
             internalID: internalID,
             productCode: productCode,
             pricingQuantities: pricingQuantities,
-            basePrices: basePrices,
+            //          basePrices: basePrices,
         };
         postData = JSON.stringify(postData);
 
@@ -106,24 +71,59 @@ define(["N/https", "N/runtime"], function (https, runtime) {
                 headers: header,
                 body: postData,
             });
-            log.debug({
+            log.error({
                 title: "API CALL",
                 details:
                     context.type + " internal id = " + internalID + " Success",
             });
         } catch (er02) {
-            log.debug({
+            log.error({
                 title: "API CALL",
                 details: "ERROR",
             });
         }
 
-        log.debug("Ending API call");
+        log.error("Ending API call");
         var remainingUsage = runtime.getCurrentScript().getRemainingUsage();
-        log.debug("Remaining units", remainingUsage);
+        log.error("Remaining units", remainingUsage);
     }
 
     return {
         afterSubmit: sendProductData,
     };
 });
+
+// log.debug("Starting basePrices loop");
+// var basePrices = [];
+// var basePriceCounter = 1; // Assuming the numbering starts from 1
+
+// // log.debug("This should be #1 - ", basePriceCounter);
+// while (true) {
+//     var basePriceId = "price_2_" + basePriceCounter + "_formattedValue";
+//     log.debug("this is the basePriceId - ", basePriceId);
+//     //     // Trying to get the value of the current field.
+//     //     // If the field does not exist, getValue will return null or throw an error.
+//     var fieldValue = null;
+//     try {
+//         fieldValue = prodNewRecord.getValue(basePriceId);
+//     } catch (error) {
+//         // If error occurs (field not found), break out of the loop
+//         break;
+//     }
+
+//     //     // If no error and a valid value is returned, push to the array
+//     if (fieldValue !== null && fieldValue !== "") {
+//         basePrices.push(fieldValue);
+//     } else {
+//         // If fieldValue is null or empty, you can choose to break out of the loop or continue.
+//         break;
+//     }
+
+//     basePriceCounter++; // Increment the counter for the next iteration
+// }
+
+// log.debug("Base Prices", basePrices);
+// log.debug("Ending basePrices loop");
+
+// var remainingUsage = runtime.getCurrentScript().getRemainingUsage();
+// log.debug("Remaining units", remainingUsage);

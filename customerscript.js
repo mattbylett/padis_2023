@@ -14,56 +14,55 @@ define(["N/record", "N/https"], function (record, https) {
         var customerEmail = customerRecord.getValue("email");
         var category = customerRecord.getValue("category");
 
-        var loadedCustomerRecord = record.load({
-            type: record.Type.CUSTOMER,
-            id: internalID,
-        });
+        if (context.type !== context.UserEventType.CREATE) {
+            var loadedCustomerRecord = record.load({
+                type: record.Type.CUSTOMER,
+                id: internalID,
+            });
 
-        var attention;
-        var numLines = loadedCustomerRecord.getLineCount({
-            sublistId: "addressbook",
-        });
-
-        for (var i = 0; i < numLines; i++) {
-            var subrecord = loadedCustomerRecord.getSublistSubrecord({
+            var attention;
+            var numLines = loadedCustomerRecord.getLineCount({
                 sublistId: "addressbook",
-                fieldId: "addressbookaddress",
-                line: i,
             });
 
-            attention = subrecord.getValue({
-                fieldId: "attention",
+            for (var i = 0; i < numLines; i++) {
+                attention = loadedCustomerRecord.getSublistValue({
+                    sublistId: "addressbook",
+                    fieldId: "attention",
+                    line: i,
+                });
+            }
+
+            var subscriptions = [];
+            var subscriptionCount = customerRecord.getLineCount({
+                sublistId: "subscriptions",
             });
+            for (var j = 0; j < subscriptionCount; j++) {
+                var subscriptionId = customerRecord.getSublistValue({
+                    sublistId: "subscriptions",
+                    fieldId: "subscription",
+                    line: j,
+                });
+
+                var isSubscribed = customerRecord.getSublistValue({
+                    sublistId: "subscriptions",
+                    fieldId: "subscribed",
+                    line: j,
+                });
+
+                var subscriptionText = customerRecord.getSublistText({
+                    sublistId: "subscriptions",
+                    fieldId: "subscription",
+                    line: j,
+                });
+                subscriptions.push({
+                    id: subscriptionId,
+                    name: subscriptionText,
+                    value: isSubscribed,
+                });
+            }
         }
-
-        var subscriptions = [];
-        var subscriptionCount = customerRecord.getLineCount({
-            sublistId: "subscriptions",
-        });
-        for (var j = 0; j < subscriptionCount; j++) {
-            var subscriptionId = customerRecord.getSublistValue({
-                sublistId: "subscriptions",
-                fieldId: "subscription",
-                line: j,
-            });
-
-            var isSubscribed = customerRecord.getSublistValue({
-                sublistId: "subscriptions",
-                fieldId: "subscribed",
-                line: j,
-            });
-
-            var subscriptionText = customerRecord.getSublistText({
-                sublistId: "subscriptions",
-                fieldId: "subscription",
-                line: j,
-            });
-            subscriptions.push({
-                id: subscriptionId,
-                name: subscriptionText,
-                value: isSubscribed,
-            });
-        }
+        // see below for removed old code
 
         var postData = {
             type: type,
@@ -101,3 +100,39 @@ define(["N/record", "N/https"], function (record, https) {
         afterSubmit: sendCustomerData,
     };
 });
+
+// var loadedCustomerRecord = record.load({
+//     type: record.Type.CUSTOMER,
+//     id: internalID,
+// });
+
+// var attention;
+// var numLines = loadedCustomerRecord.getLineCount({
+//     sublistId: "addressbook",
+// });
+
+// for (var i = 0; i < numLines; i++) {
+//     var subrecord = loadedCustomerRecord.getSublistSubrecord({
+//         sublistId: "addressbook",
+//         fieldId: "addressbookaddress",
+//         line: i,
+//     });
+
+//     attention = subrecord.getValue({
+//         fieldId: "attention",
+//     });
+// }
+
+// if (context.type !== context.UserEventType.CREATE) {
+//     var numLines = loadedCustomerRecord.getLineCount({
+//         sublistId: "addressbook",
+//     });
+
+//     for (var i = 0; i < numLines; i++) {
+//         attention = loadedCustomerRecord.getSublistValue({
+//             sublistId: "addressbook",
+//             fieldId: "attention",
+//             line: i,
+//         });
+//     }
+// }

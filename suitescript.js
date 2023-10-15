@@ -17,8 +17,8 @@ define(["N/record", "N/https"], function (record, https) {
         postData = JSON.stringify(postData);
         var header = [];
         header["Content-Type"] = "application/json";
-        var apiURL = "https://padis.thinknew.nz/api/updateProduct";
-        //var apiURL = "https://insinc.cluster.nz/api/updateProduct";
+        // var apiURL = "https://padis.thinknew.nz/api/updateProduct";
+        var apiURL = "https://insinc.cluster.nz/api/updateProduct";
         try {
             var response = https.post({
                 url: apiURL,
