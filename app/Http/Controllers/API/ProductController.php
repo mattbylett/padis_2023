@@ -189,15 +189,15 @@ public function updateProduct(Request $request)
 
         $p_price = $base_price;
 
-        $p_priceBreakA_minqty = isset($result->custitem49) ? $result->custitem49 : '';
+        $p_pricebreaka_minqty = isset($result->custitem49) ? $result->custitem49 : '';
         $p_pricebreaka = isset($result->custitem50) ? $p_price - ($p_price * ($result->custitem50 / 100)) : '';
-        $p_priceBreakB_minqty = isset($result->custitem51) ? $result->custitem51 : '';
+        $p_pricebreakb_minqty = isset($result->custitem51) ? $result->custitem51 : '';
         $p_pricebreakb = isset($result->custitem56) ? $p_price - ($p_price * ($result->custitem56 / 100)) : '';
-        $p_priceBreakC_minqty = isset($result->custitem52) ? $result->custitem52 : '';
+        $p_pricebreakc_minqty = isset($result->custitem52) ? $result->custitem52 : '';
         $p_pricebreakc = isset($result->custitem57) ? $p_price - ($p_price * ($result->custitem57 / 100)) : '';
-        $p_priceBreakD_minqty = isset($result->custitem53) ? $result->custitem53 : '';
+        $p_pricebreakd_minqty = isset($result->custitem53) ? $result->custitem53 : '';
         $p_pricebreakd = isset($result->custitem58) ? $p_price - ($p_price * ($result->custitem58 / 100)) : '';
-        $p_priceBreakE_minqty = isset($result->custitem54) ? $result->custitem54 : '';
+        $p_pricebreake_minqty = isset($result->custitem54) ? $result->custitem54 : '';
         $p_pricebreake = isset($result->custitem59) ? $p_price - ($p_price * ($result->custitem59 / 100)) : '';
 
         $p_suppliername = $vendor_name;
@@ -471,11 +471,11 @@ public function updateProduct(Request $request)
             "p_sale_ends" => $p_sale_ends,
             "p_qtyinstock" => $p_qtyinstock,
             "p_order" => 1,
-            "p_pricebreaka_minqty" => $p_priceBreakA_minqty,
-            "p_pricebreakb_minqty" => $p_priceBreakB_minqty,
-            "p_pricebreakc_minqty" => $p_priceBreakC_minqty,
-            "p_pricebreakd_minqty" => $p_priceBreakD_minqty,
-            "p_pricebreake_minqty" => $p_priceBreakE_minqty,
+            "p_pricebreaka_minqty" => $p_pricebreaka_minqty,
+            "p_pricebreakb_minqty" => $p_pricebreakb_minqty,
+            "p_pricebreakc_minqty" => $p_pricebreakc_minqty,
+            "p_pricebreakd_minqty" => $p_pricebreakd_minqty,
+            "p_pricebreake_minqty" => $p_pricebreake_minqty,
             "p_pricebreakb"        => $p_pricebreakb,
             "p_pricebreakc"        => $p_pricebreakc,
             "p_pricebreakd"        => $p_pricebreakd,
@@ -627,11 +627,11 @@ public function updateProduct(Request $request)
                 $content_utf8 = mb_convert_encoding($content, 'UTF-8', 'ISO-8859-1');
                 $result= json_decode($content_utf8, true);
 
-                if($result) {
-                    Log::debug('Result ', ['result' => $result]);
-                } else {
-                Log::info( 'Something Went Wrong in the Conversion');
-                }
+                // if($result) {
+                //     Log::debug('Result ', ['result' => $result]);
+                // } else {
+                // Log::info( 'Something Went Wrong in the Conversion');
+                // }
 
                 if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
                     $preparedData["p_groupid"] = $groupId;
@@ -641,7 +641,7 @@ public function updateProduct(Request $request)
                 }
                 $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                 $result = $response->json();
-                Log::info("Success for website with groupId: $groupId");
+                // Log::info("Success for website with groupId: $groupId");
                 } else {
                     $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
                     $result = $response->json();
