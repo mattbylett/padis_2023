@@ -619,8 +619,7 @@ public function updateProduct(Request $request)
     function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null)     
     {
         if ($displayFlag) {
-                $preparedData = json_encode($data); // Copying the data
-                // $preparedData = $data; // Copying the data
+                $preparedData = $data; // Copying the data
                 Log::debug('PreparedData: ', ['data' => $preparedData]);
                 // Get product details first  from Website World
                 $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
