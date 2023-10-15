@@ -625,6 +625,9 @@ public function updateProduct(Request $request)
 
                 $preparedDataToSend = ['data' => $preparedData];
                 $jsonData = json_encode($preparedDataToSend);
+
+                Log::debug('jsonData: ', ['json' => $jsonData]);
+                
                 // Get product details first  from Website World
                 $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
                 $content = $response->getBody();  // Assuming $response is your response object.
