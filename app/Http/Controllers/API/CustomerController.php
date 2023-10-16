@@ -52,13 +52,16 @@ class CustomerController extends Controller
         //Subsctiptions Relate to Opt in and  Opt Out - We need to handle this first
         $mbr_level = '0'; // set to unsubscribe by default
         $subs = $request->input('subscriptions');
-        foreach ($subs as $subscription) {
-            // check to see if Newsletter For  Website World is set  and If So  Set mbr_level to  subscribed
-            if ($subscription['id'] == 14 && $subscription['value'] == true) {
-                $mbr_level = 135;
-            break;  // as soon as its set - move on
-            }
-        }  
+        if ($subs) {
+            foreach ($subs as $subscription) {
+                // check to see if Newsletter For  Website World is set  and If So  Set mbr_level to  subscribed
+                if ($subscription['id'] == 14 && $subscription['value'] == true) {
+                    $mbr_level = 135;
+                break;  // as soon as its set - move on
+                }
+            } 
+        }
+ 
         // if mbr_level is still zero then unsuubscribe in Website World
         if($mbr_level == 0) {
             $unsubscribe = 
