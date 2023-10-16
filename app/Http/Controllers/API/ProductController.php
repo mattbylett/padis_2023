@@ -129,8 +129,9 @@ public function featuredProducts(Request $request)
             Log::error($th->getMessage());
         }
     }
-
     Log::debug('Updated Products: ' . json_encode($updatedProducts));
+    // Clear the Cache
+    $clearCache =$http_insinc->get("{base_uri}/apistatus?dopublish");
     
     return;
 }
@@ -199,6 +200,8 @@ public function updateProduct(Request $request)
         $p_pricebreakd = isset($result->custitem58) ? $p_price - ($p_price * ($result->custitem58 / 100)) : 0;
         $p_pricebreake_minqty = isset($result->custitem54) ? $result->custitem54 : 0;
         $p_pricebreake = isset($result->custitem59) ? $p_price - ($p_price * ($result->custitem59 / 100)) : 0;
+        $p_pricebreakf_minqty = isset($result->custitem55) ? $result->custitem55 : 0;
+        $p_pricebreakf = isset($result->custitem60) ? $p_price - ($p_price * ($result->custitem60 / 100)) : 0;
 
         $p_suppliername = $vendor_name;
 
