@@ -479,11 +479,13 @@ public function updateProduct(Request $request)
             "p_pricebreakc_minqty" => $p_pricebreakc_minqty,
             "p_pricebreakd_minqty" => $p_pricebreakd_minqty,
             "p_pricebreake_minqty" => $p_pricebreake_minqty,
+            "p_pricebreakf_minqty" => $p_pricebreakf_minqty,
+            "p_pricebreaka"        => $p_pricebreaka,
             "p_pricebreakb"        => $p_pricebreakb,
             "p_pricebreakc"        => $p_pricebreakc,
             "p_pricebreakd"        => $p_pricebreakd,
             "p_pricebreake"        => $p_pricebreake,
-            "p_pricebreaka"        => $p_pricebreaka,
+            "p_pricebreakf"        => $p_pricebreakf,
         ];
 
         Log::info('Data For Website World : ' . json_encode($data));
