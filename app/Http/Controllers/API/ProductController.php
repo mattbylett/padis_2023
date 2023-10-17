@@ -131,7 +131,7 @@ public function featuredProducts(Request $request)
     }
     Log::debug('Updated Products: ' . json_encode($updatedProducts));
     // Clear the Cache
-    $clearCache =$http_insinc->get("{base_uri}/apistatus?dopublish");
+    $clearCache = $http_insinc->get("{$base_uri}/apistatus?dopublish");
     
     return;
 }
