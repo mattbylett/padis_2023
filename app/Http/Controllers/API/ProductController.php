@@ -634,8 +634,8 @@ public function updateProduct(Request $request)
     {
         if ($displayFlag) {
                 $preparedData = $data; // Copying the data
-                Log::debug('PreparedData: ', ['data' => $preparedData]);
-
+               // Log::debug('PreparedData: ', ['data' => $preparedData]);
+            Log::info('Updating Product');
                 // Get product details first  from Website World
                 $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
                 $content = $response->getBody();  // Assuming $response is your response object.
