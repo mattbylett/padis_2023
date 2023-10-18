@@ -593,32 +593,32 @@ public function updateProduct(Request $request)
 
         $base_uri = config("services.website.base_uri");
 
-        $website_display_hand = boolval($request->input('custitem19', false));
+        $website_display_hand = boolval($result->custitem19);
         $this->processWebsiteData($website_display_hand, $http_hand, $base_uri, $p_code, $data, $type, "209709", $removeData);
         Log::debug('Display: ', ["Hand Sanitiser - " => $website_display_hand]);
 
-        $website_display_car = boolval($request->input('custitem20', false));
+        $website_display_car = boolval($result->custitem20);
         $this->processWebsiteData($website_display_car, $http_car, $base_uri, $p_code, $data, $type, "209707", $removeData);
         Log::debug('Display: ', ["Car Supplies - " => $website_display_car]);  
         
         Log::debug('Raw custitem19: ', ["Packnet - " => $result->custitem18]);
-        $website_display_packnet = boolval($request->input('custitem18', false));
+        $website_display_packnet = boolval($result->custitem18);
         $this->processWebsiteData($website_display_packnet, $http_packnet, $base_uri,  $p_code, $data, $type, "209710", $removeData);
         Log::debug('Display: ', ["Packnet - " => $website_display_packnet]);
 
-        $website_display_cafe = boolval($request->input('custitem15', false));
+        $website_display_cafe = boolval($result->custitem15);
         $this->processWebsiteData($website_display_cafe, $http_cafe, $base_uri,  $p_code, $data, $type, "209706", $removeData);
         Log::debug('Display: ', ["Cafe Supplies - " => $website_display_cafe]);
 
-        $website_display_rubbish = boolval($request->input('custitem17', false));
+        $website_display_rubbish = boolval($result->custitem17);
         $this->processWebsiteData($website_display_rubbish, $http_rubbish, $base_uri,  $p_code, $data, $type, "209711", $removeData);
         Log::debug('Display: ', ["Rubbish - " => $website_display_rubbish]);
 
-        $website_display_disposable = boolval($request->input('custitem16', false));
+        $website_display_disposable = boolval($result->custitem16);
         $this->processWebsiteData($website_display_disposable, $http_gloves, $base_uri,  $p_code, $data, $type, "209708", $removeData);
         Log::debug('Display: ', ["Disposable Gloves - " => $website_display_disposable]);
 
-        $website_display_soluclean = boolval($request->input('custitem43', false));
+        $website_display_soluclean = boolval($result->custitem43);
         $this->processWebsiteData($website_display_soluclean, $http_soluclean, $base_uri,  $p_code, $data, $type, "244504", $removeData);
         Log::debug('Display: ', ["Soluclean - " => $website_display_soluclean]);
 
