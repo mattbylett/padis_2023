@@ -547,8 +547,8 @@ public function updateProduct(Request $request)
             "p_code" => $p_code,
             "p_order" => "-999",
         ];
-        // Creating Connection Strings to the Website World API
 
+        // Creating Connection Strings to the Website World API
         $http_cafe = Http::withHeaders([
             "apiID" => config("services.website.cafe_api_id"),
             "apiKey" => config("services.website.cafe_api_key"),
@@ -599,11 +599,17 @@ public function updateProduct(Request $request)
 
         $website_display_car = boolval($request->input('custitem20', false));
         $this->processWebsiteData($website_display_car, $http_car, $base_uri, $p_code, $data, $type, "209707", $removeData);
-        Log::debug('Display: ', ["Car Supplies - " => $website_display_car]);     
+        Log::debug('Display: ', ["Car Supplies - " => $website_display_car]);  
+        
+        if(isset($request->custitem18)){
+            $website_display_packnet = TRUE;
+        $this->processWebsiteData($website_display_packnet, $http_packnet, $base_uri,  $p_code, $data, $type, "209710", $removeData);
+        Log::debug('Display Conditional: ', ["Packnet - " => $website_display_packnet]);
+        }
 
         $website_display_packnet = boolval($request->input('custitem18', false));
         $this->processWebsiteData($website_display_packnet, $http_packnet, $base_uri,  $p_code, $data, $type, "209710", $removeData);
-        Log::debug('Display: ', ["Packnet - " => $website_display_packnet]);
+        Log::debug('Original Display: ', ["Packnet - " => $website_display_packnet]);
 
         $website_display_cafe = boolval($request->input('custitem15', false));
         $this->processWebsiteData($website_display_cafe, $http_cafe, $base_uri,  $p_code, $data, $type, "209706", $removeData);
