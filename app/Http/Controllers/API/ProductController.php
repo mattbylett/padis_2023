@@ -601,15 +601,10 @@ public function updateProduct(Request $request)
         $this->processWebsiteData($website_display_car, $http_car, $base_uri, $p_code, $data, $type, "209707", $removeData);
         Log::debug('Display: ', ["Car Supplies - " => $website_display_car]);  
         
-        if(isset($request->custitem18)){
-            $website_display_packnet = TRUE;
-        $this->processWebsiteData($website_display_packnet, $http_packnet, $base_uri,  $p_code, $data, $type, "209710", $removeData);
-        Log::debug('Display Conditional: ', ["Packnet - " => $website_display_packnet]);
-        }
-
+        Log::debug('Raw custitem19: ', ["Packnet - " => $request->input('custitem18')]);
         $website_display_packnet = boolval($request->input('custitem18', false));
         $this->processWebsiteData($website_display_packnet, $http_packnet, $base_uri,  $p_code, $data, $type, "209710", $removeData);
-        Log::debug('Original Display: ', ["Packnet - " => $website_display_packnet]);
+        Log::debug('Display: ', ["Packnet - " => $website_display_packnet]);
 
         $website_display_cafe = boolval($request->input('custitem15', false));
         $this->processWebsiteData($website_display_cafe, $http_cafe, $base_uri,  $p_code, $data, $type, "209706", $removeData);
