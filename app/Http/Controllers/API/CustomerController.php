@@ -162,7 +162,8 @@ class CustomerController extends Controller
                    ["name" => $priceCategory]   
                 ],
             'mbr_discount' => $discount,
-            'mbr_reference' => $id
+            'mbr_reference' => $id,
+            'mbr_level' => $mbr_level
         ];
 
         Log::info('Logging The Customer Data From Netsuite');
