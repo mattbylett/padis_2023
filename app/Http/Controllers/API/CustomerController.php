@@ -52,6 +52,8 @@ class CustomerController extends Controller
         //Subsctiptions Relate to Opt in and  Opt Out - We need to handle this first
         $mbr_level = '0'; // set to unsubscribe by default
         $subs = $request->input('subscriptions');
+
+        Log::debug('Subscriptions', ['Subscription : ' => $subs]);
         if ($subs) {
             foreach ($subs as $subscription) {
                 // check to see if Newsletter For  Website World is set  and If So  Set mbr_level to  subscribed
