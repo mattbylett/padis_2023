@@ -485,7 +485,6 @@ public function updateProduct(Request $request)
             "p_sale_ends"          => $p_sale_ends,
             "p_qtyinstock"         => $p_qtyinstock,
             "p_order"              => 1,
-            "p_groupid"            => $weekly_specials_insinc,
             "p_pricebreaka_minqty" => $p_pricebreaka_minqty,
             "p_pricebreakb_minqty" => $p_pricebreakb_minqty,
             "p_pricebreakc_minqty" => $p_pricebreakc_minqty,
@@ -507,7 +506,8 @@ public function updateProduct(Request $request)
             "p_priceg"             => $p_priceg,
             "p_priceh"             => $p_priceh,
             'p_metakeywords'       => $p_metakeywords,
-            "p_metatitle"          => true
+            "p_metatitle"          => true,
+            "p_groupid"            => $weekly_specials_insinc
         ];
 
      //   Log::info('Data For Website World : ' . json_encode($data));
@@ -563,7 +563,6 @@ public function updateProduct(Request $request)
         if ($p_additionaltext != "") {
             $data["p_additionaltext"] = $p_additionaltext;
         }
-
 
         $removeData = [
             "p_code" => $p_code,
@@ -676,10 +675,12 @@ public function updateProduct(Request $request)
                 if ($additionalText) {
                     $preparedData["p_additionaltext"] = $additionalText;
                 }
+
+
                 $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                 $result = $response->json();
 //Log::debug('Result: ', ['Product Updated Successfully: ' => $result['data']['p_code']]);
-                //Log::debug('Result: ', ['Product Updated Successfully: ' => $result]);
+                Log::debug('Result: ', ['Product Updated Successfully: ' => $result]);
                 // Log::info("Success for website with groupId: $groupId");
                 } else {
                     $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
