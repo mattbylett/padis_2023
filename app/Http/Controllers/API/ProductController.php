@@ -177,19 +177,19 @@ public function updateProduct(Request $request)
 
         $p_code = $productInfo->itemId;
      
-        $weekly_specials_insinc = '';
-        if (isset($result->custitem27)) {
-            if ($result->custitem27) {
-                $weekly_specials_insinc = 124022;
-            }
-        }
+        // $weekly_specials_insinc = '';
+        // if (isset($result->custitem27)) {
+        //     if ($result->custitem27) {
+        //         $weekly_specials_insinc = 124022;
+        //     }
+        // }
         // Getting the Insinc Site Ready For Additional Text
 
         $website_display_insinc = false;
         if (isset($result->custitem14)) {
             if ($result->custitem14) {
                 $website_display_insinc = true;
-                $groupId = 'Main Page';
+                $groupId = 0;
                 if($type == 'create') {
                     $groupId = "209705"; // Insinc New Products For Create
                 }
