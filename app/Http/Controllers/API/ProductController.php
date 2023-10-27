@@ -676,7 +676,7 @@ public function updateProduct(Request $request)
                 // Log::info( 'Something Went Wrong in the Conversion');
                 // }
 
-                if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
+                if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0) || $groupId != '') {
                     $preparedData["p_groupid"] = $groupId;
                 }
                 if ($additionalText) {
