@@ -221,12 +221,11 @@ public function updateProduct(Request $request)
             $p_suppliercode = $result->vendorName;
         }
 
-        $p_showbuybutton = true;
-        if (isset($result->custitem13)) {
-            if ($result->custitem13) {
-                $p_showbuybutton = $result->custitem13;
-            }
-        }
+        // if (isset($result->custitem13)) {
+        //     if ($result->custitem13) {
+        //         $p_showbuybutton = $result->custitem13;
+        //     }
+        // }
 
         $p_freight_exclude = false;
         if (isset($result->custitem24)) {
@@ -461,9 +460,9 @@ public function updateProduct(Request $request)
                 $p_showbuybutton = true;
             }
         }
-        $p_showbuybutton = true;
-        if (isset($result->custitem13)) {
-            if ($result->custitem13) {
+
+        if (isset($result->custitem35)) {
+            if ($result->custitem35) {
                 $p_showbuybutton = false;
             }
         }
@@ -680,7 +679,7 @@ public function updateProduct(Request $request)
                 $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                 $result = $response->json();
 //Log::debug('Result: ', ['Product Updated Successfully: ' => $result['data']['p_code']]);
-                Log::debug('Result: ', ['Product Updated Successfully: ' => $result]);
+               // Log::debug('Result: ', ['Product Updated Successfully: ' => $result]);
                 // Log::info("Success for website with groupId: $groupId");
                 } else {
                     $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
