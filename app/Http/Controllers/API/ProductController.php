@@ -460,7 +460,7 @@ public function updateProduct(Request $request)
                 $p_showbuybutton = true;
             }
         }
-
+        $p_showbuybutton = true;
         if (isset($result->custitem35)) {
             if ($result->custitem35) {
                 $p_showbuybutton = false;
