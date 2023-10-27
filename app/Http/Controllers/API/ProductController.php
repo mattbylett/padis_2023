@@ -176,13 +176,28 @@ public function updateProduct(Request $request)
         $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
 
         $p_code = $productInfo->itemId;
-
+     
+        $weekly_specials_insinc = '';
+        if (isset($result->custitem27)) {
+            if ($result->custitem27) {
+                $weekly_specials_insinc = 124022;
+            }
+        }
         // Getting the Insinc Site Ready For Additional Text
 
         $website_display_insinc = false;
         if (isset($result->custitem14)) {
             if ($result->custitem14) {
                 $website_display_insinc = true;
+                $groupId = '';
+                if($type == 'create') {
+                    $groupId = "209705"; // Insinc New Products For Create
+                }
+            if (isset($result->custitem27)) {
+                if ($result->custitem27) {
+                    $groupId = 124022; // Weekly Specials
+                }
+            }
             }
         }
 
@@ -354,13 +369,6 @@ public function updateProduct(Request $request)
             }
         }
 
-        $weekly_specials_insinc = 0;
-        if (isset($result->custitem27)) {
-            if ($result->custitem27) {
-                $weekly_specials_insinc = 124022;
-            }
-        }
-
         $p_promote = "";
         if (isset($result->custitem25)) {
             if ($result->custitem25) {
@@ -506,7 +514,6 @@ public function updateProduct(Request $request)
             "p_priceh"             => $p_priceh,
             'p_metakeywords'       => $p_metakeywords,
             "p_metatitle"          => true,
-            "p_groupid"            => $weekly_specials_insinc
         ];
 
      //   Log::info('Data For Website World : ' . json_encode($data));
@@ -642,7 +649,8 @@ public function updateProduct(Request $request)
         $this->processWebsiteData($website_display_soluclean, $http_soluclean, $base_uri,  $p_code, $data, $type, "244504", $removeData);
        // Log::debug('Display: ', ["Soluclean - " => $website_display_soluclean]);
 
-        $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
+        $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, $groupId, $removeData);
+        // $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
 
         Log::info('Data Processing Complete!');
 
