@@ -513,7 +513,6 @@ public function updateProduct(Request $request)
             "p_priceg"             => $p_priceg,
             "p_priceh"             => $p_priceh,
             'p_metakeywords'       => $p_metakeywords,
-            "p_metatitle"          => true,
         ];
 
      //   Log::info('Data For Website World : ' . json_encode($data));
@@ -688,7 +687,7 @@ public function updateProduct(Request $request)
 
                 $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                 $result = $response->json();
-//Log::debug('Result: ', ['Product Updated Successfully: ' => $result['data']['p_code']]);
+                Log::debug('Result: ', ['Product Updated Successfully: ' => $preparedData['p_code']]);
                // Log::debug('Result: ', ['Product Updated Successfully: ' => $result]);
                 // Log::info("Success for website with groupId: $groupId");
                 } else {
