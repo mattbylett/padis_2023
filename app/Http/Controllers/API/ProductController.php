@@ -678,7 +678,7 @@ public function updateProduct(Request $request)
                 }
                 $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                 $result = $response->json();
-Log::debug('Result: ', ['Product Updated Successfully: ' => $result['data']['p_code']]);
+//Log::debug('Result: ', ['Product Updated Successfully: ' => $result['data']['p_code']]);
                 //Log::debug('Result: ', ['Product Updated Successfully: ' => $result]);
                 // Log::info("Success for website with groupId: $groupId");
                 } else {
