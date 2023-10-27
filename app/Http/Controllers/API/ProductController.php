@@ -190,6 +190,15 @@ public function updateProduct(Request $request)
 
         $p_price = $base_price;
 
+        $p_pricea = isset($result->custitem61) ? $result->custitem61 : 0;
+        $p_priceb = isset($result->custitem62) ? $result->custitem62 : 0;
+        $p_pricec = isset($result->custitem63) ? $result->custitem63 : 0;
+        $p_priced = isset($result->custitem64) ? $result->custitem64 : 0;
+        $p_pricee = isset($result->custitem65) ? $result->custitem65 : 0;
+        $p_pricef = isset($result->custitem66) ? $result->custitem66 : 0;
+        $p_priceg = isset($result->custitem67) ? $result->custitem67 : 0;
+        $p_priceh = isset($result->custitem68) ? $result->custitem68 : 0;
+
         $p_pricebreaka_minqty = isset($result->custitem49) ? $result->custitem49 : 0;
         $p_pricebreaka = isset($result->custitem50) ? $p_price - ($p_price * ($result->custitem50 / 100)) : 0;
         $p_pricebreakb_minqty = isset($result->custitem51) ? $result->custitem51 : 0;
@@ -204,6 +213,8 @@ public function updateProduct(Request $request)
         $p_pricebreakf = isset($result->custitem60) ? $p_price - ($p_price * ($result->custitem60 / 100)) : 0;
 
         $p_suppliername = $vendor_name;
+
+        $p_metakeywords = isset($result->custitem48) ? $result->custitem48 : '';
 
         $p_suppliercode = "";
         if (isset($result->vendorName)) {
@@ -450,7 +461,7 @@ public function updateProduct(Request $request)
                 $p_showbuybutton = true;
             }
         }
-
+        $p_showbuybutton = true;
         if (isset($result->custitem13)) {
             if ($result->custitem13) {
                 $p_showbuybutton = false;
@@ -458,22 +469,23 @@ public function updateProduct(Request $request)
         }
 
         $data = [
-            "p_code" => $p_code,
-            "p_suppliercode" => $p_suppliercode,
-            "p_suppliername" => $p_suppliername,
-            "p_showbuybutton" => $p_showbuybutton,
-            "p_freight_exclude" => $p_freight_exclude,
-            "p_shipping" => $p_shipping,
-            "p_details" => $p_details,
-            "p_promote" => $p_promote,
-            "p_price" => $p_price,
-            "p_title" => $p_title,
-            "p_outofstockmessage" => $p_outofstockmessage,
-            "p_supplierprice" => $p_supplierprice,
-            "p_priceprediscount" => $p_priceprediscount,
-            "p_sale_ends" => $p_sale_ends,
-            "p_qtyinstock" => $p_qtyinstock,
-            "p_order" => 1,
+            "p_code"               => $p_code,
+            "p_suppliercode"       => $p_suppliercode,
+            "p_suppliername"       => $p_suppliername,
+            "p_showbuybutton"      => $p_showbuybutton,
+            "p_freight_exclude"    => $p_freight_exclude,
+            "p_shipping"           => $p_shipping,
+            "p_details"            => $p_details,
+            "p_promote"            => $p_promote,
+            "p_price"              => $p_price,
+            "p_title"              => $p_title,
+            "p_outofstockmessage"  => $p_outofstockmessage,
+            "p_supplierprice"      => $p_supplierprice,
+            "p_priceprediscount"   => $p_priceprediscount,
+            "p_sale_ends"          => $p_sale_ends,
+            "p_qtyinstock"         => $p_qtyinstock,
+            "p_order"              => 1,
+            "p_groupid"            => $weekly_specials_insinc,
             "p_pricebreaka_minqty" => $p_pricebreaka_minqty,
             "p_pricebreakb_minqty" => $p_pricebreakb_minqty,
             "p_pricebreakc_minqty" => $p_pricebreakc_minqty,
@@ -486,6 +498,16 @@ public function updateProduct(Request $request)
             "p_pricebreakd"        => $p_pricebreakd,
             "p_pricebreake"        => $p_pricebreake,
             "p_pricebreakf"        => $p_pricebreakf,
+            "p_pricea"             => $p_pricea,
+            "p_priceb"             => $p_priceb,
+            "p_pricec"             => $p_pricec,
+            "p_priced"             => $p_priced,
+            "p_pricee"             => $p_pricee,
+            "p_pricef"             => $p_pricef,
+            "p_priceg"             => $p_priceg,
+            "p_priceh"             => $p_priceh,
+            'p_metakeywords'       => $p_metakeywords,
+            "p_metatitle"          => true
         ];
 
      //   Log::info('Data For Website World : ' . json_encode($data));

@@ -50,7 +50,7 @@ class CustomerController extends Controller
         $mbrGroups = $request->input('category');
         $base_uri = config("services.website.base_uri");
         //Subsctiptions Relate to Opt in and  Opt Out - We need to handle this first
-        $mbr_level = '0'; // set to unsubscribe by default
+        $mbr_level = 100; // set to unsubscribe by default
         $subs = $request->input('subscriptions');
 
         Log::debug('Subscriptions', ['Subscription : ' => $subs]);
@@ -65,12 +65,12 @@ class CustomerController extends Controller
         }
  
         // if mbr_level is still zero then unsuubscribe in Website World
-        if($mbr_level == 0) {
+        if($mbr_level == 100) {
             $unsubscribe = 
             [
                 'mbr_reference' => $id,
                 'mbr_email' => $mbrEmail,
-                'mbr_level' => 0
+                'mbr_level' => 100
             ];
           // Call the private function to post Subscription details  
             $url = "{$base_uri}/member?mbr_reference={$id}";
