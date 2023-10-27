@@ -189,7 +189,7 @@ public function updateProduct(Request $request)
         if (isset($result->custitem14)) {
             if ($result->custitem14) {
                 $website_display_insinc = true;
-                $groupId = '';
+                $groupId = 'Main Page';
                 if($type == 'create') {
                     $groupId = "209705"; // Insinc New Products For Create
                 }
@@ -676,7 +676,7 @@ public function updateProduct(Request $request)
                 // Log::info( 'Something Went Wrong in the Conversion');
                 // }
 
-                if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0) || $groupId != '') {
+                if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0) ) {
                     $preparedData["p_groupid"] = $groupId;
                 }
                 if ($additionalText) {
