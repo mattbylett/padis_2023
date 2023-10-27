@@ -678,6 +678,8 @@ public function updateProduct(Request $request)
 
                 if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0) ) {
                     $preparedData["p_groupid"] = $groupId;
+                } else {
+                    $preparedData["p_groupid"] = "0";
                 }
                 if ($additionalText) {
                     $preparedData["p_additionaltext"] = $additionalText;
