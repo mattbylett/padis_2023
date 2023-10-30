@@ -378,7 +378,7 @@ public function updateProduct(Request $request)
         }
 
         $p_groupid8 = 0;
-        if($weekly_specials_insinc != "") {
+        if($weekly_specials_insinc != 0) {
             $p_groupid8 = $weekly_specials_insinc;
         }
 
