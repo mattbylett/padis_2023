@@ -587,7 +587,7 @@ public function updateProduct(Request $request)
         }
 
         if ($p_promote != "" ) {
-            "p_groupid" = $weekly_specials_insinc,
+           $data["p_groupid"] = $weekly_specials_insinc,
             "promotions" => [
                 "promo_tag" : "Home Page - On Sale",
                 "promo_order" : 1
