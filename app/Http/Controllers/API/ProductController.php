@@ -176,29 +176,13 @@ public function updateProduct(Request $request)
         $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
 
         $p_code = $productInfo->itemId;
-     
-        // $weekly_specials_insinc = '';
-        // if (isset($result->custitem27)) {
-        //     if ($result->custitem27) {
-        //         $weekly_specials_insinc = 124022;
-        //     }
-        // }
         // Getting the Insinc Site Ready For Additional Text
 
         $website_display_insinc = false;
         if (isset($result->custitem14)) {
             if ($result->custitem14) {
                 $website_display_insinc = true;
-                // $groupId = '';
-                // if($type == 'create') {
-                //     $groupId = "209705"; // Insinc New Products For Create
-                }
-            // if (isset($result->custitem27)) {
-            //     if ($result->custitem27) {
-            //         $groupId = 124022; // Weekly Specials
-            //     }
-            // }
-            // }
+            }
         }
 
         // Mapping The Fields From Netsuite to Website World
@@ -235,12 +219,6 @@ public function updateProduct(Request $request)
         if (isset($result->vendorName)) {
             $p_suppliercode = $result->vendorName;
         }
-
-        // if (isset($result->custitem13)) {
-        //     if ($result->custitem13) {
-        //         $p_showbuybutton = $result->custitem13;
-        //     }
-        // }
 
         $p_freight_exclude = false;
         if (isset($result->custitem24)) {
@@ -589,13 +567,13 @@ public function updateProduct(Request $request)
         if ($p_additionalText_insinc != "") {
             $data["p_additionaltext"] = $p_additionalText_insinc;
         }
-        Log::debug("AdditionalText: ", ["Data: " => $p_additionalText_insinc]);
+
         $removeData = [
             "p_code" => $p_code,
             "p_order" => "-999",
         ];
 
-    Log::info('Data For Website World : ' . json_encode($data));
+ //   Log::info('Data For Website World : ' . json_encode($data));
 
         // Creating Connection Strings to the Website World API
         $http_cafe = Http::withHeaders([
@@ -682,45 +660,27 @@ public function updateProduct(Request $request)
     // Create a reusable function to handle The Website World Conections
     function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null)     
     {
-        Log::debug("AdditionalText: ", ["Passed In: " => $additionalText]);
         if ($displayFlag) {
                 $preparedData = $data; // Copying the data
-               // Log::debug('PreparedData: ', ['data' => $preparedData]);
-            Log::info('Updating Product');
                 // Get product details first  from Website World
                 $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
                 $content = $response->getBody();  // Assuming $response is your response object.
                 $content_utf8 = mb_convert_encoding($content, 'UTF-8', 'ISO-8859-1');
                 $result= json_decode($content_utf8, true);
 
-                // if($result) {
-                //     Log::debug('Result ', ['result' => $result]);
-                // } else {
-                // Log::info( 'Something Went Wrong in the Conversion');
-                // }
-
                 if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0) ) {
                     $preparedData["p_groupid"] = $groupId;
-                    $preparedData["p_additionaltext"] = $additionalText;
+                    // $preparedData["p_additionaltext"] = $additionalText;
                 } 
                 
                 if ($additionalText) {
                     $preparedData["p_additionaltext"] = $additionalText;
                 }
 
-                Log::debug("AdditionalText: ", ["Update: " => $additionalText]);
-
-                // $response = $httpInstance->post("{$base_uri}/product", $preparedData);
-                // $result = $response->json();
-                // Log::debug('Result: ', ['Product Updated Successfully: ' => $preparedData['p_code']]);
-                Log::info('Pereparing Post Request');
                 try {
-                Log::info('Entered The Try Block');
                     $response = $httpInstance->post("{$base_uri}/product", $preparedData);
-                    Log::info('Request Made');
                     if ($response->successful()) {
                         $result = $response->json();
-                        Log::debug('Result: ', ['Product Updated Successfully: ' => $preparedData['p_code']]);
                     } else {
                         Log::error('HTTP request failed: ', ['status' => $response->status(), 'body' => $response->body()]);
                     }
@@ -728,9 +688,6 @@ public function updateProduct(Request $request)
                     Log::error('Error: ', ['message' => $e->getMessage()]);
                 }
 
-
-               // Log::debug('Result: ', ['Product Updated Successfully: ' => $result]);
-                // Log::info("Success for website with groupId: $groupId");
                 } else {
                     $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
                     $result = $response->json();
