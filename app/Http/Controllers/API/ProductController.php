@@ -388,7 +388,7 @@ public function updateProduct(Request $request)
 
         if (isset($result->custitem27)) {
             if($result->custitem27) {
-            $p_promote = $weekly_specials_insinc
+            $p_promote = $weekly_specials_insinc;
             }
         }
 
