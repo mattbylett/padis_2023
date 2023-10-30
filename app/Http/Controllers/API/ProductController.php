@@ -499,7 +499,6 @@ public function updateProduct(Request $request)
             "p_freight_exclude"    => $p_freight_exclude,
             "p_shipping"           => $p_shipping,
             "p_details"            => $p_details,
-            "p_promote"            => $p_promote,
             "p_price"              => $p_price,
             "p_title"              => $p_title,
             "p_outofstockmessage"  => $p_outofstockmessage,
@@ -529,7 +528,8 @@ public function updateProduct(Request $request)
             "p_priceg"             => $p_priceg,
             "p_priceh"             => $p_priceh,
             'p_metakeywords'       => $p_metakeywords,
-            "p_groupid8"           => $weekly_specials_insinc
+            "p_groupid8"           => $weekly_specials_insinc,
+            
         ];
 
        Log::info('Data For Website World : ' . json_encode($data));
@@ -586,9 +586,13 @@ public function updateProduct(Request $request)
             $data["p_additionaltext"] = $p_additionaltext;
         }
 
-        // if ($weekly_specials_insinc != "") {
-        //     $data['p_promote'] = $weekly_specials_insinc;
-        // }
+        if ($p_promote != "" ) {
+            "p_groupid" => $weekly_specials_insinc,
+            "promotions" => [
+                "promo_tag" : "Home Page - On Sale",
+                "promo_order" : 1
+            ];
+        }
 
         $removeData = [
             "p_code" => $p_code,
