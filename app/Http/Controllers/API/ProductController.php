@@ -393,7 +393,7 @@ public function updateProduct(Request $request)
         if (isset($result->custitem42)) {
             if ($result->custitem42) {
                 $p_promote = "Home Page - Featured";                
-               // $weekly_specials_insinc = 124022;
+                $weekly_specials_insinc = 124022;
             }
         }
 
@@ -575,6 +575,10 @@ public function updateProduct(Request $request)
 
         if ($p_additionaltext != "") {
             $data["p_additionaltext"] = $p_additionaltext;
+        }
+
+        if ($weekly_specials_insinc != "") {
+            $data['p_promote'] => $weekly_specials_insinc;
         }
 
         $removeData = [
