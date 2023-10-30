@@ -386,7 +386,7 @@ public function updateProduct(Request $request)
             }
         }
 
-        if isset($result->custitem27) {
+        if (isset($result->custitem27)) {
             if($result->custitem27) {
                 $p_promote = "Home Page - On Sale";
             }
