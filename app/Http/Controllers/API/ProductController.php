@@ -682,7 +682,7 @@ public function updateProduct(Request $request)
     // Create a reusable function to handle The Website World Conections
     function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null)     
     {
-        Log::debug("AdditionalText: ", ["Passed In: " => $p_additionalText]);
+        Log::debug("AdditionalText: ", ["Passed In: " => $additionalText]);
         if ($displayFlag) {
                 $preparedData = $data; // Copying the data
                // Log::debug('PreparedData: ', ['data' => $preparedData]);
@@ -708,7 +708,7 @@ public function updateProduct(Request $request)
                     $preparedData["p_additionaltext"] = $additionalText;
                 }
 
-                Log::debug("AdditionalText: ", ["Update: " => $p_additionalText]);
+                Log::debug("AdditionalText: ", ["Update: " => $additionalText]);
 
                 // $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                 // $result = $response->json();
