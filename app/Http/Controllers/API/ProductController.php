@@ -377,19 +377,18 @@ public function updateProduct(Request $request)
             }
         }
 
-        $p_groupid8 = 0;
-        if($weekly_specials_insinc != 0) {
-            $p_groupid8 = $weekly_specials_insinc;
-        }
-
-        Log::debug("groupid8", ["GroupId8: " => $p_groupid8]);
-
         Log::debug('Weekly Specials', ['Specials: ', $weekly_specials_insinc]);
 
         $p_promote = "";
         if (isset($result->custitem25)) {
             if ($result->custitem25) {
                 $p_promote = "View Cart";
+            }
+        }
+
+        if isset($result->custitem27) {
+            if($result->custitem27) {
+                $p_promote = "Home Page - On Sale"
             }
         }
 
@@ -700,17 +699,10 @@ public function updateProduct(Request $request)
                 if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0) ) {
                     $preparedData["p_groupid"] = $groupId;
                 } 
-
-                // if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0) || $groupId != '' ) {
-                //     $preparedData["p_groupid"] = $groupId;
-                // } else {
-                //     $preparedData["p_groupid"] = "0";
-                // }
                 
                 if ($additionalText) {
                     $preparedData["p_additionaltext"] = $additionalText;
                 }
-
 
                 $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                 $result = $response->json();
@@ -725,9 +717,6 @@ public function updateProduct(Request $request)
                         $result = $response->json();
                     }
             }
-
-
-
     }
     
 }
