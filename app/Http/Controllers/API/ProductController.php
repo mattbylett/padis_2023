@@ -375,7 +375,7 @@ public function updateProduct(Request $request)
             if ($result->custitem27) {
                 $weekly_specials_insinc = 124022;
             } else {
-                $weekly_specials_insinc = -9
+                $weekly_specials_insinc = -9;
             }
         }
 
