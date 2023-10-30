@@ -707,9 +707,13 @@ public function updateProduct(Request $request)
                 // Log::debug('Result: ', ['Product Updated Successfully: ' => $preparedData['p_code']]);
 
                 try {
-                    $responseundefined= $httpInstance->post("{$base_uri}/product", $preparedData);
-                    $result = $response->json();
-                    Log::debug('Result: ', ['Product Updated Successfully: ' => $preparedData['p_code']]);
+                    $response = $httpInstance->post("{$base_uri}/product", $preparedData);
+                    if ($response->successful()) {
+                        $result = $response->json();
+                        Log::debug('Result: ', ['Product Updated Successfully: ' => $preparedData['p_code']]);
+                    } else {
+                        Log::error('HTTP request failed: ', ['status' => $response->status(), 'body' => $response->body()]);
+                    }
                 } catch (\Exception $e) {
                     Log::error('Error: ', ['message' => $e->getMessage()]);
                 }
