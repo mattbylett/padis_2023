@@ -369,6 +369,14 @@ public function updateProduct(Request $request)
             }
         }
 
+
+        $weekly_specials_insinc = 0;
+        if (isset($result->custitem27)) {
+            if ($result->custitem27) {
+                $weekly_specials_insinc = 124022;
+            }
+        }
+
         $p_promote = "";
         if (isset($result->custitem25)) {
             if ($result->custitem25) {
@@ -385,7 +393,7 @@ public function updateProduct(Request $request)
         if (isset($result->custitem42)) {
             if ($result->custitem42) {
                 $p_promote = "Home Page - Featured";                
-                $weekly_specials_insinc = 124022;
+               // $weekly_specials_insinc = 124022;
             }
         }
 
