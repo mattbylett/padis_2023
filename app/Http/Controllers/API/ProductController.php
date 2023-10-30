@@ -523,7 +523,7 @@ public function updateProduct(Request $request)
             "p_priceg"             => $p_priceg,
             "p_priceh"             => $p_priceh,
             'p_metakeywords'       => $p_metakeywords,
-            "p_groupid8"            => $weekly_specials_insinc
+            "p_groupid8"           => $weekly_specials_insinc
         ];
 
        Log::info('Data For Website World : ' . json_encode($data));
