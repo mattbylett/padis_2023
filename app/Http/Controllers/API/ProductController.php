@@ -192,7 +192,7 @@ public function updateProduct(Request $request)
                 // $groupId = '';
                 // if($type == 'create') {
                 //     $groupId = "209705"; // Insinc New Products For Create
-                // }
+                }
             // if (isset($result->custitem27)) {
             //     if ($result->custitem27) {
             //         $groupId = 124022; // Weekly Specials
