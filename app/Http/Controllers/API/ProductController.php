@@ -377,6 +377,8 @@ public function updateProduct(Request $request)
             }
         }
 
+        Log::debug('Weekly Specials', ['Specials: ', $weekly_specials_insinc]);
+
         $p_promote = "";
         if (isset($result->custitem25)) {
             if ($result->custitem25) {
