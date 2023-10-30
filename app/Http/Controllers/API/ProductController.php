@@ -388,13 +388,7 @@ public function updateProduct(Request $request)
 
         if (isset($result->custitem27)) {
             if($result->custitem27) {
-            $p_promote = [
-            'promotions' => [
-                'DeleteMissingArrayElements' => true,
-                'promo_tag' => 'Home Page - On Sale',
-                'promo_order' => 1
-            ]
-        ];;
+            $p_promote = $weekly_specials_insinc
             }
         }
 
