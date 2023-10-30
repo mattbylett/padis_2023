@@ -303,42 +303,42 @@ public function updateProduct(Request $request)
             $p_supplierprice = $result->cost;
         }
 
-        $p_additionaltext = $net_website_additional_text;
-        $p_additionaltext_insinc = $net_website_additional_text;
+        $p_additionalText = $net_website_additional_text;
+        $p_additionalText_insinc = $net_website_additional_text;
         if ($website_display_insinc) {
             switch ($net_website_additional_text) {
                 case "Regular":
-                    $p_additionaltext_insinc =
+                    $p_additionalText_insinc =
                         // '<p><img src="/images/149131/Red_Leaf_-_regular_product.jpg" border="0" /></p>';
                         '<p><img src="/assets/images/Regular.jpg" border="0" /></p>';
                     break;
 
                 case "Sustainable":
-                    $p_additionaltext_insinc =
+                    $p_additionalText_insinc =
                         // '<p><img src="/images/149131/Blue_leaf_-_sustainable_product.jpg" border="0" /></p>';
                         '<p><img src="/assets/images/Sustainable.jpg" border="0" /></p>';
                     break;
 
                 case "Eco-Friendly":
-                    $p_additionaltext_insinc =
+                    $p_additionalText_insinc =
                         // '<p><img src="/images/149131/Green_leaf_-_eco_option.jpg" border="0" /></p>';
                         '<p><img src="/assets/images/Planet-Friendly.jpg" border="0" /></p>';
                     break;
 
                 case "Mixed Eco/Regular":
-                    $p_additionaltext_insinc =
+                    $p_additionalText_insinc =
                         // '<p><img src="/images/149131/Blue_leaf_-_mixed_product.png" border="0" /></p>';
                         '<p><img src="/assets/images/Mixed.jpg" border="0" /></p>';
                     break;
 
                 case "Recyclable":
-                    $p_additionaltext_insinc =
+                    $p_additionalText_insinc =
                         // '<p><img src="/images/149131/Red_Leaf_-_regular_product_recyclable.jpg" border="0" /></p>';
                         '<p><img src="/assets/images/Recyclable.jpg" border="0" /></p>';
                     break;
 
                 case "Reusable":
-                    $p_additionaltext_insinc =
+                    $p_additionalText_insinc =
                         '<p><img src="/assets/images/Reusable.jpg" border="0" /></p>';
                     break;
             }
@@ -586,10 +586,10 @@ public function updateProduct(Request $request)
             );
         }
 
-        if ($p_additionaltext != "") {
-            $data["p_additionaltext"] = $p_additionaltext;
+        if ($p_additionalText_insinc != "") {
+            $data["p_additionaltext"] = $p_additionalText_insinc;
         }
-        Log::debug("AdditionalText: ", ["Data: " => $p_additionaltext]);
+        Log::debug("AdditionalText: ", ["Data: " => $p_additionalText_insinc]);
         $removeData = [
             "p_code" => $p_code,
             "p_order" => "-999",
@@ -682,7 +682,7 @@ public function updateProduct(Request $request)
     // Create a reusable function to handle The Website World Conections
     function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null)     
     {
-        Log::debug("AdditionalText: ", ["Passed In: " => $p_additionaltext]);
+        Log::debug("AdditionalText: ", ["Passed In: " => $p_additionalText]);
         if ($displayFlag) {
                 $preparedData = $data; // Copying the data
                // Log::debug('PreparedData: ', ['data' => $preparedData]);
@@ -708,7 +708,7 @@ public function updateProduct(Request $request)
                     $preparedData["p_additionaltext"] = $additionalText;
                 }
 
-                Log::debug("AdditionalText: ", ["Update: " => $p_additionaltext]);
+                Log::debug("AdditionalText: ", ["Update: " => $p_additionalText]);
 
                 // $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                 // $result = $response->json();
