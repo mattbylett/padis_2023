@@ -649,7 +649,7 @@ public function updateProduct(Request $request)
        // Log::debug('Display: ', ["Soluclean - " => $website_display_soluclean]);
 
         // $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, $groupId, $removeData);
-        $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
+        // $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
 
         Log::info('Data Processing Complete!');
 
@@ -679,9 +679,16 @@ public function updateProduct(Request $request)
                     $preparedData["p_groupid"] = $groupId;
                 } 
 
+                // if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0) || $groupId != '' ) {
+                //     $preparedData["p_groupid"] = $groupId;
+                // } else {
+                //     $preparedData["p_groupid"] = "0";
+                // }
+                
                 if ($additionalText) {
                     $preparedData["p_additionaltext"] = $additionalText;
                 }
+
 
                 $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                 $result = $response->json();
