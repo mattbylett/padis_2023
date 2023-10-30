@@ -523,9 +523,10 @@ public function updateProduct(Request $request)
             "p_priceg"             => $p_priceg,
             "p_priceh"             => $p_priceh,
             'p_metakeywords'       => $p_metakeywords,
+            "p_promote"            => $p_promote
         ];
 
-     //   Log::info('Data For Website World : ' . json_encode($data));
+       Log::info('Data For Website World : ' . json_encode($data));
 
         if ($p_img != "") {
             $data["p_img"] = $p_img;
