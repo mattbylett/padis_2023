@@ -578,7 +578,7 @@ public function updateProduct(Request $request)
         }
 
         if ($weekly_specials_insinc != "") {
-            $data['p_promote'] => $weekly_specials_insinc;
+            $data['p_promote'] = $weekly_specials_insinc;
         }
 
         $removeData = [
