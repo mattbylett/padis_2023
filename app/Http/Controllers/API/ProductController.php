@@ -189,16 +189,16 @@ public function updateProduct(Request $request)
         if (isset($result->custitem14)) {
             if ($result->custitem14) {
                 $website_display_insinc = true;
-                $groupId = '';
-                if($type == 'create') {
-                    $groupId = "209705"; // Insinc New Products For Create
-                }
-            if (isset($result->custitem27)) {
-                if ($result->custitem27) {
-                    $groupId = 124022; // Weekly Specials
-                }
-            }
-            }
+                // $groupId = '';
+                // if($type == 'create') {
+                //     $groupId = "209705"; // Insinc New Products For Create
+                // }
+            // if (isset($result->custitem27)) {
+            //     if ($result->custitem27) {
+            //         $groupId = 124022; // Weekly Specials
+            //     }
+            // }
+            // }
         }
 
         // Mapping The Fields From Netsuite to Website World
@@ -385,7 +385,7 @@ public function updateProduct(Request $request)
         if (isset($result->custitem42)) {
             if ($result->custitem42) {
                 $p_promote = "Home Page - Featured";                
-                // $weekly_specials_insinc = 124022;
+                $weekly_specials_insinc = 124022;
             }
         }
 
@@ -648,8 +648,8 @@ public function updateProduct(Request $request)
         $this->processWebsiteData($website_display_soluclean, $http_soluclean, $base_uri,  $p_code, $data, $type, "244504", $removeData);
        // Log::debug('Display: ', ["Soluclean - " => $website_display_soluclean]);
 
-        $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, $groupId, $removeData);
-        // $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
+        // $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, $groupId, $removeData);
+        $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
 
         Log::info('Data Processing Complete!');
 
@@ -675,15 +675,13 @@ public function updateProduct(Request $request)
                 // Log::info( 'Something Went Wrong in the Conversion');
                 // }
 
-                if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0) || $groupId != '' ) {
+                if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0) ) {
                     $preparedData["p_groupid"] = $groupId;
-                } else {
-                    $preparedData["p_groupid"] = "0";
-                }
+                } 
+
                 if ($additionalText) {
                     $preparedData["p_additionaltext"] = $additionalText;
                 }
-
 
                 $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                 $result = $response->json();
