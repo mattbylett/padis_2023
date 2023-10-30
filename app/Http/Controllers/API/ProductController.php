@@ -586,14 +586,6 @@ public function updateProduct(Request $request)
             $data["p_additionaltext"] = $p_additionaltext;
         }
 
-        if ($p_promote != "" ) {
-           $data["p_groupid"] = $weekly_specials_insinc;
-            $data["promotions"] => [
-                "promo_tag" : "Home Page - On Sale",
-                "promo_order" : 1
-            ];
-        }
-
         $removeData = [
             "p_code" => $p_code,
             "p_order" => "-999",
