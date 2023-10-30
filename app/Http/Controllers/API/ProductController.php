@@ -536,7 +536,7 @@ public function updateProduct(Request $request)
             
         ];
 
-       Log::info('Data For Website World : ' . json_encode($data));
+
 
         if ($p_img != "") {
             $data["p_img"] = $p_img;
@@ -589,11 +589,13 @@ public function updateProduct(Request $request)
         if ($p_additionaltext != "") {
             $data["p_additionaltext"] = $p_additionaltext;
         }
-
+        Log::debug("AdditionalText: ", ["Data: " => $p_additionaltext]);
         $removeData = [
             "p_code" => $p_code,
             "p_order" => "-999",
         ];
+
+    Log::info('Data For Website World : ' . json_encode($data));
 
         // Creating Connection Strings to the Website World API
         $http_cafe = Http::withHeaders([
@@ -680,6 +682,7 @@ public function updateProduct(Request $request)
     // Create a reusable function to handle The Website World Conections
     function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null)     
     {
+        Log::debug("AdditionalText: ", ["Passed In: " => $p_additionaltext]);
         if ($displayFlag) {
                 $preparedData = $data; // Copying the data
                // Log::debug('PreparedData: ', ['data' => $preparedData]);
@@ -698,11 +701,14 @@ public function updateProduct(Request $request)
 
                 if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0) ) {
                     $preparedData["p_groupid"] = $groupId;
+                    $preparedData["p_additionaltext"] = $additionalText;
                 } 
                 
                 if ($additionalText) {
                     $preparedData["p_additionaltext"] = $additionalText;
                 }
+
+                Log::debug("AdditionalText: ", ["Update: " => $p_additionaltext]);
 
                 // $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                 // $result = $response->json();
