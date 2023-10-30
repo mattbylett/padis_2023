@@ -702,9 +702,19 @@ public function updateProduct(Request $request)
                     $preparedData["p_additionaltext"] = $additionalText;
                 }
 
-                $response = $httpInstance->post("{$base_uri}/product", $preparedData);
-                $result = $response->json();
-                Log::debug('Result: ', ['Product Updated Successfully: ' => $preparedData['p_code']]);
+                // $response = $httpInstance->post("{$base_uri}/product", $preparedData);
+                // $result = $response->json();
+                // Log::debug('Result: ', ['Product Updated Successfully: ' => $preparedData['p_code']]);
+
+                try {
+                    $responseundefined= $httpInstance->post("{$base_uri}/product", $preparedData);
+                    $result = $response->json();
+                    Log::debug('Result: ', ['Product Updated Successfully: ' => $preparedData['p_code']]);
+                } catch (\Exception $e) {
+                    Log::error('Error: ', ['message' => $e->getMessage()]);
+                }
+
+
                // Log::debug('Result: ', ['Product Updated Successfully: ' => $result]);
                 // Log::info("Success for website with groupId: $groupId");
                 } else {
