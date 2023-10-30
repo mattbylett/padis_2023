@@ -370,10 +370,10 @@ public function updateProduct(Request $request)
         }
 
 
-        $weekly_specials_insinc = 0;
+        $weekly_specials_insinc = "";
         if (isset($result->custitem27)) {
             if ($result->custitem27) {
-                $weekly_specials_insinc = 124022;
+                $weekly_specials_insinc = "124022";
             }
         }
 
@@ -389,6 +389,7 @@ public function updateProduct(Request $request)
         if (isset($result->custitem27)) {
             if($result->custitem27) {
             $p_promote = $weekly_specials_insinc;
+            $p_groupid8 = "124022";
             }
         }
 
