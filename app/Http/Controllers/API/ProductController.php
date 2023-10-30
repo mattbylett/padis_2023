@@ -377,6 +377,13 @@ public function updateProduct(Request $request)
             }
         }
 
+        $p_groupid8 = 0;
+        if($weekly_specials_insinc != "") {
+            $p_groupid8 = $weekly_specials_insinc;
+        }
+
+        Log::debug("groupid8", ["GroupId8: " => $p_groupid8]);
+
         Log::debug('Weekly Specials', ['Specials: ', $weekly_specials_insinc]);
 
         $p_promote = "";
@@ -523,7 +530,7 @@ public function updateProduct(Request $request)
             "p_priceg"             => $p_priceg,
             "p_priceh"             => $p_priceh,
             'p_metakeywords'       => $p_metakeywords,
-            "p_groupid8"           => $weekly_specials_insinc
+            "p_groupid8"           => $p_groupid8
         ];
 
        Log::info('Data For Website World : ' . json_encode($data));
@@ -580,9 +587,9 @@ public function updateProduct(Request $request)
             $data["p_additionaltext"] = $p_additionaltext;
         }
 
-        if ($weekly_specials_insinc != "") {
-            $data['p_promote'] = $weekly_specials_insinc;
-        }
+        // if ($weekly_specials_insinc != "") {
+        //     $data['p_promote'] = $weekly_specials_insinc;
+        // }
 
         $removeData = [
             "p_code" => $p_code,
