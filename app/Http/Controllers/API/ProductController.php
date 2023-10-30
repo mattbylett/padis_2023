@@ -705,9 +705,11 @@ public function updateProduct(Request $request)
                 // $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                 // $result = $response->json();
                 // Log::debug('Result: ', ['Product Updated Successfully: ' => $preparedData['p_code']]);
-
+                Log::info('Pereparing Post Request');
                 try {
+                Log::info('Entered The Try Block')
                     $response = $httpInstance->post("{$base_uri}/product", $preparedData);
+                    Log::info('Request Made');
                     if ($response->successful()) {
                         $result = $response->json();
                         Log::debug('Result: ', ['Product Updated Successfully: ' => $preparedData['p_code']]);
