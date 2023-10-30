@@ -668,7 +668,7 @@ public function updateProduct(Request $request)
        // Log::debug('Display: ', ["Soluclean - " => $website_display_soluclean]);
 
         // $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, $groupId, $removeData);
-        // $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
+        $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
 
         Log::info('Data Processing Complete!');
 
