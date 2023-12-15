@@ -361,16 +361,16 @@ public function updateProduct(Request $request)
 
         // Add Promotions Array
         // Initialize Promotions Array
-        $promotions = [];
+        $p_promotions = [];
 
         // Check if custItem25 is set and add to promotions
         if (isset($result->custItem25)) {
-            $promotions["View Cart"] = $result->custItem25;
+            $p_promotions["View Cart"] = $result->custItem25;
         }
 
         // Check if custItem27 is set and add to promotions
         if (isset($result->custItem27)) {
-            $promotions["Weekly Specials"] = $result->custItem27;
+            $p_promotions["Weekly Specials"] = $result->custItem27;
         }
 
         // If promotions array is empty, set p_promote to 'General'
