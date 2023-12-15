@@ -174,7 +174,7 @@ public function updateProduct(Request $request)
         } while ($net_website_additional_text === "error");
 
         $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
-
+        Log::info('Product Info', ['productInfo' => $productInfo]);
         $p_code = $productInfo->itemId;
         // Getting the Insinc Site Ready For Additional Text
 
