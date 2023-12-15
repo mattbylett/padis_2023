@@ -386,6 +386,8 @@ public function updateProduct(Request $request)
             }
         }
 
+        Log::info('isset', ['p_promote' => $p_promote]);
+
         $p_tab_video = "";
         if (isset($result->custitem33)) {
             $p_tab_video = $result->custitem33;
@@ -514,6 +516,7 @@ public function updateProduct(Request $request)
             
         ];
 
+        Log::info('Data', ['data' => $data]);
 
 
         if ($p_img != "") {
