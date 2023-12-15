@@ -359,34 +359,53 @@ public function updateProduct(Request $request)
 
         Log::debug('Weekly Specials', ['Specials: ', $weekly_specials_insinc]);
 
-        $p_promote = "General";
-        if (isset($result->custitem25)) {
-            if ($result->custitem25) {
-                $p_promote = "View Cart";
-            }
+        // Add Promotions Array
+        // Initialize Promotions Array
+        $promotions = [];
+
+        // Check if custItem25 is set and add to promotions
+        if (isset($result->custItem25)) {
+            $promotions["View Cart"] = $result->custItem25;
         }
 
-        if (isset($result->custitem27)) {
-            if($result->custitem27) {
-            $p_promote = $weekly_specials_insinc;
-            $p_groupid8 = 124022;
-            }
+        // Check if custItem27 is set and add to promotions
+        if (isset($result->custItem27)) {
+            $promotions["Weekly Specials"] = $result->custItem27;
         }
 
-        if (isset($result->custitem26)) {
-            if ($result->custitem26) {
-                $p_promote = "Order Confirm";
-            }
+        // If promotions array is empty, set p_promote to 'General'
+        if (empty($promotions)) {
+            $p_promote = 'General';
         }
 
-        if (isset($result->custitem42)) {
-            if ($result->custitem42) {
-                $p_promote = "Home Page - Featured";                
-                $weekly_specials_insinc = 124022;
-            }
-        }
+        // $p_promote = "General";
+        // if (isset($result->custitem25)) {
+        //     if ($result->custitem25) {
+        //         $p_promote = "View Cart";
+        //     }
+        // }
 
-        Log::info('isset', ['p_promote' => $p_promote]);
+        // if (isset($result->custitem27)) {
+        //     if($result->custitem27) {
+        //     $p_promote = $weekly_specials_insinc;
+        //     $p_groupid8 = 124022;
+        //     }
+        // }
+
+        // if (isset($result->custitem26)) {
+        //     if ($result->custitem26) {
+        //         $p_promote = "Order Confirm";
+        //     }
+        // }
+
+        // if (isset($result->custitem42)) {
+        //     if ($result->custitem42) {
+        //         $p_promote = "Home Page - Featured";                
+        //         $weekly_specials_insinc = 124022;
+        //     }
+        // }
+
+        // Log::info('isset', ['p_promote' => $p_promote]);
 
         $p_tab_video = "";
         if (isset($result->custitem33)) {
@@ -512,7 +531,7 @@ public function updateProduct(Request $request)
             "p_priceh"             => $p_priceh,
             'p_metakeywords'       => $p_metakeywords,
             "p_groupid8"           => $weekly_specials_insinc,
-            "p_promote"            => $p_promote
+            "p_promotions"         => $p_promotions
             
         ];
 
