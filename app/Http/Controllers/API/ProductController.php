@@ -365,22 +365,18 @@ public function updateProduct(Request $request)
         $p_promote = '';
         // Check if custItem25 is set and add to promotions
         if (isset($result->custItem25)) {
-            $promotions =
+            $promotions[] =
             [
-                'promotions' => [
                     'promo_tag' => 'View Page',
                     'promo_order' => 1
-                ]
             ];
         }
 
         // Check if custItem27 is set and add to promotions
         if (isset($result->custItem27)) {
-            $promotions = [
-                'promotions' => [
+            $promotions[] = [
                     'promo_tag' => 'Website Weekly Special',
                     'promo_order' => 1
-                ]
             ];
         }
 
