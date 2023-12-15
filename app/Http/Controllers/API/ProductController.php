@@ -361,23 +361,24 @@ public function updateProduct(Request $request)
 
         // Add Promotions Array
         // Initialize Promotions Array
-        $p_promotions = [];
-
+        $promotions = [];
+        $p_promote = '';
         // Check if custItem25 is set and add to promotions
         if (isset($result->custItem25)) {
-            $p_promotions["View Cart"] = $result->custItem25;
+            $promotions["View Cart"] = $result->custItem25;
         }
 
         // Check if custItem27 is set and add to promotions
         if (isset($result->custItem27)) {
-            $p_promotions["Weekly Specials"] = $result->custItem27;
+            $promotions["Weekly Specials"] = $result->custItem27;
         }
 
         // If promotions array is empty, set p_promote to 'General'
         if (empty($promotions)) {
             $p_promote = 'General';
         }
-
+        Log::info('promotions', ['promotions' => $promotions]);
+        Log::info('p_promote', ['p_promote' => $p_promote]);
         // $p_promote = "General";
         // if (isset($result->custitem25)) {
         //     if ($result->custitem25) {
@@ -531,7 +532,8 @@ public function updateProduct(Request $request)
             "p_priceh"             => $p_priceh,
             'p_metakeywords'       => $p_metakeywords,
             "p_groupid8"           => $weekly_specials_insinc,
-            "p_promotions"         => $p_promotions
+            "promotions"           => $promotions,
+            "p_promote"            =>  $p_promote
             
         ];
 
