@@ -178,6 +178,7 @@ public function updateProduct(Request $request)
         $p_code = $productInfo->itemId;
         // Getting the Insinc Site Ready For Additional Text
 
+        Log::debug('RESULT: ', ['result' => $result]);
         $website_display_insinc = false;
         if (isset($result->custitem14)) {
             if ($result->custitem14) {
@@ -364,8 +365,8 @@ public function updateProduct(Request $request)
         $promotions = [];
         $p_promote = '';
         // Check if custItem25 is set and add to promotions
-        Log::info('ISSET', ['custItem25' => $result->custItem25]);
-        if (isset($result->custItem25)) {
+        Log::info('ISSET', ['custItem25' => $productInfo->custItem25]);
+        if (isset($productInfo->custItem25)) {
             $promotions[] = 
              [
                 'promo_tag' => 'View Page',
