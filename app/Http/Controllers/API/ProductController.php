@@ -547,7 +547,7 @@ public function updateProduct(Request $request)
 
         Log::info('Data', ['data' => $data]);
 
-        if($promotions = []) {
+        if(empty($promotions)) {
             $data['p_promote'] = "General";
         }
 
