@@ -357,7 +357,7 @@ public function updateProduct(Request $request)
             }
         }
 
-        Log::debug('Weekly Specials', ['Specials: ', $weekly_specials_insinc]);
+ //       Log::debug('Weekly Specials', ['Specials: ', $weekly_specials_insinc]);
 
         // Add Promotions Array
         // Initialize Promotions Array
@@ -367,8 +367,10 @@ public function updateProduct(Request $request)
         if (isset($result->custItem25)) {
             $promotions[] =
             [
+                'promotions' => [
                     'promo_tag' => 'View Page',
-                    'promo_order' => 1
+                    'promo_order' => 2
+                ]
             ];
         }
 
@@ -381,11 +383,11 @@ public function updateProduct(Request $request)
         }
 
         // If promotions array is empty, set p_promote to 'General'
-        if (empty($promotions)) {
-            $p_promote = 'General';
-        }
+        // if (empty($promotions)) {
+        //     $p_promote = 'General';
+        // }
         Log::info('promotions', ['promotions' => $promotions]);
-        Log::info('p_promote', ['p_promote' => $p_promote]);
+        // Log::info('p_promote', ['p_promote' => $p_promote]);
         // $p_promote = "General";
         // if (isset($result->custitem25)) {
         //     if ($result->custitem25) {
@@ -539,13 +541,14 @@ public function updateProduct(Request $request)
             "p_priceh"             => $p_priceh,
             'p_metakeywords'       => $p_metakeywords,
             "p_groupid8"           => $weekly_specials_insinc,
-            "promotions"           => $promotions,
-            "p_promote"            =>  $p_promote
-            
+            "promotions"           => $promotions
         ];
 
         Log::info('Data', ['data' => $data]);
 
+        if($promotions = []) {
+            $data['p_promote'] = "General";
+        }
 
         if ($p_img != "") {
             $data["p_img"] = $p_img;
