@@ -365,13 +365,11 @@ public function updateProduct(Request $request)
         $p_promote = '';
         // Check if custItem25 is set and add to promotions
         if (isset($result->custItem25)) {
-            $promotions[] =
-            [
-                'promotions' => [
-                    'promo_tag' => 'View Page',
-                    'promo_order' => 2
-                ]
-            ];
+            $promotions[] = 
+             [
+                'promo_tag' => 'View Page',
+                'promo_order' => 2,
+             ];
         }
 
         // Check if custItem27 is set and add to promotions
@@ -549,6 +547,7 @@ public function updateProduct(Request $request)
         if($promotions = []) {
             $data['p_promote'] = "General";
         }
+        Log::info("data", ["p_promote" => $data['P-promote']]);
 
         if ($p_img != "") {
             $data["p_img"] = $p_img;
