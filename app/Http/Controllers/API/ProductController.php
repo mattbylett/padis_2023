@@ -550,7 +550,7 @@ public function updateProduct(Request $request)
         if($promotions = []) {
             $data['p_promote'] = "General";
         }
-        Log::info("data", ["p_promote" => $data['p-promote']]);
+        Log::info("data", ["p_promote" => $data['p_promote']]);
 
         if ($p_img != "") {
             $data["p_img"] = $p_img;
