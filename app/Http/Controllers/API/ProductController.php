@@ -364,6 +364,7 @@ public function updateProduct(Request $request)
         $promotions = [];
         $p_promote = '';
         // Check if custItem25 is set and add to promotions
+        Log::info('ISSET', ['custItem25' => $result->custItem25]);
         if (isset($result->custItem25)) {
             $promotions[] = 
              [
@@ -373,6 +374,7 @@ public function updateProduct(Request $request)
         }
 
         // Check if custItem27 is set and add to promotions
+        Log::info('ISSET', ['custItem27' => $productInfo->custItem27]);
         if (isset($result->custItem27)) {
             $promotions[] = [
                     'promo_tag' => 'Website Weekly Special',
@@ -547,7 +549,7 @@ public function updateProduct(Request $request)
         if($promotions = []) {
             $data['p_promote'] = "General";
         }
-        Log::info("data", ["p_promote" => $data['P-promote']]);
+        Log::info("data", ["p_promote" => $data['p-promote']]);
 
         if ($p_img != "") {
             $data["p_img"] = $p_img;
