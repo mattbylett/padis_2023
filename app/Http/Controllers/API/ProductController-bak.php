@@ -106,9 +106,9 @@ public function featuredProducts(Request $request)
 
     foreach ($products as $product) {
         $updatedProduct = [
+            'DeleteMissingArrayElements' => true,
             'p_code' => $product['itemId'],
             'promotions' => [
-                'DeleteMissingArrayElements' => true,
                 'promo_tag' => 'Home Page - Featured',
                 'promo_order' => 1
             ]
@@ -129,8 +129,9 @@ public function featuredProducts(Request $request)
             Log::error($th->getMessage());
         }
     }
-
     Log::debug('Updated Products: ' . json_encode($updatedProducts));
+    // Clear the Cache
+    $clearCache = $http_insinc->get("{$base_uri}/apistatus?dopublish");
     
     return;
 }
@@ -142,11 +143,12 @@ public function updateProduct(Request $request)
 
         $id = $request->internalID;
         $type = $request->type;
+        Log::info('Type: ' . $type);
         if (!isset($request->internalID)) {
             return;
         }
 
-        Log::info("API request from NetSuite " . $id);
+        // $pricingQuantities = $request->input('pricingQuantities');
 
         $netSuiteApi = new NetSuiteApi();
 
@@ -172,13 +174,12 @@ public function updateProduct(Request $request)
             );
         } while ($net_website_additional_text === "error");
 
-        Log::info("NetSuite Result = " . json_encode($result));
+        $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
+        // Log::info('Product Info', ['productInfo' => $productInfo]);
+        $p_code = $productInfo->itemId;
+        // Getting the Insinc Site Ready For Additional Text
 
-
-        $p_code = $result->itemId;
-
-        Log::info("p_code = " . $p_code );
-
+       // Log::debug('RESULT: ', ['result' => $result]);
         $website_display_insinc = false;
         if (isset($result->custitem14)) {
             if ($result->custitem14) {
@@ -186,18 +187,39 @@ public function updateProduct(Request $request)
             }
         }
 
+        // Mapping The Fields From Netsuite to Website World
+
+        $p_price = $base_price;
+
+        $p_pricea = isset($result->custitem61) ? $result->custitem61 : 0;
+        $p_priceb = isset($result->custitem62) ? $result->custitem62 : 0;
+        $p_pricec = isset($result->custitem63) ? $result->custitem63 : 0;
+        $p_priced = isset($result->custitem64) ? $result->custitem64 : 0;
+        $p_pricee = isset($result->custitem65) ? $result->custitem65 : 0;
+        $p_pricef = isset($result->custitem66) ? $result->custitem66 : 0;
+        $p_priceg = isset($result->custitem67) ? $result->custitem67 : 0;
+        $p_priceh = isset($result->custitem68) ? $result->custitem68 : 0;
+
+        $p_pricebreaka_minqty = isset($result->custitem49) ? $result->custitem49 : 0;
+        $p_pricebreaka = isset($result->custitem50) ? $p_price - ($p_price * ($result->custitem50 / 100)) : 0;
+        $p_pricebreakb_minqty = isset($result->custitem51) ? $result->custitem51 : 0;
+        $p_pricebreakb = isset($result->custitem56) ? $p_price - ($p_price * ($result->custitem56 / 100)) : 0;
+        $p_pricebreakc_minqty = isset($result->custitem52) ? $result->custitem52 : 0;
+        $p_pricebreakc = isset($result->custitem57) ? $p_price - ($p_price * ($result->custitem57 / 100)) : 0;
+        $p_pricebreakd_minqty = isset($result->custitem53) ? $result->custitem53 : 0;
+        $p_pricebreakd = isset($result->custitem58) ? $p_price - ($p_price * ($result->custitem58 / 100)) : 0;
+        $p_pricebreake_minqty = isset($result->custitem54) ? $result->custitem54 : 0;
+        $p_pricebreake = isset($result->custitem59) ? $p_price - ($p_price * ($result->custitem59 / 100)) : 0;
+        $p_pricebreakf_minqty = isset($result->custitem55) ? $result->custitem55 : 0;
+        $p_pricebreakf = isset($result->custitem60) ? $p_price - ($p_price * ($result->custitem60 / 100)) : 0;
+
         $p_suppliername = $vendor_name;
+
+        $p_metakeywords = isset($result->custitem48) ? $result->custitem48 : '';
 
         $p_suppliercode = "";
         if (isset($result->vendorName)) {
             $p_suppliercode = $result->vendorName;
-        }
-
-        $p_showbuybutton = true;
-        if (isset($result->custitem13)) {
-            if ($result->custitem13) {
-                $p_showbuybutton = $result->custitem13;
-            }
         }
 
         $p_freight_exclude = false;
@@ -231,8 +253,6 @@ public function updateProduct(Request $request)
             }
         }
 
-        $p_price = $base_price;
-
         $p_title = "";
         if (isset($result->custitem5)) {
             $p_title = $result->custitem5;
@@ -263,42 +283,42 @@ public function updateProduct(Request $request)
             $p_supplierprice = $result->cost;
         }
 
-        $p_additionaltext = $net_website_additional_text;
-        $p_additionaltext_insinc = $net_website_additional_text;
+        $p_additionalText = $net_website_additional_text;
+        $p_additionalText_insinc = $net_website_additional_text;
         if ($website_display_insinc) {
             switch ($net_website_additional_text) {
                 case "Regular":
-                    $p_additionaltext_insinc =
+                    $p_additionalText_insinc =
                         // '<p><img src="/images/149131/Red_Leaf_-_regular_product.jpg" border="0" /></p>';
                         '<p><img src="/assets/images/Regular.jpg" border="0" /></p>';
                     break;
 
                 case "Sustainable":
-                    $p_additionaltext_insinc =
+                    $p_additionalText_insinc =
                         // '<p><img src="/images/149131/Blue_leaf_-_sustainable_product.jpg" border="0" /></p>';
                         '<p><img src="/assets/images/Sustainable.jpg" border="0" /></p>';
                     break;
 
                 case "Eco-Friendly":
-                    $p_additionaltext_insinc =
+                    $p_additionalText_insinc =
                         // '<p><img src="/images/149131/Green_leaf_-_eco_option.jpg" border="0" /></p>';
                         '<p><img src="/assets/images/Planet-Friendly.jpg" border="0" /></p>';
                     break;
 
                 case "Mixed Eco/Regular":
-                    $p_additionaltext_insinc =
+                    $p_additionalText_insinc =
                         // '<p><img src="/images/149131/Blue_leaf_-_mixed_product.png" border="0" /></p>';
                         '<p><img src="/assets/images/Mixed.jpg" border="0" /></p>';
                     break;
 
                 case "Recyclable":
-                    $p_additionaltext_insinc =
+                    $p_additionalText_insinc =
                         // '<p><img src="/images/149131/Red_Leaf_-_regular_product_recyclable.jpg" border="0" /></p>';
                         '<p><img src="/assets/images/Recyclable.jpg" border="0" /></p>';
                     break;
 
                 case "Reusable":
-                    $p_additionaltext_insinc =
+                    $p_additionalText_insinc =
                         '<p><img src="/assets/images/Reusable.jpg" border="0" /></p>';
                     break;
             }
@@ -329,32 +349,75 @@ public function updateProduct(Request $request)
             }
         }
 
+
         $weekly_specials_insinc = 0;
         if (isset($result->custitem27)) {
             if ($result->custitem27) {
                 $weekly_specials_insinc = 124022;
+            } else {
+                $weekly_specials_insinc = -9;
             }
         }
 
-        $p_promote = "";
-        if (isset($result->custitem25)) {
-            if ($result->custitem25) {
-                $p_promote = "View Cart";
-            }
+ //       Log::debug('Weekly Specials', ['Specials: ', $weekly_specials_insinc]);
+
+        // Add Promotions Array
+        // Initialize Promotions Array
+        $promotions = [];
+        $p_promote = '';
+        // Check if custItem25 is set and add to promotions
+        Log::info('ISSET', ['custitem25' => $productInfo->custitem25]);
+        if (isset($productInfo->custitem25)) {
+            $promotions[] = 
+             [
+                'promo_tag' => 'View Page',
+                'promo_order' => 2,
+             ];
         }
 
-        if (isset($result->custitem26)) {
-            if ($result->custitem26) {
-                $p_promote = "Order Confirm";
-            }
+        // Check if custItem27 is set and add to promotions
+        Log::info('ISSET', ['custitem27' => $productInfo->custitem27]);
+        if (isset($result->custitem27)) {
+            $promotions[] = [
+                    'promo_tag' => 'Website Weekly Special',
+                    'promo_order' => 1
+            ];
         }
 
-        if (isset($result->custitem42)) {
-            if ($result->custitem42) {
-                $p_promote = "Home Page - Featured";                
-                $weekly_specials_insinc = 124022;
-            }
-        }
+        // If promotions array is empty, set p_promote to 'General'
+        // if (empty($promotions)) {
+        //     $p_promote = 'General';
+        // }
+        Log::info('promotions', ['promotions' => $promotions]);
+        // Log::info('p_promote', ['p_promote' => $p_promote]);
+        // $p_promote = "General";
+        // if (isset($result->custitem25)) {
+        //     if ($result->custitem25) {
+        //         $p_promote = "View Cart";
+        //     }
+        // }
+
+        // if (isset($result->custitem27)) {
+        //     if($result->custitem27) {
+        //     $p_promote = $weekly_specials_insinc;
+        //     $p_groupid8 = 124022;
+        //     }
+        // }
+
+        // if (isset($result->custitem26)) {
+        //     if ($result->custitem26) {
+        //         $p_promote = "Order Confirm";
+        //     }
+        // }
+
+        // if (isset($result->custitem42)) {
+        //     if ($result->custitem42) {
+        //         $p_promote = "Home Page - Featured";                
+        //         $weekly_specials_insinc = 124022;
+        //     }
+        // }
+
+        // Log::info('isset', ['p_promote' => $p_promote]);
 
         $p_tab_video = "";
         if (isset($result->custitem33)) {
@@ -435,31 +498,60 @@ public function updateProduct(Request $request)
                 $p_showbuybutton = true;
             }
         }
-
-        if (isset($result->custitem13)) {
-            if ($result->custitem13) {
+        $p_showbuybutton = true;
+        if (isset($result->custitem35)) {
+            if ($result->custitem35) {
                 $p_showbuybutton = false;
             }
         }
 
         $data = [
-            "p_code" => $p_code,
-            "p_suppliercode" => $p_suppliercode,
-            "p_suppliername" => $p_suppliername,
-            "p_showbuybutton" => $p_showbuybutton,
-            "p_freight_exclude" => $p_freight_exclude,
-            "p_shipping" => $p_shipping,
-            "p_details" => $p_details,
-            "p_promote" => $p_promote,
-            "p_price" => $p_price,
-            "p_title" => $p_title,
-            "p_outofstockmessage" => $p_outofstockmessage,
-            "p_supplierprice" => $p_supplierprice,
-            "p_priceprediscount" => $p_priceprediscount,
-            "p_sale_ends" => $p_sale_ends,
-            "p_qtyinstock" => $p_qtyinstock,
-            "p_order" => 1,
+            "p_code"               => $p_code,
+            "p_suppliercode"       => $p_suppliercode,
+            "p_suppliername"       => $p_suppliername,
+            "p_showbuybutton"      => $p_showbuybutton,
+            "p_freight_exclude"    => $p_freight_exclude,
+            "p_shipping"           => $p_shipping,
+            "p_details"            => $p_details,
+            "p_price"              => $p_price,
+            "p_title"              => $p_title,
+            "p_outofstockmessage"  => $p_outofstockmessage,
+            "p_supplierprice"      => $p_supplierprice,
+            "p_priceprediscount"   => $p_priceprediscount,
+            "p_sale_ends"          => $p_sale_ends,
+            "p_qtyinstock"         => $p_qtyinstock,
+            "p_order"              => 1,
+            "p_pricebreaka_minqty" => $p_pricebreaka_minqty,
+            "p_pricebreakb_minqty" => $p_pricebreakb_minqty,
+            "p_pricebreakc_minqty" => $p_pricebreakc_minqty,
+            "p_pricebreakd_minqty" => $p_pricebreakd_minqty,
+            "p_pricebreake_minqty" => $p_pricebreake_minqty,
+            "p_pricebreakf_minqty" => $p_pricebreakf_minqty,
+            "p_pricebreaka"        => $p_pricebreaka,
+            "p_pricebreakb"        => $p_pricebreakb,
+            "p_pricebreakc"        => $p_pricebreakc,
+            "p_pricebreakd"        => $p_pricebreakd,
+            "p_pricebreake"        => $p_pricebreake,
+            "p_pricebreakf"        => $p_pricebreakf,
+            "p_pricea"             => $p_pricea,
+            "p_priceb"             => $p_priceb,
+            "p_pricec"             => $p_pricec,
+            "p_priced"             => $p_priced,
+            "p_pricee"             => $p_pricee,
+            "p_pricef"             => $p_pricef,
+            "p_priceg"             => $p_priceg,
+            "p_priceh"             => $p_priceh,
+            'p_metakeywords'       => $p_metakeywords,
+            "p_groupid8"           => $weekly_specials_insinc,
+            "promotions"           => $promotions
         ];
+
+        Log::info('Data', ['data' => $data]);
+
+        if(empty($promotions)) {
+            $data['p_promote'] = "General";
+        }
+
 
         if ($p_img != "") {
             $data["p_img"] = $p_img;
@@ -509,19 +601,18 @@ public function updateProduct(Request $request)
             );
         }
 
-        if ($p_additionaltext != "") {
-            $data["p_additionaltext"] = $p_additionaltext;
+        if ($p_additionalText_insinc != "") {
+            $data["p_additionaltext"] = $p_additionalText_insinc;
         }
-
-        Log::info("Mapping Data = " . json_encode($data));
 
         $removeData = [
             "p_code" => $p_code,
             "p_order" => "-999",
         ];
 
-        Log::info("Netsuite Type = " . $type);
+ //   Log::info('Data For Website World : ' . json_encode($data));
 
+        // Creating Connection Strings to the Website World API
         $http_cafe = Http::withHeaders([
             "apiID" => config("services.website.cafe_api_id"),
             "apiKey" => config("services.website.cafe_api_key"),
@@ -553,11 +644,10 @@ public function updateProduct(Request $request)
         ]);
 
         $http_insinc = Http::withHeaders([
+            'Content-Type' => 'application/json',
             "apiID" => config("services.website.insinc_api_id"),
             "apiKey" => config("services.website.insinc_api_key"),
         ]);
-
-
 
         $http_soluclean = Http::withHeaders([
             "apiID" => config("services.website.soluclean_api_id"),
@@ -567,98 +657,83 @@ public function updateProduct(Request $request)
 
         $base_uri = config("services.website.base_uri");
 
-        $website_display_hand = boolval($request->input('custitem19', false));
+        $website_display_hand = boolval($result->custitem19);
         $this->processWebsiteData($website_display_hand, $http_hand, $base_uri, $p_code, $data, $type, "209709", $removeData);
+       // Log::debug('Display: ', ["Hand Sanitiser - " => $website_display_hand]);
 
-        $website_display_car = boolval($request->input('custitem20', false));
+        $website_display_car = boolval($result->custitem20);
         $this->processWebsiteData($website_display_car, $http_car, $base_uri, $p_code, $data, $type, "209707", $removeData);
-
-        $website_display_packnet = boolval($request->input('custitem18', false));
+      //  Log::debug('Display: ', ["Car Supplies - " => $website_display_car]);  
+        
+       //Log::debug('Raw custitem19: ', ["Packnet - " => $result->custitem18]);
+        $website_display_packnet = boolval($result->custitem18);
         $this->processWebsiteData($website_display_packnet, $http_packnet, $base_uri,  $p_code, $data, $type, "209710", $removeData);
+       //Log::debug('Display: ', ["Packnet - " => $website_display_packnet]);
 
-        $website_display_cafe = boolval($request->input('custitem15', false));
+        $website_display_cafe = boolval($result->custitem15);
         $this->processWebsiteData($website_display_cafe, $http_cafe, $base_uri,  $p_code, $data, $type, "209706", $removeData);
+       // Log::debug('Display: ', ["Cafe Supplies - " => $website_display_cafe]);
 
-        $website_display_rubbish = boolval($request->input('custitem17', false));
+        $website_display_rubbish = boolval($result->custitem17);
         $this->processWebsiteData($website_display_rubbish, $http_rubbish, $base_uri,  $p_code, $data, $type, "209711", $removeData);
+       // Log::debug('Display: ', ["Rubbish - " => $website_display_rubbish]);
 
-        $website_display_disposable = boolval($request->input('custitem16', false));
+        $website_display_disposable = boolval($result->custitem16);
         $this->processWebsiteData($website_display_disposable, $http_gloves, $base_uri,  $p_code, $data, $type, "209708", $removeData);
+      //  Log::debug('Display: ', ["Disposable Gloves - " => $website_display_disposable]);
 
-        $website_display_soluclean = boolval($request->input('custitem43', false));
+        $website_display_soluclean = boolval($result->custitem43);
         $this->processWebsiteData($website_display_soluclean, $http_soluclean, $base_uri,  $p_code, $data, $type, "244504", $removeData);
+       // Log::debug('Display: ', ["Soluclean - " => $website_display_soluclean]);
 
+        // $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, $groupId, $removeData);
         $this->processWebsiteData($website_display_insinc, $http_insinc, $base_uri,  $p_code, $data, $type, "209705", $removeData);
 
-        // try {
-        //     if ($type == "delete") {
-        //         Log::info("This is for Type Delete - Unlikely to show");
-        //     } else {
-
-        //         Log::info("Website Cafe Success");
-
-        //         Log::info("Website Car Success");
-
-        //         Log::info("Website Hand Success");
-
-        //         Log::info("Website Packnet Success");
-
-        //         Log::info("Website Rubbish Success");
-
-        //         Log::info("Website Gloves Success");
-
-        //         Log::info("Website Soluclean Success");
-
-        //         Log::info("Website Insinc Success");
-
-        //     }
-        // } catch (\Throwable $th) {
-        //     Log::error($th->getMessage());
-        // }
+        Log::info('Data Processing Complete!');
 
         return;
     }
 
     // Create a reusable function to handle The Website World Conections
-    function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null) {
-    Log::info(gettype($httpInstance));
+    function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null)     
+    {
+        if ($displayFlag) {
+                $preparedData = $data; // Copying the data
+                // Get product details first  from Website World
+                $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
+                $content = $response->getBody();  // Assuming $response is your response object.
+                $content_utf8 = mb_convert_encoding($content, 'UTF-8', 'ISO-8859-1');
+                $result= json_decode($content_utf8, true);
 
-    if ($displayFlag) {
-        $preparedData = $data; // Copying the data
+                if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0) ) {
+                    $preparedData["p_groupid"] = $groupId;
+                    // $preparedData["p_additionaltext"] = $additionalText;
+                } 
+                
+                if ($additionalText) {
+                    $preparedData["p_additionaltext"] = $additionalText;
+                }
 
-        // Get product details first  from Website World
-        $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
-        Log::info('This is the Response: ' . $response);
+                try {
+                    $response = $httpInstance->post("{$base_uri}/product", $preparedData);
+                    if ($response->successful()) {
+                        $result = $response->json();
+                    } else {
+                        Log::error('HTTP request failed: ', ['status' => $response->status(), 'body' => $response->body()]);
+                    }
+                } catch (\Exception $e) {
+                    Log::error('Error: ', ['message' => $e->getMessage()]);
+                }
 
-        // $testing = $response->resultCount;
-        // Log::info('Directly from the Response Object : ' . $testing);
-
-        //Deccode the response using json encode
-        $result = json_decode($response->body(), false);
-        Log::info('Decoded Result: ', ['result' => $result]);
-
-        //decode the response directly - This was the original method that was working
-        $result1 = $response->json();
-        Log::info('Original Decode Method: ' . $result1);
-
-        if ($type == "create" || (!isset($result["resultCount"]) || $result["resultCount"] == 0)) {
-            $preparedData["p_groupid"] = $groupId;
-        }
-        if ($additionalText) {
-            $preparedData["p_additionaltext"] = $additionalText;
-        }
-        $response = $httpInstance->post("{$base_uri}/product", $preparedData);
-        $result = $response->json();
-        Log::info("Success for website with groupId: $groupId");
-    } else {
-        $response = $httpInstance->get("{$base_uri}/products?p_code=" . $p_code);
-        $result = $response->json();
-        if (isset($result["resultCount"]) && $result["resultCount"] != 0) {
-            $response = $httpInstance->post("{$base_uri}/product", $removeData);
-            $result = $response->json();
-        }
+                } else {
+                    $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
+                    $result = $response->json();
+                    if (isset($result["resultCount"]) && $result["resultCount"] != 0) {
+                        $response = $httpInstance->post("{$base_uri}/product", $removeData);
+                        $result = $response->json();
+                    }
+            }
     }
-}
-
+    
 }
 

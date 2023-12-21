@@ -143,6 +143,7 @@ public function updateProduct(Request $request)
 
         $id = $request->internalID;
         $type = $request->type;
+        Log::info('Type: ' . $type);
         if (!isset($request->internalID)) {
             return;
         }
@@ -174,11 +175,11 @@ public function updateProduct(Request $request)
         } while ($net_website_additional_text === "error");
 
         $productInfo = $netSuiteApi->fetchFromNetSuite("GET", "/inventoryitem/" . $id);
-        Log::info('Product Info', ['productInfo' => $productInfo]);
+        // Log::info('Product Info', ['productInfo' => $productInfo]);
         $p_code = $productInfo->itemId;
         // Getting the Insinc Site Ready For Additional Text
 
-        Log::debug('RESULT: ', ['result' => $result]);
+       // Log::debug('RESULT: ', ['result' => $result]);
         $website_display_insinc = false;
         if (isset($result->custitem14)) {
             if ($result->custitem14) {
@@ -365,7 +366,7 @@ public function updateProduct(Request $request)
         $promotions = [];
         $p_promote = '';
         // Check if custItem25 is set and add to promotions
-        Log::info('ISSET', ['custitem25' => $productInfo->custitem25]);
+       // Log::info('ISSET', ['custitem25' => $productInfo->custitem25]);
         if (isset($productInfo->custitem25)) {
             $promotions[] = 
              [
@@ -375,7 +376,7 @@ public function updateProduct(Request $request)
         }
 
         // Check if custItem27 is set and add to promotions
-        Log::info('ISSET', ['custitem27' => $productInfo->custitem27]);
+      //  Log::info('ISSET', ['custitem27' => $productInfo->custitem27]);
         if (isset($result->custitem27)) {
             $promotions[] = [
                     'promo_tag' => 'Website Weekly Special',
@@ -387,7 +388,7 @@ public function updateProduct(Request $request)
         // if (empty($promotions)) {
         //     $p_promote = 'General';
         // }
-        Log::info('promotions', ['promotions' => $promotions]);
+      //  Log::info('promotions', ['promotions' => $promotions]);
         // Log::info('p_promote', ['p_promote' => $p_promote]);
         // $p_promote = "General";
         // if (isset($result->custitem25)) {
@@ -545,7 +546,7 @@ public function updateProduct(Request $request)
             "promotions"           => $promotions
         ];
 
-        Log::info('Data', ['data' => $data]);
+       // Log::info('Data', ['data' => $data]);
 
         if(empty($promotions)) {
             $data['p_promote'] = "General";
@@ -696,10 +697,23 @@ public function updateProduct(Request $request)
     // Create a reusable function to handle The Website World Conections
     function processWebsiteData($displayFlag, $httpInstance, $base_uri, $p_code, $data, $type, $groupId, $removeData, $additionalText = null)     
     {
+        Log::info('processWebsiteData called', 
+        [
+            'displayFlag' => $displayFlag,
+            'base_uri' => $base_uri,
+            'p_code' => $p_code,
+            'type' => $type,
+            'groupId' => $groupId,
+        ]);
+
         if ($displayFlag) {
                 $preparedData = $data; // Copying the data
                 // Get product details first  from Website World
                 $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
+                Log::info('Initial GET request response', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                ]);
                 $content = $response->getBody();  // Assuming $response is your response object.
                 $content_utf8 = mb_convert_encoding($content, 'UTF-8', 'ISO-8859-1');
                 $result= json_decode($content_utf8, true);
@@ -714,7 +728,14 @@ public function updateProduct(Request $request)
                 }
 
                 try {
+                    Log::info('Prepared data for POST request', [
+                        'preparedData' => $preparedData,
+                    ]);
                     $response = $httpInstance->post("{$base_uri}/product", $preparedData);
+                    Log::info('POST request response', [
+                        'status' => $response->status(),
+                        'body' => $response->body(),
+                    ]);
                     if ($response->successful()) {
                         $result = $response->json();
                     } else {
@@ -726,12 +747,21 @@ public function updateProduct(Request $request)
 
                 } else {
                     $response = $httpInstance->get("{$base_uri}/product?p_code=" . $p_code);
+                    Log::info('GET request response when displayFlag is false', [
+                        'status' => $response->status(),
+                        'body' => $response->body(),
+                    ]);
+   
                     $result = $response->json();
                     if (isset($result["resultCount"]) && $result["resultCount"] != 0) {
                         $response = $httpInstance->post("{$base_uri}/product", $removeData);
+                        Log::info('POST request response to remove product', [
+                        'status' => $response->status(),
+                        'body' => $response->body(),
+                    ]);
                         $result = $response->json();
                     }
-            }
+        } 
     }
     
 }
