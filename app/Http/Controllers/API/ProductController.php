@@ -728,9 +728,9 @@ public function updateProduct(Request $request)
                 }
 
                 try {
-                    Log::info('Prepared data for POST request', [
-                        'preparedData' => $preparedData,
-                    ]);
+                    // Log::info('Prepared data for POST request', [
+                    //     'preparedData' => $preparedData,
+                    // ]);
                     $response = $httpInstance->post("{$base_uri}/product", $preparedData);
                     Log::info('POST request response', [
                         'status' => $response->status(),
